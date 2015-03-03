@@ -16,7 +16,7 @@ public class AlarmModel {
     public static final int FRDIAY = 5;
     public static final int SATURDAY = 6;
 
-    public long id;
+    public long id = -1;
     public int timeHour;
     public int timeMinute;
     private boolean repeatingDays[];
