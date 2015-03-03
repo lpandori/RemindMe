@@ -1,22 +1,32 @@
 package cs121.hmc.edu.remindme;
 
 
+import android.app.ListActivity;
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-
-/**
- * Created by heatherseaman on 2/23/15.
- */
+import android.view.View;
+import android.widget.Button;
+import android.widget.ListView;
 
 public class AlarmListActivity extends ActionBarActivity {
+
+    private AlarmDBHelper dbHelper = new AlarmDBHelper(this);
+
+    private AlarmListAdapter mAdapter;
+    private Context mContext;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mContext = this;
+        mAdapter = new AlarmListAdapter(this, dbHelper.getAlarms());
         setContentView(R.layout.activity_alarm_list);
+        ListView alarmList=(ListView)findViewById(R.id.list);
+        alarmList.setAdapter(mAdapter);
     }
 
 
@@ -32,14 +42,37 @@ public class AlarmListActivity extends ActionBarActivity {
 
         switch (item.getItemId()) {
             case R.id.action_add_new_alarm: {
-                Intent intent = new Intent(this,
-                        AlarmDetailsActivity.class);
-
-                startActivity(intent);
+                startAlarmDetailsActivity(-1);
                 break;
             }
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected  void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode == RESULT_OK) {
+            mAdapter.setAlarms(dbHelper.getAlarms());
+            mAdapter.notifyDataSetChanged();
+        }
+    }
+
+    public void setAlarmEnabled(long id, boolean isEnabled) {
+        AlarmModel model = dbHelper.getAlarm(id);
+        model.isEnabled = isEnabled;
+        dbHelper.updateAlarm(model);
+        // refreshing the adapter after the state of the toggle has changed
+        // in the first list view item
+        mAdapter.setAlarms(dbHelper.getAlarms());
+        mAdapter.notifyDataSetChanged();
+        AlarmManagerHelper.setAlarms(this);
+    }
+
+    public void startAlarmDetailsActivity(long id) {
+        Intent intent = new Intent(this, AlarmDetailsActivity.class);
+        intent.putExtra("id", id);
+        startActivityForResult(intent, 0);
     }
 }

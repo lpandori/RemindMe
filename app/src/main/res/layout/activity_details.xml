@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent">
+    android:layout_height="fill_parent"
+    android:isScrollContainer="true">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -39,7 +39,7 @@
             android:layout_alignParentEnd="true"
             android:layout_below="@+id/alarm_details_name" />
 
-        <cs121.hmc.edu.remindme.CustomSwitch
+        <heatherlouise.com.alarmclock.CustomSwitch
             android:id="@+id/alarm_details_label_repeat_weekly"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -60,7 +60,7 @@
             android:layout_alignParentEnd="true"
             android:layout_below="@+id/alarm_details_label_repeat_weekly" />
 
-        <cs121.hmc.edu.remindme.CustomSwitch
+        <heatherlouise.com.alarmclock.CustomSwitch
             android:id="@+id/alarm_details_label_sunday"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -72,7 +72,7 @@
             android:checked="true"
             android:text="@string/details_sunday" />
 
-        <cs121.hmc.edu.remindme.CustomSwitch
+        <heatherlouise.com.alarmclock.CustomSwitch
             android:id="@+id/alarm_details_label_monday"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -84,7 +84,7 @@
             android:checked="true"
             android:text="@string/details_monday" />
 
-        <cs121.hmc.edu.remindme.CustomSwitch
+        <heatherlouise.com.alarmclock.CustomSwitch
             android:id="@+id/alarm_details_label_tuesday"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -96,7 +96,7 @@
             android:checked="true"
             android:text="@string/details_tuesday" />
 
-        <cs121.hmc.edu.remindme.CustomSwitch
+        <heatherlouise.com.alarmclock.CustomSwitch
             android:id="@+id/alarm_details_label_wednesday"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -108,7 +108,7 @@
             android:checked="true"
             android:text="@string/details_wednesday" />
 
-        <cs121.hmc.edu.remindme.CustomSwitch
+        <heatherlouise.com.alarmclock.CustomSwitch
             android:id="@+id/alarm_details_label_thursday"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -120,7 +120,7 @@
             android:checked="true"
             android:text="@string/details_thursday" />
 
-        <cs121.hmc.edu.remindme.CustomSwitch
+        <heatherlouise.com.alarmclock.CustomSwitch
             android:id="@+id/alarm_details_label_friday"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -132,7 +132,7 @@
             android:checked="true"
             android:text="@string/details_friday" />
 
-        <cs121.hmc.edu.remindme.CustomSwitch
+        <heatherlouise.com.alarmclock.CustomSwitch
             android:id="@+id/alarm_details_label_saturday"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
