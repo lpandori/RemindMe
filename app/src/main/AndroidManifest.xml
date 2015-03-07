@@ -25,9 +25,11 @@
         </receiver>
         <service android:name=".AlarmService"
             android:enabled="true" />
+        <activity android:name=".AlarmFrequency"/>
 
         <activity android:name=".AlarmDetailsActivity" />
         <activity android:name=".AlarmScreen" />
+        <activity android:name=".AlarmDaysOfWeek"/>
     </application>
 
 </manifest>

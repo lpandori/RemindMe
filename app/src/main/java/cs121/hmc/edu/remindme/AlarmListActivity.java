@@ -71,8 +71,12 @@ public class AlarmListActivity extends ActionBarActivity {
     }
 
     public void startAlarmDetailsActivity(long id) {
-        Intent intent = new Intent(this, AlarmDetailsActivity.class);
-        intent.putExtra("id", id);
-        startActivityForResult(intent, 0);
+        //Intent intent = new Intent(this, AlarmDetailsActivity.class);
+        //intent.putExtra("id", id);
+        //startActivityForResult(intent, 0);
+        Intent intent = new Intent(AlarmListActivity.this,AlarmFrequency.class);
+        //intent.putExtra("id",id);
+        startActivity(intent);
+
     }
 }
