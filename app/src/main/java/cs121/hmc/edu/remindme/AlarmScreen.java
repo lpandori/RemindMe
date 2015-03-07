@@ -35,8 +35,9 @@ public class AlarmScreen extends Activity {
 
         TextView tvName = (TextView) findViewById(R.id.alarm_screen_name);
         tvName.setText(name);
+
         TextView tvTime = (TextView) findViewById(R.id.alarm_screen_time);
-        tvTime.setText(String.format("02d : %02d", timeHour, timeMinute));
+        tvTime.setText(String.format("%02d : %02d", timeHour, timeMinute));
 
         Button dismissButton = (Button) findViewById(R.id.alarm_screen_button);
         dismissButton.setOnClickListener(new View.OnClickListener() {
@@ -97,10 +98,10 @@ public class AlarmScreen extends Activity {
         // Dismiss the keyguard if unsecured
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
 
-        // Acquire Wakelock
+//        Acquire Wakelock
         PowerManager pm = (PowerManager) getApplicationContext().getSystemService(Context.POWER_SERVICE);
         if (mWakeLock == null) {
-            mWakeLock = pm.newWakeLock((PowerManager.ACQUIRE_CAUSES_WAKEUP), TAG);
+            mWakeLock = pm.newWakeLock((PowerManager.FULL_WAKE_LOCK | PowerManager.SCREEN_BRIGHT_WAKE_LOCK |PowerManager.ACQUIRE_CAUSES_WAKEUP), TAG);
         }
         if(!mWakeLock.isHeld()) {
             mWakeLock.acquire();

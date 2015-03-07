@@ -17,6 +17,8 @@ import java.util.List;
  * to run on boot and reset all the alarms stored in the database.
  */
 public class AlarmManagerHelper extends BroadcastReceiver{
+
+
     public static final String ID = "id";
     public static final String NAME = "name";
     public static final String TIME_HOUR = "timeHour";
@@ -73,8 +75,6 @@ public class AlarmManagerHelper extends BroadcastReceiver{
                             }
                         }
                     }
-
-
                 }
             }
         }

@@ -126,7 +126,7 @@ public class AlarmDetailsActivity extends ActionBarActivity {
             }
             case R.id.action_save_alarm_details: {
                 updateModelFromLayout();
-                AlarmDBHelper dbHelper = new AlarmDBHelper(this);
+                AlarmManagerHelper.cancelAlarms(this);
 
                 // When we create a new alarm we need to make sure
                 // to initalize the ID as -1 so we can know that it
