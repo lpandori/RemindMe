@@ -1,7 +1,5 @@
 package cs121.hmc.edu.remindme;
 
-import android.app.Activity;
-import android.app.AlarmManager;
 import android.content.Intent;
 import android.media.RingtoneManager;
 import android.support.v7.app.ActionBarActivity;
@@ -27,6 +25,7 @@ public class AlarmDetailsActivity extends ActionBarActivity {
     private AlarmModel alarmDetails;
     private AlarmDBHelper dbHelper = new AlarmDBHelper(this);
     private TimePicker timePicker;
+    private EditText snoozeInput; //TODO
     private EditText edtName;
     private CustomSwitch chkWeekly;
     private CustomSwitch chkSunday;
@@ -49,6 +48,7 @@ public class AlarmDetailsActivity extends ActionBarActivity {
 
         setContentView(R.layout.activity_details);
         timePicker = (TimePicker) findViewById(R.id.alarm_details_time_picker);
+        snoozeInput = (EditText) findViewById(R.id.alarm_details_snooze_picker);//TODO
         edtName = (EditText) findViewById(R.id.alarm_details_name);
         chkWeekly = (CustomSwitch) findViewById(R.id.alarm_details_label_repeat_weekly);
         chkSunday = (CustomSwitch) findViewById(R.id.alarm_details_label_sunday);
@@ -60,6 +60,9 @@ public class AlarmDetailsActivity extends ActionBarActivity {
         chkSaturday = (CustomSwitch) findViewById(R.id.alarm_details_label_saturday);
         txtToneSelection = (TextView) findViewById(R.id.alarm_label_tone_selection);
 
+
+        snoozeInput.setText("20");//TODO move this to a more appropriate place
+
         long id = getIntent().getExtras().getLong("id");
 
         if (id == -1) {
@@ -68,6 +71,10 @@ public class AlarmDetailsActivity extends ActionBarActivity {
             alarmDetails = dbHelper.getAlarm(id);
             timePicker.setCurrentMinute(alarmDetails.timeMinute);
             timePicker.setCurrentHour(alarmDetails.timeHour);
+
+            //snoozeInput.setText("20");//TODO add default based on storage from AlarmModel
+            //snoozePicker.setValue(10);//TODO do this from alarmDetails.snooze
+
             edtName.setText(alarmDetails.name);
             chkWeekly.setChecked(alarmDetails.repeatWeekly);
             chkSunday.setChecked(alarmDetails.getRepeatingDay(AlarmModel.SUNDAY));
@@ -75,7 +82,7 @@ public class AlarmDetailsActivity extends ActionBarActivity {
             chkTuesday.setChecked(alarmDetails.getRepeatingDay(AlarmModel.TUESDAY));
             chkWednesday.setChecked(alarmDetails.getRepeatingDay(AlarmModel.WEDNESDAY));
             chkThursday.setChecked(alarmDetails.getRepeatingDay(AlarmModel.THURSDAY));
-            chkFriday.setChecked(alarmDetails.getRepeatingDay(AlarmModel.FRDIAY));
+            chkFriday.setChecked(alarmDetails.getRepeatingDay(AlarmModel.FRIDAY));
             chkSaturday.setChecked(alarmDetails.getRepeatingDay(AlarmModel.SATURDAY));
 
             txtToneSelection.setText(RingtoneManager.getRingtone(this, alarmDetails.alarmTone).getTitle(this));
@@ -151,6 +158,8 @@ public class AlarmDetailsActivity extends ActionBarActivity {
 
         alarmDetails.timeMinute = timePicker.getCurrentMinute();
         alarmDetails.timeHour = timePicker.getCurrentHour();
+        //TODO
+        alarmDetails.snooze = Integer.parseInt( snoozeInput.getText().toString() );
         alarmDetails.name = edtName.getText().toString();
         alarmDetails.repeatWeekly = chkWeekly.isChecked();
         alarmDetails.setRepeatingDay(AlarmModel.SUNDAY, chkSunday.isChecked());
@@ -158,7 +167,7 @@ public class AlarmDetailsActivity extends ActionBarActivity {
         alarmDetails.setRepeatingDay(AlarmModel.TUESDAY, chkTuesday.isChecked());
         alarmDetails.setRepeatingDay(AlarmModel.WEDNESDAY, chkWednesday.isChecked());
         alarmDetails.setRepeatingDay(AlarmModel.THURSDAY, chkThursday.isChecked());
-        alarmDetails.setRepeatingDay(AlarmModel.FRDIAY, chkFriday.isChecked());
+        alarmDetails.setRepeatingDay(AlarmModel.FRIDAY, chkFriday.isChecked());
         alarmDetails.setRepeatingDay(AlarmModel.SATURDAY, chkSaturday.isChecked());
         alarmDetails.isEnabled = true;
     }

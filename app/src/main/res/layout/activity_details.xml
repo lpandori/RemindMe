@@ -21,11 +21,21 @@
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true" />
 
+        <!-- snooze selector TODO make this pretty-->
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/alarm_details_time_picker"
+            android:id="@+id/alarm_details_snooze_picker"
+            android:inputType="numberDecimal"/>
+            <!-- android:layout_alignParentTop="true" -->
+            <!-- android:layout_centerHorizontal="true" -->
+
         <EditText
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/alarm_details_name"
-            android:layout_below="@+id/alarm_details_time_picker"
+            android:layout_below="@+id/alarm_details_snooze_picker"
             android:layout_marginBottom="@dimen/activity_vertical_margin"
             android:layout_marginTop="@dimen/activity_vertical_margin"
             android:ems="10"
@@ -152,6 +162,7 @@
             android:layout_alignParentStart="true"
             android:layout_alignParentEnd="true"
             android:layout_below="@+id/alarm_details_label_saturday" />
+
 
         <LinearLayout
             android:id="@+id/alarm_ringtone_container"

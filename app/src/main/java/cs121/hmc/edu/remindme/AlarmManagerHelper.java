@@ -35,7 +35,7 @@ public class AlarmManagerHelper extends BroadcastReceiver{
 
         if (alarms != null) {
             for (AlarmModel alarm : alarms) {
-                if (alarm.isEnabled) {
+                if (alarm.isEnabled()) {
                     PendingIntent pIntent = createPendingIntent(context, alarm);
                     Calendar calendar = Calendar.getInstance();
                     calendar.set(Calendar.HOUR_OF_DAY, alarm.timeHour);
@@ -117,6 +117,7 @@ public class AlarmManagerHelper extends BroadcastReceiver{
 
     }
 
+    //creates pending intent in uniform way
     private static PendingIntent createPendingIntent(Context context, AlarmModel model) {
         Intent intent = new Intent(context, AlarmService.class);
         intent.putExtra(ID, model.id);
