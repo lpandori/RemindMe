@@ -139,7 +139,7 @@ public class AlarmDetailsActivity extends ActionBarActivity {
                 }
 
                 AlarmManagerHelper.setAlarms(this);
-
+                // This result code tells the ListActivity that the  alarm was saved properly
                 setResult(RESULT_OK);
                 finish();
             }

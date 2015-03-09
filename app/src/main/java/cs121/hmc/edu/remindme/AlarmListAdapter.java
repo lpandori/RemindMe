@@ -29,6 +29,7 @@ public class AlarmListAdapter extends BaseAdapter {
     public void setAlarms(List<AlarmModel> alarms) {
         mAlarms = alarms;
     }
+
     @Override
     public int getCount() {
         if (mAlarms != null) {
