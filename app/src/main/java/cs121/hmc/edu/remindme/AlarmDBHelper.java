@@ -106,7 +106,7 @@ public class AlarmDBHelper extends SQLiteOpenHelper {
 
     }
 
-    //    TODO: Read up on Content Providers!
+    //TODO: Read up on Content Providers!
     //now returns an array list of content values!!
     //TODO still some implementation left
     private ArrayList<ContentValues> populateContent(AlarmModel model) {
