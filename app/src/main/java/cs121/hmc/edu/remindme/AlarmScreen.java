@@ -1,16 +1,22 @@
 package cs121.hmc.edu.remindme;
 
 import android.app.Activity;
+import android.content.ClipData;
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.PowerManager;
+import android.view.DragEvent;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 /**
@@ -48,6 +54,10 @@ public class AlarmScreen extends Activity {
             }
         });
 
+        findViewById(R.id.dismiss_start).setOnTouchListener(new DismissTouchListener());
+        findViewById(R.id.dismiss_end).setOnDragListener(new DismissDragListener());
+
+
         String tone = getIntent().getStringExtra(AlarmManagerHelper.TONE);
         mPlayer = new MediaPlayer();
         try {
@@ -83,6 +93,59 @@ public class AlarmScreen extends Activity {
 
 
     }
+
+    private final class DismissTouchListener implements View.OnTouchListener {
+        public boolean onTouch(View view, MotionEvent motionEvent) {
+            if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
+                ClipData data = ClipData.newPlainText("", "");
+                View.DragShadowBuilder shadowBuilder = new View.DragShadowBuilder(view);
+                view.startDrag(data, shadowBuilder, view, 0);
+                view.setVisibility(View.INVISIBLE);
+                return true;
+            }
+            else return false;
+        }
+    }
+
+    class DismissDragListener implements View.OnDragListener {
+
+        Drawable enterShape = getResources().getDrawable(R.drawable.oval_droptarget);
+        Drawable normalShape = getResources().getDrawable(R.drawable.oval);
+
+        @Override
+        public boolean onDrag(View v, DragEvent event) {
+            int action = event.getAction();
+            switch (action) {
+                case DragEvent.ACTION_DRAG_STARTED:
+                    // do nothing
+                    break;
+                case DragEvent.ACTION_DRAG_ENTERED:
+                    v.setBackgroundDrawable(enterShape);
+                    break;
+                case DragEvent.ACTION_DRAG_EXITED:
+                    v.setBackgroundDrawable(normalShape);
+                    break;
+                case DragEvent.ACTION_DROP:
+                    // Dropped, reassign View to ViewGroup
+                    View view = (View) event.getLocalState();
+                    ViewGroup owner = (ViewGroup) view.getParent();
+                    owner.removeView(view);
+                    LinearLayout container = (LinearLayout) v;
+                    container.addView(view);
+                    view.setVisibility(View.VISIBLE);
+                    mPlayer.stop();
+                    finish();
+                    break;
+                case DragEvent.ACTION_DRAG_ENDED:
+                    v.setBackgroundDrawable(normalShape);
+                default:
+                    break;
+            }
+            return true;
+        }
+
+    }
+
 
     @Override
     protected  void onResume() {
