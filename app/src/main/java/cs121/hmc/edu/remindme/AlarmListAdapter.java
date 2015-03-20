@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.CompoundButton;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import java.util.List;
@@ -54,6 +55,13 @@ public class AlarmListAdapter extends BaseAdapter {
         return 0;
     }
 
+    public void remove(int position) {
+        if (mAlarms != null) {
+            mAlarms.remove(position);
+            notifyDataSetChanged();
+        }
+    }
+
     @Override
     public View getView(int position, View view, ViewGroup parent) {
         if (view == null) {
@@ -88,12 +96,12 @@ public class AlarmListAdapter extends BaseAdapter {
             }
         });
         view.setTag(model.id);
-        view.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ((AlarmListActivity) mContext).startAlarmDetailsActivity((Long) v.getTag());
-            }
-        });
+//        view.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                ((AlarmListActivity) mContext).startAlarmDetailsActivity((Long) v.getTag());
+//            }
+//        });
         return view;
     }
 

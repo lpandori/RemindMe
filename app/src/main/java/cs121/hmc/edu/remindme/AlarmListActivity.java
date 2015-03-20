@@ -10,7 +10,16 @@ import android.view.Menu;
 import android.view.MenuItem;
 //import android.view.View;
 //import android.widget.Button;
+import android.view.View;
+import android.widget.AbsListView;
+import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
+
+import com.hudomju.swipe.SwipeToDismissTouchListener;
+import com.hudomju.swipe.adapter.ListViewAdapter;
+
+import static android.widget.Toast.LENGTH_SHORT;
 
 public class AlarmListActivity extends ActionBarActivity {
 
@@ -27,6 +36,37 @@ public class AlarmListActivity extends ActionBarActivity {
         setContentView(R.layout.activity_alarm_list);
         ListView alarmList=(ListView)findViewById(R.id.list);
         alarmList.setAdapter(mAdapter);
+
+        final SwipeToDismissTouchListener<ListViewAdapter> touchListener =
+                new SwipeToDismissTouchListener<>(
+                    new ListViewAdapter(alarmList),
+                    new SwipeToDismissTouchListener.DismissCallbacks<ListViewAdapter>() {
+                        @Override
+                        public boolean canDismiss (int position) {
+                            return true;
+                        }
+                        @Override
+                        public void onDismiss(ListViewAdapter lvAdapter, int position) {
+                            mAdapter.remove(position);
+                            View thisView = lvAdapter.getChildAt(position);
+                            long viewId = (long) thisView.getTag();
+                            dbHelper.deleteAlarm(viewId);
+            }
+        });
+
+
+        alarmList.setOnTouchListener(touchListener);
+        alarmList.setOnScrollListener((AbsListView.OnScrollListener) touchListener.makeScrollListener());
+//        alarmList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                if (touchListener.existPendingDismisses()) {
+//                    touchListener.undoPendingDismiss();
+//                } else {
+//                    Toast.makeText(AlarmListActivity.this, "Position " + position, LENGTH_SHORT).show();
+//                }
+//            }
+//        });
     }
 
 
