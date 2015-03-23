@@ -26,6 +26,18 @@ public class DailyReminder implements ReminderTime{
         return DAILY;
     }
 
+    //return boolean rep of weekdays sunday-saturday (will be entirely false boolean array for non-relevants)
+    @Override
+    public String getWeekdays(){ return "0000000"; }
+
+    //return string rep of one time event (will be empty string for non-relevants)
+    @Override
+    public String getDateString(){ return ""; }
+
+    //return int for the week of each month the alarm goes off (-1 if not applicable)
+    @Override
+    public int getWeekOfMonth(){ return -1; }
+
     @Override
     public long getId() {
         return id;

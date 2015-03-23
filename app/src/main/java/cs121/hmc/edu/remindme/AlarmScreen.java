@@ -16,6 +16,7 @@ import android.widget.TextView;
 /**
  * Created by heatherseaman on 3/1/15.
  */
+//TODO medium changes to handle new alarmModel
 public class AlarmScreen extends Activity {
 
     public final String TAG = this.getClass().getSimpleName();
@@ -30,13 +31,13 @@ public class AlarmScreen extends Activity {
         //Setting up layout
         this.setContentView(R.layout.alarm_screen);
         String name = getIntent().getStringExtra(AlarmManagerHelper.NAME);
-        int timeHour = getIntent().getIntExtra(AlarmManagerHelper.TIME_HOUR, 0);
-        int timeMinute = getIntent().getIntExtra(AlarmManagerHelper.TIME_MINUTE, 0);
+        //int timeHour = getIntent().getIntExtra(AlarmManagerHelper.TIME_HOUR, 0);
+        //int timeMinute = getIntent().getIntExtra(AlarmManagerHelper.TIME_MINUTE, 0);
 
         TextView tvName = (TextView) findViewById(R.id.alarm_screen_name);
         tvName.setText(name);
-        TextView tvTime = (TextView) findViewById(R.id.alarm_screen_time);
-        tvTime.setText(String.format("02d : %02d", timeHour, timeMinute));
+        //TextView tvTime = (TextView) findViewById(R.id.alarm_screen_time);//TODO remove time textview
+        //tvTime.setText(String.format("02d : %02d", timeHour, timeMinute));
 
         Button dismissButton = (Button) findViewById(R.id.alarm_screen_button);
         dismissButton.setOnClickListener(new View.OnClickListener() {
