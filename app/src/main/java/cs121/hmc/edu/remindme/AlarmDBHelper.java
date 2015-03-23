@@ -111,7 +111,6 @@ public class AlarmDBHelper extends SQLiteOpenHelper {
         }
 
     }
-
     //takes in a string of the form "0110001" and makes boolean array
     private boolean[] makeWeekdayArray(String boolString){
         boolean[] result = new boolean[7];
