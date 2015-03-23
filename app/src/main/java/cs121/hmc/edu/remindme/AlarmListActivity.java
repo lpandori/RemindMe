@@ -42,7 +42,7 @@ public class AlarmListActivity extends ActionBarActivity {
 
         switch (item.getItemId()) {
             case R.id.action_add_new_alarm: {
-                startAlarmDetailsActivity(-1);
+                startSetNameActivity();
                 break;
             }
         }
@@ -70,7 +70,7 @@ public class AlarmListActivity extends ActionBarActivity {
         AlarmManagerHelper.setAlarms(this);
     }
 
-    public void startAlarmDetailsActivity(long id) {
+    public void startAlarmFrequencyActivity(long id) {
         //Intent intent = new Intent(this, AlarmDetailsActivity.class);
         //intent.putExtra("id", id);
         //startActivityForResult(intent, 0);
@@ -78,5 +78,17 @@ public class AlarmListActivity extends ActionBarActivity {
         //intent.putExtra("id",id);
         startActivity(intent);
 
+    }
+
+    public void startAlarmDetailsActivity(long id){
+        Intent intent = new Intent(this, AlarmDetailsActivity.class);
+        intent.putExtra("id", id);
+        startActivityForResult(intent,0);
+    }
+
+    public void startSetNameActivity(){
+        Intent intent = new Intent(AlarmListActivity.this, SetName.class);
+        //intent.putExtra("id",id);
+        startActivity(intent);
     }
 }

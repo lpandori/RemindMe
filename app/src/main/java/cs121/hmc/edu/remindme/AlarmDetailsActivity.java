@@ -148,7 +148,6 @@ public class AlarmDetailsActivity extends ActionBarActivity {
     }
 
     private void updateModelFromLayout() {
-
         alarmDetails.timeMinute = timePicker.getCurrentMinute();
         alarmDetails.timeHour = timePicker.getCurrentHour();
         alarmDetails.name = edtName.getText().toString();

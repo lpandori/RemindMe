@@ -3,6 +3,7 @@ package cs121.hmc.edu.remindme;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.DatePicker;
 
@@ -27,6 +28,5 @@ public class DatePickerFragment extends DialogFragment
     @Override
     public void onDateSet(DatePicker view, int year, int month, int day) {
         //Do something with the date chosen by the user
-
     }
 }

@@ -1,11 +1,13 @@
 package cs121.hmc.edu.remindme;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.TextView;
 import android.widget.ToggleButton;
@@ -58,6 +60,7 @@ public class AlarmListAdapter extends BaseAdapter {
         if (view == null) {
             LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             view = inflater.inflate(R.layout.alarm_list_item, parent, false);
+            //view = inflater.inflate(R.layout.alarm_list_item, parent, false);
         }
 
         // get Item implemented above
@@ -93,12 +96,34 @@ public class AlarmListAdapter extends BaseAdapter {
                 ((AlarmListActivity) mContext).startAlarmDetailsActivity((Long) v.getTag());
             }
         });
+
+        Button edit = (Button) view.findViewById(R.id.edit);
+        edit.setTag(model.id);
+        edit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ((AlarmListActivity) mContext).startAlarmDetailsActivity((Long) view.getTag());
+            }
+        });
+
+        Button addNew = (Button) view.findViewById(R.id.newTime);
+        //addNew.setTag(model.id);
+        addNew.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent =new Intent((AlarmListActivity)mContext, AlarmFrequency.class);
+                ((AlarmListActivity)mContext).startActivity(intent);
+
+                //((AlarmListActivity) mContext).startSetNameActivity();
+                //mContext.startActivity(i);
+            }
+        });
         return view;
     }
 
     private void updateTextColor(TextView view, boolean isOn) {
         if (isOn) {
-            view.setTextColor(Color.GREEN);
+            view.setTextColor(Color.parseColor("#33B5E5"));
         } else {
             view.setTextColor(Color.BLACK);
         }

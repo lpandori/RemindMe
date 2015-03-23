@@ -3,6 +3,7 @@ package cs121.hmc.edu.remindme;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.app.TimePickerDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.TimePicker;
 
@@ -25,7 +26,8 @@ public class TimePickerFragment extends DialogFragment
     }
 
     public void onTimeSet(TimePicker view, int hourOfDay, int minute){
-        //do something with the time chosen by the user
+        Intent intent = new Intent(getActivity(),AlarmListActivity.class);
+        startActivity(intent);
     }
 
 

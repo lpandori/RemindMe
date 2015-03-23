@@ -7,6 +7,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Sunday"
+        android:textSize="30sp"
+        android:layout_weight="1"
         android:textColor="@color/selector_days_of_week"
         android:id="@+id/Sunday"/>
 
@@ -14,6 +16,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Monday"
+        android:textSize="30sp"
+        android:layout_weight="1"
         android:textColor="@color/selector_days_of_week"
         android:id="@+id/Monday"/>
 
@@ -21,6 +25,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Tuesday"
+        android:textSize="30sp"
+        android:layout_weight="1"
         android:textColor="@color/selector_days_of_week"
         android:id="@+id/Tuesday"/>
 
@@ -28,6 +34,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Wednesday"
+        android:textSize="30sp"
+        android:layout_weight="1"
         android:textColor="@color/selector_days_of_week"
         android:id="@+id/Wednesday"/>
 
@@ -35,6 +43,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Thursday"
+        android:textSize="30sp"
+        android:layout_weight="1"
         android:textColor="@color/selector_days_of_week"
         android:id="@+id/Thursday"/>
 
@@ -42,6 +52,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Friday"
+        android:textSize="30sp"
+        android:layout_weight="1"
         android:textColor="@color/selector_days_of_week"
         android:id="@+id/Friday"/>
 
@@ -49,12 +61,16 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Saturday"
+        android:textSize="30sp"
+        android:layout_weight="1"
         android:textColor="@color/selector_days_of_week"
         android:id="@+id/Saturday"/>
 
     <Button
         android:id="@+id/btn_next"
         android:text= "Next"
+        android:textSize="30sp"
+        android:layout_weight=".65"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 

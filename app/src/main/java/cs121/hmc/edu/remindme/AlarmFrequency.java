@@ -23,8 +23,10 @@ public class AlarmFrequency extends Activity{
         once.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showTimePickerDialog(view);
-                showDatePickerDialog(view);
+                Intent i = new Intent(AlarmFrequency.this, OneTime.class);
+                startActivity(i);
+                //showTimePickerDialog(view);
+                //showDatePickerDialog(view);
 
             }
         });
@@ -38,7 +40,15 @@ public class AlarmFrequency extends Activity{
         weekly.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                System.out.println("IN WEEKLY ");
                 Intent i = new Intent(AlarmFrequency.this, AlarmDaysOfWeek.class);
+                startActivity(i);
+            }
+        });
+        monthly.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(AlarmFrequency.this, AlarmMonthly.class);
                 startActivity(i);
             }
         });

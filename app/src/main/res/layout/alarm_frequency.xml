@@ -4,23 +4,35 @@
     android:layout_height="match_parent">
     <Button
         android:id="@+id/one_time"
+        style = "@style/button"
         android:text="One time"
+        android:background="@drawable/button_pressed"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_weight="1"
         android:onClick="showTimePickerDialog"/>
     <Button
         android:id="@+id/daily"
+        style = "@style/button"
         android:text="Daily"
+        android:layout_weight="1"
+        android:background="@drawable/button_pressed"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
     <Button
         android:id="@+id/weekly"
+        style = "@style/button"
         android:text="Weekly"
+        android:background="@drawable/button_pressed"
+        android:layout_weight="1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
     <Button
         android:id="@+id/monthly"
+        style = "@style/button"
         android:text = "Monthly"
+        android:background="@drawable/button_pressed"
+        android:layout_weight="1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 

@@ -24,6 +24,7 @@ public class AlarmModel {
     public Uri alarmTone;
     public String name;
     public boolean isEnabled;
+
     /**
      * Default constructor defines an alarm that repeats every day
      */

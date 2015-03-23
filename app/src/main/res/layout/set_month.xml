@@ -2,5 +2,31 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
+    
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textSize="25sp"
+        android:text = "Every..."/>
+    <Spinner
+        android:id = "@+id/which_week"
+        android:layout_width="fill_parent"
+
+        android:layout_height="wrap_content"></Spinner>
+    <TextView
+        android:text = "Day of the week..."
+        android:layout_width="fill_parent"
+        android:textSize = "25sp"
+        android:layout_height="wrap_content" />
+    <Spinner
+        android:id = "@+id/day_of_week"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"></Spinner>
+
+    <Button
+        android:id = "@+id/btn_done"
+        android:text = "Done"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" />
 
 </LinearLayout>
