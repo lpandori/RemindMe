@@ -16,5 +16,22 @@
     <string name="details_saturday">Saturday</string>
     <string name="details_alarm_tone">Alarm Tone</string>
     <string name="details_alarm_tone_default">Select an alarm tone</string>
+    
+    <string-array name="which_week_options">
+        <item> First </item>
+        <item> Second </item>
+        <item> Third </item>
+        <item> Fourth </item>
+    </string-array>
+
+    <string-array name="day_options">
+        <item> Sunday </item>
+        <item> Monday </item>
+        <item> Tuesday </item>
+        <item> Wednesday </item>
+        <item> Thursday </item>
+        <item> Friday </item>
+        <item> Saturday </item>
+    </string-array>
 
 </resources>

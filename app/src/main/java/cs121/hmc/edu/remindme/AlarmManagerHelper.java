@@ -86,7 +86,7 @@ public class AlarmManagerHelper extends BroadcastReceiver{
     }
 
     //creates pending intent in uniform way
-    //TODO redo this!!!!
+    //TODO double check this
     //Need help on this one
     private static PendingIntent createPendingIntent(Context context, AlarmModel model) {
         Intent intent = new Intent(context, AlarmService.class);
