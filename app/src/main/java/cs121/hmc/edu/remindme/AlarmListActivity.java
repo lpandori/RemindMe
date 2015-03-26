@@ -59,9 +59,10 @@ public class AlarmListActivity extends ActionBarActivity {
         }
     }
 
-    public void setAlarmEnabled(long id, boolean isEnabled) {
-        AlarmModel model = dbHelper.getAlarm(id);
-        model.isEnabled = isEnabled;
+    //sets alarm passed on name (name must be unique)
+    public void setAlarmEnabled(long id, String name, boolean isEnabled) {
+        AlarmModel model = dbHelper.getAlarm(id, name);//TODO test this
+        model.setEnabled(isEnabled);
         dbHelper.updateAlarm(model);
         // refreshing the adapter after the state of the toggle has changed
         // in the first list view item

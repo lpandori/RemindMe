@@ -1,5 +1,6 @@
 package cs121.hmc.edu.remindme;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.app.TimePickerDialog;
@@ -17,6 +18,7 @@ public class TimePickerFragment extends DialogFragment
         implements TimePickerDialog.OnTimeSetListener{
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
+        //TODO put inputs into savedInstanceState Bundle
         final Calendar c = Calendar.getInstance();
         int hour = c.get(Calendar.HOUR_OF_DAY);
         int minute = c.get(Calendar.MINUTE);
@@ -26,6 +28,7 @@ public class TimePickerFragment extends DialogFragment
     }
 
     public void onTimeSet(TimePicker view, int hourOfDay, int minute){
+        //TODO add to db and trigger setting time
         Intent intent = new Intent(getActivity(),AlarmListActivity.class);
         startActivity(intent);
     }

@@ -30,9 +30,10 @@ public class AlarmModel {
     private ArrayList<ReminderTime> reminders;
 
     /**
-     * Default constructor defines an alarm that repeats every day
+     * Default constructor creates an alarm model with a given name
      */
-    public AlarmModel() {
+    public AlarmModel(String name) {
+        this.name = name;
         reminders = new ArrayList<ReminderTime>();
     }
 

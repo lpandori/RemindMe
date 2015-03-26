@@ -48,22 +48,23 @@ public class AlarmScreen extends Activity {
             }
         });
 
-        String tone = getIntent().getStringExtra(AlarmManagerHelper.TONE);
-        mPlayer = new MediaPlayer();
-        try {
-            if (tone != null && !tone.equals("")) {
-                Uri toneUri = Uri.parse(tone);
-                if (toneUri != null) {
-                    mPlayer.setDataSource(this, toneUri);
-                    mPlayer.setAudioStreamType(AudioManager.STREAM_ALARM);
-                    mPlayer.setLooping(true);
-                    mPlayer.prepare();
-                    mPlayer.start();
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        //TODO temporarily removed
+//        String tone = getIntent().getStringExtra(AlarmManagerHelper.TONE);
+//        mPlayer = new MediaPlayer();
+//        try {
+//            if (tone != null && !tone.equals("")) {
+//                Uri toneUri = Uri.parse(tone);
+//                if (toneUri != null) {
+//                    mPlayer.setDataSource(this, toneUri);
+//                    mPlayer.setAudioStreamType(AudioManager.STREAM_ALARM);
+//                    mPlayer.setLooping(true);
+//                    mPlayer.prepare();
+//                    mPlayer.start();
+//                }
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
 
         // Ensure wakelock release
         Runnable releaseWakeLock = new Runnable() {

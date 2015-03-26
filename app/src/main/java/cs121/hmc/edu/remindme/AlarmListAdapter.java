@@ -66,29 +66,30 @@ public class AlarmListAdapter extends BaseAdapter {
         // get Item implemented above
         AlarmModel model = (AlarmModel) getItem(position);
 
-        TextView txtTime = (TextView) view.findViewById(R.id.alarm_item_time);
-        txtTime.setText(String.format("%02d : %02d", model.timeHour, model.timeMinute));
+        //TextView txtTime = (TextView) view.findViewById(R.id.alarm_item_time);
+        //txtTime.setText(String.format("%02d : %02d", model.timeHour, model.timeMinute));
         TextView txtName = (TextView) view.findViewById(R.id.alarm_item_name);
         txtName.setText(model.name);
 
-        updateTextColor((TextView) view.findViewById(R.id.alarm_item_sunday), model.getRepeatingDay(AlarmModel.SUNDAY));
-        updateTextColor((TextView) view.findViewById(R.id.alarm_item_monday), model.getRepeatingDay(AlarmModel.MONDAY));
-        updateTextColor((TextView) view.findViewById(R.id.alarm_item_tuesday), model.getRepeatingDay(AlarmModel.TUESDAY));
-        updateTextColor((TextView) view.findViewById(R.id.alarm_item_wednesday), model.getRepeatingDay(AlarmModel.WEDNESDAY));
-        updateTextColor((TextView) view.findViewById(R.id.alarm_item_thursday), model.getRepeatingDay(AlarmModel.THURSDAY));
-        updateTextColor((TextView) view.findViewById(R.id.alarm_item_friday), model.getRepeatingDay(AlarmModel.FRIDAY));
-        updateTextColor((TextView) view.findViewById(R.id.alarm_item_saturday), model.getRepeatingDay(AlarmModel.SATURDAY));
+//        updateTextColor((TextView) view.findViewById(R.id.alarm_item_sunday), model.getRepeatingDay(AlarmModel.SUNDAY));
+//        updateTextColor((TextView) view.findViewById(R.id.alarm_item_monday), model.getRepeatingDay(AlarmModel.MONDAY));
+//        updateTextColor((TextView) view.findViewById(R.id.alarm_item_tuesday), model.getRepeatingDay(AlarmModel.TUESDAY));
+//        updateTextColor((TextView) view.findViewById(R.id.alarm_item_wednesday), model.getRepeatingDay(AlarmModel.WEDNESDAY));
+//        updateTextColor((TextView) view.findViewById(R.id.alarm_item_thursday), model.getRepeatingDay(AlarmModel.THURSDAY));
+//        updateTextColor((TextView) view.findViewById(R.id.alarm_item_friday), model.getRepeatingDay(AlarmModel.FRIDAY));
+//        updateTextColor((TextView) view.findViewById(R.id.alarm_item_saturday), model.getRepeatingDay(AlarmModel.SATURDAY));
 
         ToggleButton btnToggle = (ToggleButton) view.findViewById(R.id.alarm_item_toggle);
-        btnToggle.setChecked(model.isEnabled);
+        btnToggle.setChecked(model.isEnabled());
         btnToggle.setTag(model.id);
-        btnToggle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                ((AlarmListActivity) mContext).setAlarmEnabled(((Long)
-                        buttonView.getTag()), isChecked);
-            }
-        });
+        //TODO will need to put this back in (but working
+//        btnToggle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//            @Override
+//            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+//                ((AlarmListActivity) mContext).setAlarmEnabled(((Long)
+//                        buttonView.getTag()), isChecked);
+//            }
+//        });
         view.setTag(model.id);
         view.setOnClickListener(new View.OnClickListener() {
             @Override

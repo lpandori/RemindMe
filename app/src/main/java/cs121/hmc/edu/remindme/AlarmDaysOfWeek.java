@@ -30,7 +30,10 @@ public class AlarmDaysOfWeek extends Activity {
         next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-               showTimePickerDialog(view);
+                //TODO how this time picker is done is very confusing to me
+                //TODO I guess I'm confused why this is a fragment versus an activity
+                //TODO It's just as bulky but harder for me to deal with
+                showTimePickerDialog(view);
 
             }
         });
