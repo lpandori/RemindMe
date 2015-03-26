@@ -33,6 +33,8 @@
         <activity android:name=".AlarmMonthly"/>
         <activity android:name=".SetName"/>
         <activity android:name=".OneTime"/>
+        <activity android:name=".Timepicker"></activity>
+        <activity android:name=".Datepicker"></activity>
     </application>
 
 </manifest>

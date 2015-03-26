@@ -6,19 +6,20 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.DatePicker;
 
 
 /**
  * Created by rachelleholmgren on 3/5/15.
  */
 public class AlarmFrequency extends Activity{
-    @Override
 
     public static String REMINDER_TYPE = "reminder_type";
-
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.alarm_frequency);
+
         Button once = (Button) findViewById(R.id.one_time);
         Button daily = (Button) findViewById(R.id.daily);
         Button weekly = (Button) findViewById(R.id.weekly);
@@ -38,7 +39,7 @@ public class AlarmFrequency extends Activity{
         once.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(AlarmFrequency.this, OneTime.class);
+                Intent i = new Intent(AlarmFrequency.this, Datepicker.class);
                 i.putExtra(SetName.ALARM_NAME, alarmName);
                 i.putExtra(REMINDER_TYPE, ReminderTime.ONE_TIME);
                 startActivity(i);
@@ -50,10 +51,8 @@ public class AlarmFrequency extends Activity{
         daily.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //TODO need to overhaul this
-                //need some way to pass intent to fragment
-                showTimePickerDialog(view);
-
+                Intent i = new Intent(AlarmFrequency.this, Timepicker.class);
+                startActivity(i);
             }
         });
         weekly.setOnClickListener(new View.OnClickListener() {
