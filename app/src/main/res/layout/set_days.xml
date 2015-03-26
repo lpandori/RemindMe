@@ -67,6 +67,7 @@
         android:id="@+id/Saturday"/>
 
     <Button
+        style = "@style/orangebutton"
         android:id="@+id/btn_next"
         android:text= "Next"
         android:textSize="30sp"

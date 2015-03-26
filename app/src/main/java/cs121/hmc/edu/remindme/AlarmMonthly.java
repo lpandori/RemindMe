@@ -40,7 +40,7 @@ public class AlarmMonthly extends Activity {
         done.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(AlarmMonthly.this, AlarmListActivity.class);
+                Intent i = new Intent(AlarmMonthly.this, Timepicker.class);
                 startActivity(i);
             }
         });

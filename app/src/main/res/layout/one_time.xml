@@ -35,6 +35,7 @@
         android:layout_height="wrap_content" />
 
     <TimePicker
+
         android:layout_below="@+id/datepcker"
         android:layout_toLeftOf="@+id/calendarbutton"
         android:layout_weight = "1"

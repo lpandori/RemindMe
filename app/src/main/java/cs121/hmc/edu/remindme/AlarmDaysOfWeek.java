@@ -2,6 +2,7 @@ package cs121.hmc.edu.remindme;
 
 import android.app.Activity;
 import android.app.DialogFragment;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
@@ -30,7 +31,8 @@ public class AlarmDaysOfWeek extends Activity {
         next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-               showTimePickerDialog(view);
+               Intent i = new Intent(AlarmDaysOfWeek.this, Timepicker.class);
+               startActivity(i);
 
             }
         });
@@ -38,7 +40,7 @@ public class AlarmDaysOfWeek extends Activity {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
                 if(isChecked){
-                    sunday.setBackgroundColor(Color.parseColor("#6bcaee"));
+                    sunday.setBackgroundColor(Color.parseColor("#02798c"));
                 }
                 else{
                     sunday.setBackgroundColor(Color.WHITE);
@@ -49,7 +51,7 @@ public class AlarmDaysOfWeek extends Activity {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
                 if(isChecked){
-                    monday.setBackgroundColor(Color.parseColor("#6bcaee"));
+                    monday.setBackgroundColor(Color.parseColor("#02798c"));
                 }
                 else{
                     monday.setBackgroundColor(Color.WHITE);
@@ -60,7 +62,7 @@ public class AlarmDaysOfWeek extends Activity {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
                 if(isChecked){
-                    tuesday.setBackgroundColor(Color.parseColor("#6bcaee"));
+                    tuesday.setBackgroundColor(Color.parseColor("#02798c"));
                 }
                 else{
                     tuesday.setBackgroundColor(Color.WHITE);
@@ -71,7 +73,7 @@ public class AlarmDaysOfWeek extends Activity {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
                 if(isChecked){
-                    wednesday.setBackgroundColor(Color.parseColor("#6bcaee"));
+                    wednesday.setBackgroundColor(Color.parseColor("#02798c"));
                 }
                 else{
                     wednesday.setBackgroundColor(Color.WHITE);
@@ -82,7 +84,7 @@ public class AlarmDaysOfWeek extends Activity {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
                 if (isChecked) {
-                    thursday.setBackgroundColor(Color.parseColor("#6bcaee"));
+                    thursday.setBackgroundColor(Color.parseColor("#02798c"));
                 } else {
                     thursday.setBackgroundColor(Color.WHITE);
                 }
@@ -92,7 +94,7 @@ public class AlarmDaysOfWeek extends Activity {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
                 if(isChecked){
-                    friday.setBackgroundColor(Color.parseColor("#6bcaee"));
+                    friday.setBackgroundColor(Color.parseColor("#02798c"));
                 }
                 else{
                     friday.setBackgroundColor(Color.WHITE);
@@ -103,7 +105,7 @@ public class AlarmDaysOfWeek extends Activity {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
                 if(isChecked){
-                    saturday.setBackgroundColor(Color.parseColor("#6bcaee"));
+                    saturday.setBackgroundColor(Color.parseColor("#02798c"));
                 }
                 else{
                     saturday.setBackgroundColor(Color.WHITE);
