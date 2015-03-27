@@ -45,14 +45,14 @@ public class AlarmScreen extends Activity {
         TextView tvTime = (TextView) findViewById(R.id.alarm_screen_time);
         tvTime.setText(String.format("%02d : %02d", timeHour, timeMinute));
 
-        Button dismissButton = (Button) findViewById(R.id.alarm_screen_button);
-        dismissButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mPlayer.stop();
-                finish();
-            }
-        });
+//        Button dismissButton = (Button) findViewById(R.id.alarm_screen_button);
+//        dismissButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                mPlayer.stop();
+//                finish();
+//            }
+//        });
 
         findViewById(R.id.dismiss_start).setOnTouchListener(new DismissTouchListener());
         findViewById(R.id.dismiss_end).setOnDragListener(new DismissDragListener());
@@ -86,6 +86,9 @@ public class AlarmScreen extends Activity {
                 if (mWakeLock != null && mWakeLock.isHeld()) {
                     mWakeLock.release();
                 }
+                if(mPlayer != null) {
+                    mPlayer.release();
+                }
             }
         };
 
@@ -109,22 +112,13 @@ public class AlarmScreen extends Activity {
 
     class DismissDragListener implements View.OnDragListener {
 
-        Drawable enterShape = getResources().getDrawable(R.drawable.oval_droptarget);
-        Drawable normalShape = getResources().getDrawable(R.drawable.oval);
+//        Drawable enterShape = getResources().getDrawable(R.drawable.oval_selected);
+//        Drawable normalShape = getResources().getDrawable(R.drawable.oval_droptarget);
 
         @Override
         public boolean onDrag(View v, DragEvent event) {
             int action = event.getAction();
             switch (action) {
-                case DragEvent.ACTION_DRAG_STARTED:
-                    // do nothing
-                    break;
-                case DragEvent.ACTION_DRAG_ENTERED:
-                    v.setBackgroundDrawable(enterShape);
-                    break;
-                case DragEvent.ACTION_DRAG_EXITED:
-                    v.setBackgroundDrawable(normalShape);
-                    break;
                 case DragEvent.ACTION_DROP:
                     // Dropped, reassign View to ViewGroup
                     View view = (View) event.getLocalState();
@@ -132,12 +126,11 @@ public class AlarmScreen extends Activity {
                     owner.removeView(view);
                     LinearLayout container = (LinearLayout) v;
                     container.addView(view);
-                    view.setVisibility(View.VISIBLE);
+                    view.setVisibility(View.INVISIBLE);
                     mPlayer.stop();
+                    mWakeLock.release();
                     finish();
                     break;
-                case DragEvent.ACTION_DRAG_ENDED:
-                    v.setBackgroundDrawable(normalShape);
                 default:
                     break;
             }
@@ -175,7 +168,11 @@ public class AlarmScreen extends Activity {
     protected void onPause() {
         super.onPause();
 
-        if(mWakeLock != null & mWakeLock.isHeld()) {
+        if(mPlayer != null) {
+            mPlayer.release();
+        }
+
+        if((mWakeLock != null) && mWakeLock.isHeld()) {
             mWakeLock.release();
         }
     }

@@ -4,8 +4,10 @@
     android:layout_height="wrap_content" >
 
     <RelativeLayout
+        android:id="@+id/alarm_item"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
         android:layout_margin="16dp" >
 
         <TextView
@@ -111,29 +113,43 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="horizontal"
+        android:weightSum="3"
         android:visibility="gone"
-        android:weightSum="3">
+        android:layout_gravity="center|left">
 
-        <TextView
-            android:layout_width="0dp"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/txt_delete"
-            android:gravity="center_vertical"
-            android:text="@string/deleted"
-            android:clickable="false"
-            android:layout_weight="2"
-            android:hapticFeedbackEnabled="true"
-            android:textColor="@android:color/white"/>
+            android:orientation="horizontal"
+            android:layout_weight="1"
+            android:background="#ffd01e0f"
+            android:baselineAligned="false"
+            android:gravity="center_horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/deleted"
+                android:clickable="false"
+                android:hapticFeedbackEnabled="true"
+                android:textColor="@android:color/black"
+                android:textAlignment="center"
+                android:editable="true"
+                android:textStyle="bold"
+                android:layout_gravity="center" />
+        </LinearLayout>
+
 
         <TextView
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:gravity="center"
+            android:orientation="horizontal"
             android:id="@+id/txt_undo"
             android:text="@string/undo"
             android:clickable="false"
-            android:layout_weight="1"
-            android:textColor="#DD2ECCFA"/>
+            android:layout_weight="2"
+            android:textColor="#DD2ECCFA"
+            android:gravity="center" />
 
     </LinearLayout>
 
