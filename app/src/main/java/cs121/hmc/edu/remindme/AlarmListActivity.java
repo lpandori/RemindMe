@@ -45,7 +45,7 @@ public class AlarmListActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
 
         mContext = this;
-        //mAdapter = new AlarmListAdapter(this, dbHelper.getAlarms());//TODO removed for now
+        mAdapter = new AlarmListAdapter(this, dbHelper.getAlarms());//TODO removed for now
         setContentView(R.layout.activity_alarm_list);
         ListView alarmList=(ListView)findViewById(R.id.alarm_list);
         alarmList.setAdapter(mAdapter);
@@ -98,14 +98,15 @@ public class AlarmListActivity extends ActionBarActivity {
         }
     }
 
-    public void setAlarmEnabled(long id, boolean isEnabled) {
-        AlarmManagerHelper.cancelAlarms(this);
-        AlarmModel model = dbHelper.getAlarm(id);
-        model.isEnabled = isEnabled;
+    //sets alarm passed on name (name must be unique)
+    public void setAlarmEnabled(long id, String name, boolean isEnabled) {
+        AlarmModel model = dbHelper.getAlarm(id, name);//TODO test this
+        model.setEnabled(isEnabled);
         dbHelper.updateAlarm(model);
-
         // refreshing the adapter after the state of the toggle has changed
         // in the first list view item
+        mAdapter.setAlarms(dbHelper.getAlarms());
+        mAdapter.notifyDataSetChanged();
         AlarmManagerHelper.setAlarms(this);
     }
 
@@ -123,6 +124,12 @@ public class AlarmListActivity extends ActionBarActivity {
         Intent intent = new Intent(this, AlarmDetailsActivity.class);
         intent.putExtra("id", id);
         startActivityForResult(intent,0);
+    }
+
+    public void startSetNameActivity(){
+        Intent intent = new Intent(AlarmListActivity.this, SetName.class);
+        //intent.putExtra("id",id);
+        startActivity(intent);
     }
 
     /*
