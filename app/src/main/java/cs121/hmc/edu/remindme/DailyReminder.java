@@ -14,8 +14,8 @@ public class DailyReminder implements ReminderTime{
     //constructor for a daily repeating reminder
     //id is the same id in db
     //hour is 0-24 :)
-    public DailyReminder(long id, int hour, int min){
-        this.id = id;
+    public DailyReminder(int hour, int min){
+        //this.id = id; TODO removed reminder
         this.hour = hour;
         this.min = min;
     }
@@ -42,6 +42,8 @@ public class DailyReminder implements ReminderTime{
     public long getId() {
         return id;
     }
+    @Override
+    public void setId(long id) { this.id = id;}
 
 
     @Override

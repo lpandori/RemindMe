@@ -18,7 +18,7 @@ public class AlarmModel {
     public static final int FRIDAY = 5;
     public static final int SATURDAY = 6;
 
-    public long id = -1;
+    private long id = -1; //TODO remove
     //public int timeHour;
     //public int timeMinute;
     //private boolean repeatingDays[];
@@ -26,8 +26,9 @@ public class AlarmModel {
     //public Uri alarmTone;
     public String name;
     public int snooze;//TODO added snooze
-    private boolean isEnabled;
+    private boolean isEnabled = true;//TODO is setting this true initially ok?
     private ArrayList<ReminderTime> reminders;
+    private ReminderTime currentSet;//TODO fill this in later
 
     /**
      * Default constructor creates an alarm model with a given name
@@ -36,6 +37,10 @@ public class AlarmModel {
         this.name = name;
         reminders = new ArrayList<ReminderTime>();
     }
+
+    public long getId() {return id;}
+
+    public void setId(long id) {this.id = id;}
 
     //return list of reminders
     public ArrayList<ReminderTime> getReminders() {
@@ -48,15 +53,16 @@ public class AlarmModel {
     }
 
     //remove a specific reminder time from the alarm model
-    public void removeReminder(int reminderId){
+    public void removeReminder(long reminderId){
         //search through arraylist comparing id of reminder to all others
         //remove it
         for(ReminderTime r : reminders){//check how to do for each loops
             if(r.getId() == reminderId){
                 //remove it
+                //TODO finish
             }
         }
-        //TODO
+        //TODO look into if this is worthwhile
     }
 
     //check if this alarm type is on/off
@@ -75,15 +81,18 @@ public class AlarmModel {
 
         long currentSmallest = -1;
         for(ReminderTime r : reminders){
-            long rtime = r.getNextTime();
-            if(rtime != -1){
-                //if this is the first valid (non-negative) next
-                // time that has been read
-                //or if this remindertime's next time is earlier than
-                //the earliest we've found so far
-                //update the currentSmallest
-                if(currentSmallest == -1 || rtime < currentSmallest) {
-                    currentSmallest = rtime;
+            if(r.hasNextTime()) {
+                long rtime = r.getNextTime();
+                if (rtime != -1) {
+                    //if this is the first valid (non-negative) next
+                    // time that has been read
+                    //or if this remindertime's next time is earlier than
+                    //the earliest we've found so far
+                    //update the currentSmallest
+                    if (currentSmallest == -1 || rtime < currentSmallest) {
+                        currentSmallest = rtime;
+                        currentSet = r;
+                    }
                 }
             }
         }

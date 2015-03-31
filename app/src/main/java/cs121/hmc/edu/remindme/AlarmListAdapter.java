@@ -50,7 +50,7 @@ public class AlarmListAdapter extends BaseAdapter {
     @Override
     public long getItemId(int position) {
         if (mAlarms != null) {
-            return mAlarms.get(position).id;
+            return mAlarms.get(position).getId();
         }
         return 0;
     }
@@ -81,7 +81,7 @@ public class AlarmListAdapter extends BaseAdapter {
 
         ToggleButton btnToggle = (ToggleButton) view.findViewById(R.id.alarm_item_toggle);
         btnToggle.setChecked(model.isEnabled());
-        btnToggle.setTag(model.id);
+        btnToggle.setTag(model.getId());
         //TODO will need to put this back in (but working
 //        btnToggle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 //            @Override
@@ -90,7 +90,7 @@ public class AlarmListAdapter extends BaseAdapter {
 //                        buttonView.getTag()), isChecked);
 //            }
 //        });
-        view.setTag(model.id);
+        view.setTag(model.getId());
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -99,7 +99,7 @@ public class AlarmListAdapter extends BaseAdapter {
         });
 
         Button edit = (Button) view.findViewById(R.id.edit);
-        edit.setTag(model.id);
+        edit.setTag(model.getId());
         edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

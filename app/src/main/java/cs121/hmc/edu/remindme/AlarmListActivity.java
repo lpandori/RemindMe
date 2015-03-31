@@ -23,10 +23,10 @@ public class AlarmListActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mContext = this;
-        mAdapter = new AlarmListAdapter(this, dbHelper.getAlarms());
+        //mAdapter = new AlarmListAdapter(this, dbHelper.getAlarms());//TODO removed for now
         setContentView(R.layout.activity_alarm_list);
         ListView alarmList=(ListView)findViewById(R.id.list);
-        alarmList.setAdapter(mAdapter);
+        //alarmList.setAdapter(mAdapter); TODO removed for now
     }
 
 

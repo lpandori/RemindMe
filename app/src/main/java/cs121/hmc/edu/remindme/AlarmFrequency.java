@@ -27,31 +27,28 @@ public class AlarmFrequency extends Activity{
 
         Intent thisIntent = getIntent(); // gets the previously created intent
         final String alarmName = thisIntent.getStringExtra(SetName.ALARM_NAME);//TODO double check that this is ok to do
+        System.out.println("from the alarm frequency the alarm name is: "+alarmName);
 
         System.out.println(alarmName);
-
-//        public static int ONE_TIME = 1;
-//        public static int DAILY = 2;
-//        public static int WEEKLY = 3;
-//        public static int MONTHLY = 4;
 
         //create a ReminderTime based on which was clicked and pass it as
         once.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(AlarmFrequency.this, Datepicker.class);
+                System.out.println("chose one time from alarm frequency");
                 i.putExtra(SetName.ALARM_NAME, alarmName);
                 i.putExtra(REMINDER_TYPE, ReminderTime.ONE_TIME);
                 startActivity(i);
-                //showTimePickerDialog(view);
-                //showDatePickerDialog(view);
-
             }
         });
         daily.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(AlarmFrequency.this, Timepicker.class);
+                System.out.println("chose daily time from alarm frequency");
+                i.putExtra(SetName.ALARM_NAME, alarmName);
+                i.putExtra(REMINDER_TYPE, ReminderTime.DAILY);
                 startActivity(i);
             }
         });
@@ -74,14 +71,6 @@ public class AlarmFrequency extends Activity{
             }
         });
 
-    }
-    public void showTimePickerDialog(View v) {
-        DialogFragment newFragment = new TimePickerFragment();
-        newFragment.show(getFragmentManager(), "timePicker");
-    }
-    public void showDatePickerDialog(View v) {
-        DialogFragment newFragment = new DatePickerFragment();
-        newFragment.show(getFragmentManager(), "datePicker");
     }
 
 }

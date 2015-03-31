@@ -78,11 +78,8 @@ public class AlarmManagerHelper extends BroadcastReceiver{
                     AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
                     alarmManager.cancel(pIntent);
                 }
-
-
             }
         }
-
     }
 
     //creates pending intent in uniform way
@@ -94,8 +91,8 @@ public class AlarmManagerHelper extends BroadcastReceiver{
         intent.putExtra(NAME, model.name);//Will be unique
         intent.putExtra(SNOOZE, model.snooze);
         //intent.putExtra(TONE, model.alarmTone.toString());
-
-        return PendingIntent.getService(context, (int) model.id, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        //todo removed model ID, nope, didn't
+        return PendingIntent.getService(context, (int) model.getId(), intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
     }
 }

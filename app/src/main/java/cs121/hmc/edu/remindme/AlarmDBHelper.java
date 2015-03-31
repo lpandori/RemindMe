@@ -22,7 +22,8 @@ public class AlarmDBHelper extends SQLiteOpenHelper {
 
     private static final String SQL_CREATE_ALARM =
             "CREATE TABLE " + AlarmContract.Alarm.TABLE_NAME + " (" +
-                    AlarmContract.Alarm._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
+                    AlarmContract.Alarm._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + //remindertime id
+                    AlarmContract.Alarm.COLUMN_NAME_ALARM_ID + " INTEGER," + //alarm id
                     AlarmContract.Alarm.COLUMN_NAME_ALARM_NAME + " TEXT," +
                     AlarmContract.Alarm.COLUMN_NAME_ALARM_ENABLED + " BOOLEAN," +
                     AlarmContract.Alarm.COLUMN_NAME_ALARM_SNOOZE + " INTEGER," +
@@ -42,6 +43,7 @@ public class AlarmDBHelper extends SQLiteOpenHelper {
     public AlarmDBHelper(Context context) {
 
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
+
     }
 
     @Override
@@ -58,9 +60,18 @@ public class AlarmDBHelper extends SQLiteOpenHelper {
     //returns an AlarmModel object from a given db query (which gives us the cursor)
     private AlarmModel populateModel(Cursor c) {
 
-        AlarmModel model = new AlarmModel();
+        //String alarmName = c.getString(c.getColumnIndex(AlarmContract.Alarm.COLUMN_NAME_ALARM_NAME));
+        AlarmModel model = null;// = new AlarmModel(alarmName);TODO using null feels hacky
 
+        int i = 0;
         while(c.moveToNext()){
+            if(i == 0){//need to look at the first row
+                String alarmName = c.getString(c.getColumnIndex(AlarmContract.Alarm.COLUMN_NAME_ALARM_NAME));
+                model = new AlarmModel(alarmName);
+                model.setId(c.getLong(c.getColumnIndex(AlarmContract.Alarm.COLUMN_NAME_ALARM_ID)));
+            }
+            i++;
+
             ReminderTime reminderTime;
 
             int hour = c.getInt(c.getColumnIndex(AlarmContract.Alarm.COLUMN_NAME_ALARM_TIME_HOUR));
@@ -68,7 +79,7 @@ public class AlarmDBHelper extends SQLiteOpenHelper {
             boolean isEnabled = c.getInt(c.getColumnIndex(AlarmContract.Alarm.COLUMN_NAME_ALARM_ENABLED)) > 0;
 
             long id = c.getLong(c.getColumnIndex(AlarmContract.Alarm._ID));
-            String name = c.getString(c.getColumnIndex(AlarmContract.Alarm.COLUMN_NAME_ALARM_NAME));//only need this once TODO
+            //String name = c.getString(c.getColumnIndex(AlarmContract.Alarm.COLUMN_NAME_ALARM_NAME));//only need this once TODO
 
             //find which reminder time it is, AND Construct ReminderTime accordingly
             if(c.getInt(c.getColumnIndex(AlarmContract.Alarm.COLUMN_NAME_ALARM_ONE_TIME)) > 0){
@@ -76,26 +87,28 @@ public class AlarmDBHelper extends SQLiteOpenHelper {
                 //stored in format yyyy-mm-dd
                 String dateString = c.getString(c.getColumnIndex(AlarmContract.Alarm.COLUMN_NAME_ALARM_DATE));
 
-                //passes input as yyyy-mm-dd-hh:mm (not with dashes and stuff just in that order
+                //passes input as yyyy-mm-dd
+                //TODO how am i storing substrings
                 int year = Integer.parseInt(dateString.substring(0,4));
                 int month = Integer.parseInt(dateString.substring(5,7));
                 int day = Integer.parseInt(dateString.substring(8,10));
-                reminderTime = new OneTimeReminder(id, year, month, day, hour, min);
+                reminderTime = new OneTimeReminder(year, month, day, hour, min);
+                reminderTime.setId(id);
 
             }else if(c.getInt(c.getColumnIndex(AlarmContract.Alarm.COLUMN_NAME_ALARM_DAILY)) > 0){
-                reminderTime = new DailyReminder(id, hour, min);
-
+                reminderTime = new DailyReminder(hour, min);
+                reminderTime.setId(id);
             }else if(c.getInt(c.getColumnIndex(AlarmContract.Alarm.COLUMN_NAME_ALARM_WEEKLY)) > 0){
                 boolean[] weekdays =
                         makeWeekdayArray(c.getString(c.getColumnIndex(AlarmContract.Alarm.COLUMN_NAME_ALARM_WHICH_WEEKDAYS)));
-                reminderTime = new WeeklyReminder(id, hour, min, weekdays);
-
+                reminderTime = new WeeklyReminder(hour, min, weekdays);
+                reminderTime.setId(id);
             }else if(c.getInt(c.getColumnIndex(AlarmContract.Alarm.COLUMN_NAME_ALARM_MONTHLY)) > 0){
                 boolean[] weekdays =
                         makeWeekdayArray(c.getString(c.getColumnIndex(AlarmContract.Alarm.COLUMN_NAME_ALARM_WHICH_WEEKDAYS)));
                 int weekNumber = c.getInt(c.getColumnIndex(AlarmContract.Alarm.COLUMN_NAME_ALARM_WHICH_WEEK_OF_MONTH));
-                reminderTime = new MonthlyReminder(id, hour, min, weekNumber, weekdays);
-
+                reminderTime = new MonthlyReminder(hour, min, weekNumber, weekdays);
+                reminderTime.setId(id);
             }else{
                 reminderTime = null;
                 System.out.println("huge error, reminder time didn't fit any category");
@@ -132,7 +145,7 @@ public class AlarmDBHelper extends SQLiteOpenHelper {
         for(ReminderTime r : model.getReminders()){
 
             ContentValues values = new ContentValues();
-
+            values.put(AlarmContract.Alarm.COLUMN_NAME_ALARM_NAME, model.getId());
             values.put(AlarmContract.Alarm.COLUMN_NAME_ALARM_NAME, model.name);
             values.put(AlarmContract.Alarm.COLUMN_NAME_ALARM_ENABLED, model.isEnabled());
             values.put(AlarmContract.Alarm.COLUMN_NAME_ALARM_SNOOZE, model.snooze);
@@ -171,12 +184,13 @@ public class AlarmDBHelper extends SQLiteOpenHelper {
                     break;
                 default:
                     //error
+                    //TODO remove print line eventually
                     System.out.println("oops");
                     break;
             }
 
-            values.put(AlarmContract.Alarm.COLUMN_NAME_ALARM_DATE, r.getDateString());//not relevant
-            values.put(AlarmContract.Alarm.COLUMN_NAME_ALARM_WHICH_WEEKDAYS, r.getWeekdays());//not relevant
+            values.put(AlarmContract.Alarm.COLUMN_NAME_ALARM_DATE, r.getDateString());
+            values.put(AlarmContract.Alarm.COLUMN_NAME_ALARM_WHICH_WEEKDAYS, r.getWeekdays());
             values.put(AlarmContract.Alarm.COLUMN_NAME_ALARM_WHICH_WEEK_OF_MONTH, r.getWeekOfMonth());
 
             valueList.add(values);
@@ -199,12 +213,17 @@ public class AlarmDBHelper extends SQLiteOpenHelper {
         return ids;
     }
 
+    //TODO write createReminder to add new reminder ONLY (for when new reminder is added to existing model)
+    //TODO delete and update reminders
+        //TODO as well as deleting and updating alarms
+    //Can use reminder deletion and editing as helper for deleting/editing alarms
+
     //TODO edited this method to select for alarm name (i.e. "take meds") instead of id
     //this allows us to use our new alarm model
     public AlarmModel getAlarm(long id, String name) {
         SQLiteDatabase db = getReadableDatabase();
         String select = "SELECT * FROM " + AlarmContract.Alarm.TABLE_NAME + " WHERE "
-                + AlarmContract.Alarm.COLUMN_NAME_ALARM_NAME + " = " + name; //TODO, check that this works
+                + AlarmContract.Alarm.COLUMN_NAME_ALARM_NAME + " = " +"'"+ name+"'"; //TODO, check that this works
         Cursor c = db.rawQuery(select, null);
 
         return populateModel(c);
@@ -221,7 +240,7 @@ public class AlarmDBHelper extends SQLiteOpenHelper {
 
         long numRowsChanged = 0;
         for(ContentValues values : valuesList){
-
+            //TODO double check that if this is more rows that weirdness won't happen
             numRowsChanged += getWritableDatabase().update(AlarmContract.Alarm.TABLE_NAME, values,
                     AlarmContract.Alarm._ID + " = ?", new String[] { values.getAsString(AlarmContract.Alarm._ID)});
         }
@@ -246,10 +265,13 @@ public class AlarmDBHelper extends SQLiteOpenHelper {
         List<AlarmModel> alarmList = new ArrayList<AlarmModel>();
         SQLiteDatabase db = getReadableDatabase();
 
+
         String findAllNames = "SELECT DISTINCT "+  AlarmContract.Alarm.COLUMN_NAME_ALARM_NAME
                 +" FROM " + AlarmContract.Alarm.TABLE_NAME;
 
         Cursor c1 = db.rawQuery(findAllNames, null);
+
+        System.out.println(c1.getCount());//TODO remove
 
         //run cursor through to find all distinct alarm names
         //once i have list of distinct names
@@ -263,7 +285,7 @@ public class AlarmDBHelper extends SQLiteOpenHelper {
                     c1.getString(c1.getColumnIndex(AlarmContract.Alarm.COLUMN_NAME_ALARM_NAME));
 
             String reminderTimeQuery = "SELECT * FROM " + AlarmContract.Alarm.TABLE_NAME +
-                    " WHERE " + AlarmContract.Alarm.COLUMN_NAME_ALARM_NAME + " = " + alarmName;
+                    " WHERE " + AlarmContract.Alarm.COLUMN_NAME_ALARM_NAME + " = " + "'"+alarmName+"'";//TODO change alarm name
 
             Cursor c2 = db.rawQuery(reminderTimeQuery, null);
 

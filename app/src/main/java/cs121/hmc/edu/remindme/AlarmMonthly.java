@@ -15,39 +15,54 @@ import android.widget.Spinner;
  */
 public class AlarmMonthly extends Activity {
 
+    public static final String WEEK_NUMBER = "week_number";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.set_month);
 
-
-        Spinner whichWeek = (Spinner) findViewById(R.id.which_week);
+        final Spinner whichWeek = (Spinner) findViewById(R.id.which_week);
         ArrayAdapter<CharSequence> adapter =
                 ArrayAdapter.createFromResource(this, R.array.which_week_options,
                 R.layout.spinner_layout);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         whichWeek.setAdapter(adapter);
 
-        Spinner whichDay = (Spinner) findViewById(R.id.day_of_week);
+        final Spinner whichDay = (Spinner) findViewById(R.id.day_of_week);
         ArrayAdapter<CharSequence> adapter2 =
                 ArrayAdapter.createFromResource(this, R.array.day_options,
                         R.layout.spinner_layout);
         adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         whichDay.setAdapter(adapter2);
 
+        final Intent prevIntent = getIntent(); // gets the previously created intent
+        final String alarmName = prevIntent.getStringExtra(SetName.ALARM_NAME);//TODO double check that this is ok to do
+        final int reminderType = prevIntent.getIntExtra(AlarmFrequency.REMINDER_TYPE, -1);
+
         Button done = (Button) findViewById(R.id.btn_done);
         done.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(AlarmMonthly.this, Timepicker.class);
-                startActivity(i);
+
+                if(reminderType == ReminderTime.MONTHLY){
+
+                    //make array of weekdays to show which was selected
+                    boolean[] weekdays = {false,false,false,false,false,false,false};
+                    weekdays[whichDay.getSelectedItemPosition()] = true;
+
+                    Intent i = new Intent(AlarmMonthly.this, Timepicker.class);
+                    i.putExtra(SetName.ALARM_NAME, alarmName);
+                    i.putExtra(AlarmFrequency.REMINDER_TYPE, reminderType);
+                    i.putExtra(AlarmDaysOfWeek.WEEKDAY_ARRAY, weekdays);
+                    i.putExtra(WEEK_NUMBER, whichWeek.getSelectedItemPosition()+1);
+                    startActivity(i);
+                }else{
+                    System.out.println("monthly reminder type not recognized");
+                }
             }
         });
-
-
-
-
 
     }
 }

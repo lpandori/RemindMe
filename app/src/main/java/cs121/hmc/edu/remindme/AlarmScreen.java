@@ -31,6 +31,7 @@ public class AlarmScreen extends Activity {
         //Setting up layout
         this.setContentView(R.layout.alarm_screen);
         String name = getIntent().getStringExtra(AlarmManagerHelper.NAME);
+        int snooze = 0;//snooze value
         //int timeHour = getIntent().getIntExtra(AlarmManagerHelper.TIME_HOUR, 0);
         //int timeMinute = getIntent().getIntExtra(AlarmManagerHelper.TIME_MINUTE, 0);
 

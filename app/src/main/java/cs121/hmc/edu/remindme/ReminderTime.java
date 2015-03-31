@@ -32,8 +32,9 @@ public interface ReminderTime {
     //return minute of alarm
     public int getMin();
 
-    //pre: will always be the same as it's db id!
+    //pre: will always be the same as it's db id
     public long getId();
+    public void setId(long id);
 
     //returns the soonest upcoming alarm time (in milliseconds)
     public long getNextTime();

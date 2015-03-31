@@ -25,8 +25,8 @@ public class WeeklyReminder implements ReminderTime {
 
     //construct a weekly reminder
     //weekdays - boolean array indicating which weekdays to repeat on
-    public WeeklyReminder(long id, int hour, int min, boolean[] weekdays){
-        this.id = id;
+    public WeeklyReminder(int hour, int min, boolean[] weekdays){
+        //this.id = id;TODO removed reminder
         this.weekdays = weekdays;
         this.hour = hour;
         this.min = min;
@@ -64,11 +64,12 @@ public class WeeklyReminder implements ReminderTime {
         return -1;
     }
 
-    //pre: will always be the same as it's db id!
     @Override
-    public long getId(){
+    public long getId() {
         return id;
     }
+    @Override
+    public void setId(long id) { this.id = id;}
 
     @Override
     public int getHour() { return hour; }

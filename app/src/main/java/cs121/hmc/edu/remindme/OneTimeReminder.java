@@ -22,8 +22,8 @@ public class OneTimeReminder implements ReminderTime {
     //month: 1=jan, 12=dec
     //hour 0-23
     //min 0-59
-    public OneTimeReminder(long id, int year, int month, int day, int hour, int min) {
-        this.id = id;
+    public OneTimeReminder(int year, int month, int day, int hour, int min) {
+        //this.id = id; TODO removed id
         this.year = year;
         this.month = month;
         this.day = day;
@@ -90,10 +90,13 @@ public class OneTimeReminder implements ReminderTime {
     //return string rep of one time event (will be empty string for non-relevants)
     @Override
     public String getDateString(){
-        //String dayStr = ""+day;
+        //formatted as: yyyy-mm-dd
+        //TODO refactor so not so repetitive
         String  dayStr = ((""+day).length() == 2) ? ""+day : "0"+day;
+        String  monthStr = ((""+month).length() == 2) ? ""+month : "0"+month;
+        String date = year + "-" + monthStr + "-" +  dayStr;
 
-        return dayStr;
+        return date;
     }
 
     //return int for the week of each month the alarm goes off (-1 if not applicable)
@@ -112,6 +115,8 @@ public class OneTimeReminder implements ReminderTime {
     public long getId() {
         return id;
     }
+    @Override
+    public void setId(long id) { this.id = id;}
 
     @Override
     public int getHour() { return date.get(Calendar.HOUR_OF_DAY); }
