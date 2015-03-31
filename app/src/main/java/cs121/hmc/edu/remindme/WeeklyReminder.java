@@ -25,8 +25,8 @@ public class WeeklyReminder implements ReminderTime {
 
     //construct a weekly reminder
     //weekdays - boolean array indicating which weekdays to repeat on
-    public WeeklyReminder(long id, int hour, int min, boolean[] weekdays){
-        this.id = id;
+    public WeeklyReminder(int hour, int min, boolean[] weekdays){
+        //this.id = id;TODO removed reminder
         this.weekdays = weekdays;
         this.hour = hour;
         this.min = min;
@@ -38,11 +38,38 @@ public class WeeklyReminder implements ReminderTime {
         return WEEKLY;
     }
 
-    //pre: will always be the same as it's db id!
+    //return boolean rep of weekdays sunday-saturday (will be entirely false boolean array for non-relevants)
     @Override
-    public long getId(){
+    public String getWeekdays(){
+        String toReturn = "";
+        for(boolean b: weekdays){
+            if(b){
+                toReturn += "1";
+            }else{
+                toReturn += "0";
+            }
+        }
+        return toReturn;
+    }
+
+    //return string rep of one time event (will be empty string for non-relevants)
+    @Override
+    public String getDateString(){
+        return "";
+    }
+
+    //return int for the week of each month the alarm goes off (-1 if not applicable)
+    @Override
+    public int getWeekOfMonth(){
+        return -1;
+    }
+
+    @Override
+    public long getId() {
         return id;
     }
+    @Override
+    public void setId(long id) { this.id = id;}
 
     @Override
     public int getHour() { return hour; }
@@ -65,14 +92,18 @@ public class WeeklyReminder implements ReminderTime {
         setTime.set(Calendar.SECOND, 00);
 
         //check if alarm needs to happen today
-        if(hour > nowHour || (nowHour == hour && min > nowMin)){
+        //TODO fucked this up :(
+        //TODO setting it as today kinda regardless of if the alarm happens today
+        //probably cludged this :(
+        //need to test this
+        if(weekdays[nowWeekday-1] && (hour > nowHour || (nowHour == hour && min > nowMin))){
             //set for today
             setTime.set(Calendar.DAY_OF_WEEK, nowWeekday);
             return setTime.getTimeInMillis();
         }
 
         //if alarm between tomorrow and saturday
-        for(int i = nowWeekday; i <= Calendar.SATURDAY; i++){
+        for(int i = nowWeekday+1; i <= Calendar.SATURDAY; i++){
 
             //if there is a timer for this weekday
             if(weekdays[i-1]){//timer exists for this weekday (be careful to reach into correct index)

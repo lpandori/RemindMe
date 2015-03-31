@@ -20,11 +20,21 @@ public interface ReminderTime {
     //return hour of particular alarm (0-24)
     public int getHour();
 
+    //return string boolean rep of weekdays sunday-saturday (will be entirely false boolean array for non-relevants)
+    public String getWeekdays();
+
+    //return int for the week of each month the alarm goes off (-1 if not applicable)
+    public int getWeekOfMonth();
+
+    //return string rep of one time event (will be empty string for non-relevants)
+    public String getDateString();
+
     //return minute of alarm
     public int getMin();
 
-    //pre: will always be the same as it's db id!
+    //pre: will always be the same as it's db id
     public long getId();
+    public void setId(long id);
 
     //returns the soonest upcoming alarm time (in milliseconds)
     public long getNextTime();
