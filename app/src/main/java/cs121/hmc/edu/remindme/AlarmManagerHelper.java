@@ -42,6 +42,32 @@ public class AlarmManagerHelper extends BroadcastReceiver{
                     PendingIntent pIntent = createPendingIntent(context, alarm);//TODO need to redo this
                     setAlarm(context, timeInMillis, pIntent);
 
+                    //First check if it's later in the week
+                    for (int dayOfWeek = Calendar.SUNDAY; dayOfWeek <= Calendar.SATURDAY; ++dayOfWeek) {
+                        if (alarm.getRepeatingDay(dayOfWeek - 1) && dayOfWeek >= nowDay &&
+                                !(dayOfWeek == nowDay && alarm.timeHour < nowHour) &&
+                                !(dayOfWeek == nowDay && alarm.timeHour == nowHour && alarm.timeMinute <= nowMinute)) {
+                            calendar.set(Calendar.DAY_OF_WEEK, dayOfWeek);
+
+                            setAlarm(context, calendar, pIntent);
+                            alarmSet = true;
+                            break;
+                        }
+                    }
+
+                    //Else check if it's earlier in the week
+                    if (!alarmSet) {
+                        for (int dayOfWeek = Calendar.SUNDAY; dayOfWeek <= Calendar.SATURDAY; ++dayOfWeek) {
+                            if (alarm.getRepeatingDay(dayOfWeek - 1) && dayOfWeek <= nowDay && alarm.repeatWeekly) {
+                                calendar.set(Calendar.DAY_OF_WEEK, dayOfWeek);
+                                calendar.add(Calendar.WEEK_OF_YEAR, 1);
+
+                                setAlarm(context, calendar, pIntent);
+                                alarmSet = true;
+                                break;
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -61,7 +87,7 @@ public class AlarmManagerHelper extends BroadcastReceiver{
 
     /*
      * Note: to cancel an alarm we need to build an instance of the pending
-     * intent exactly as we did when the alarm was sent. We need to make sure
+     * intent exactly as we did when the alarm was set. We need to make sure
      * we cancel alarms before we make changes to them, only then can we set them
      * again. Otherwise we might leave scheduled alarms that we can no longer
      * reference.
