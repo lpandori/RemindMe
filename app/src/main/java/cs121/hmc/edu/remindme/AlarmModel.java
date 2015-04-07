@@ -19,16 +19,12 @@ public class AlarmModel {
     public static final int SATURDAY = 6;
 
     private long id = -1; //TODO remove
-    //public int timeHour;
-    //public int timeMinute;
-    //private boolean repeatingDays[];
-    //public boolean repeatWeekly;
     //public Uri alarmTone;
     public String name;
-    public int snooze;//TODO added snooze
-    private boolean isEnabled = true;//TODO is setting this true initially ok?
+    private int snooze = 20;//TODO set default for snooze (will remove later)
+    private boolean isEnabled = true;
     private ArrayList<ReminderTime> reminders;
-    private ReminderTime currentSet;//TODO fill this in later
+    private ReminderTime currentSet;
 
     /**
      * Default constructor creates an alarm model with a given name
@@ -38,9 +34,23 @@ public class AlarmModel {
         reminders = new ArrayList<ReminderTime>();
     }
 
+    //setter and getter for model id
     public long getId() {return id;}
-
     public void setId(long id) {this.id = id;}
+
+    //setter and getter for snooze
+    public int getSnooze() { return snooze; }
+    public void setSnooze(int snooze) { this.snooze = snooze; }
+
+    //return the id of the reminder time that is the most upcoming
+    public long getReminderId(){
+
+        if(currentSet != null) {
+            return currentSet.getId();
+        }else{
+            return -1;
+        }
+    }
 
     //return list of reminders
     public ArrayList<ReminderTime> getReminders() {
@@ -80,6 +90,7 @@ public class AlarmModel {
     public long getNextReminderTime(){
 
         long currentSmallest = -1;
+        currentSet = null;//remove previous current set
         for(ReminderTime r : reminders){
             if(r.hasNextTime()) {
                 long rtime = r.getNextTime();

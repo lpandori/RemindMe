@@ -17,9 +17,8 @@ import java.util.List;
  * to run on boot and reset all the alarms stored in the database.
  */
 public class AlarmManagerHelper extends BroadcastReceiver{
-    public static final String ID = "id";
+    public static final String REMINDER_ID = "id";
     public static final String NAME = "name";
-    public static final String SNOOZE = "snooze";
     //public static final String TIME_HOUR = "timeHour";
     //public static final String TIME_MINUTE = "timeMinute";
     //public static final String TONE = "alarmTone";
@@ -40,7 +39,9 @@ public class AlarmManagerHelper extends BroadcastReceiver{
 
                     long timeInMillis = alarm.getNextReminderTime();
                     PendingIntent pIntent = createPendingIntent(context, alarm);//TODO need to redo this
-                    setAlarm(context, timeInMillis, pIntent);
+                    if(timeInMillis > 0) {
+                        setAlarm(context, timeInMillis, pIntent);
+                    }
 
                 }
             }
@@ -51,12 +52,12 @@ public class AlarmManagerHelper extends BroadcastReceiver{
     //used to be: setAlarm(Context context, Calendar calendar, PendingIntent pIntent)
     private static void setAlarm(Context context, long timeInMillis, PendingIntent pIntent) {
 
-        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            alarmManager.setExact(AlarmManager.RTC_WAKEUP, timeInMillis, pIntent);
-        } else {
-            alarmManager.set(AlarmManager.RTC_WAKEUP, timeInMillis, pIntent);
-        }
+            AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                alarmManager.setExact(AlarmManager.RTC_WAKEUP, timeInMillis, pIntent);
+            } else {
+                alarmManager.set(AlarmManager.RTC_WAKEUP, timeInMillis, pIntent);
+            }
     }
 
     /*
@@ -87,11 +88,11 @@ public class AlarmManagerHelper extends BroadcastReceiver{
     //Need help on this one
     private static PendingIntent createPendingIntent(Context context, AlarmModel model) {
         Intent intent = new Intent(context, AlarmService.class);
-        //intent.putExtra(ID, model.id);
-        intent.putExtra(NAME, model.name);//Will be unique
-        intent.putExtra(SNOOZE, model.snooze);
-        //intent.putExtra(TONE, model.alarmTone.toString());
-        //todo removed model ID, nope, didn't
+
+        //from the model get currentreminder id :)
+
+        intent.putExtra(NAME, model.name);
+        intent.putExtra(REMINDER_ID, model.getReminderId());//TODO catch -1 case here?
         return PendingIntent.getService(context, (int) model.getId(), intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
     }

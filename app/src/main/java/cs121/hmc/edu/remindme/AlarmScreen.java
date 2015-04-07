@@ -31,21 +31,34 @@ public class AlarmScreen extends Activity {
         //Setting up layout
         this.setContentView(R.layout.alarm_screen);
         String name = getIntent().getStringExtra(AlarmManagerHelper.NAME);
-        int snooze = 0;//snooze value
-        //int timeHour = getIntent().getIntExtra(AlarmManagerHelper.TIME_HOUR, 0);
-        //int timeMinute = getIntent().getIntExtra(AlarmManagerHelper.TIME_MINUTE, 0);
+        final long reminderId = getIntent().getLongExtra(AlarmManagerHelper.REMINDER_ID, -1);
 
         TextView tvName = (TextView) findViewById(R.id.alarm_screen_name);
         tvName.setText(name);
-        //TextView tvTime = (TextView) findViewById(R.id.alarm_screen_time);//TODO remove time textview
-        //tvTime.setText(String.format("02d : %02d", timeHour, timeMinute));
 
-        Button dismissButton = (Button) findViewById(R.id.alarm_screen_button);
+        final Context context = this;
+
+        Button snoozeButton = (Button) findViewById(R.id.alarm_screen_button_snooze);
+        snoozeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //mPlayer.stop();
+                AlarmDBHelper dbHelper = new AlarmDBHelper(context);
+                dbHelper.snoozeReminder(reminderId);
+                finish();
+                //automatically alarms are being reset
+            }
+        });
+
+        Button dismissButton = (Button) findViewById(R.id.alarm_screen_button_dismiss);
         dismissButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mPlayer.stop();
+                //mPlayer.stop();
+                AlarmDBHelper dbHelper = new AlarmDBHelper(context);
+                dbHelper.dismiss(reminderId);
                 finish();
+                //automatically alarms are being reset
             }
         });
 
@@ -103,7 +116,7 @@ public class AlarmScreen extends Activity {
         // Acquire Wakelock
         PowerManager pm = (PowerManager) getApplicationContext().getSystemService(Context.POWER_SERVICE);
         if (mWakeLock == null) {
-            mWakeLock = pm.newWakeLock((PowerManager.ACQUIRE_CAUSES_WAKEUP), TAG);
+            mWakeLock = pm.newWakeLock((PowerManager.FULL_WAKE_LOCK | PowerManager.SCREEN_BRIGHT_WAKE_LOCK |PowerManager.ACQUIRE_CAUSES_WAKEUP), TAG);
         }
         if(!mWakeLock.isHeld()) {
             mWakeLock.acquire();

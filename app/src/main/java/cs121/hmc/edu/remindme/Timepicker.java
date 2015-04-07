@@ -46,57 +46,40 @@ public class Timepicker extends Activity {
                     //long reminder_id = System.currentTimeMillis();TODO removed id from constructor, added ny db entry
                     int hour = timePicker.getCurrentHour();
                     int minute = timePicker.getCurrentMinute();
+                    boolean[] weekdays;
 
-                    //TODO refactor to case statement later
-                    if(reminderType == ReminderTime.ONE_TIME) {
-                        System.out.println("from the time picker the remindertype is: "+reminderType);
-                        int year = prevIntent.getIntExtra(Datepicker.DATE_YEAR, -1);
-                        int month = prevIntent.getIntExtra(Datepicker.DATE_MONTH, -1);
-                        int day = prevIntent.getIntExtra(Datepicker.DATE_DAY, -1);
+                    switch(reminderType){
+                        case ReminderTime.ONE_TIME:
 
-                        //TODO check that hour is returned in 0-23
-                        System.out.println("time picker's current hour is: " +timePicker.getCurrentHour());
-                        System.out.println("time picker's current month is: " +month);
+                            int year = prevIntent.getIntExtra(Datepicker.DATE_YEAR, -1);
+                            int month = prevIntent.getIntExtra(Datepicker.DATE_MONTH, -1);
+                            int day = prevIntent.getIntExtra(Datepicker.DATE_DAY, -1);
 
-                        ReminderTime oneTime = new OneTimeReminder(year, month, day, hour, minute);
+                            ReminderTime oneTime = new OneTimeReminder(year, month, day, hour, minute);
+                            alarmModel.addReminder(oneTime);//make new time
 
-                        alarmModel.addReminder(oneTime);//make new time
+                            break;
+                        case ReminderTime.DAILY:
+                            ReminderTime daily = new DailyReminder(hour, minute);
+                            alarmModel.addReminder(daily);//make new time
 
-                        System.out.println("next reminder time: " +alarmModel.getNextReminderTime());
-                        System.out.println("now time: " +Calendar.getInstance().getTimeInMillis());
-                        System.out.println("createAlarm");
-                        System.out.println("setAlarms");
-                        dbHelper.createAlarm(alarmModel);//add to db TODO put back
-                        AlarmManagerHelper.setAlarms(context);//trigger setting alarm TODO put back
+                            break;
+                        case ReminderTime.WEEKLY:
+                            weekdays = prevIntent.getBooleanArrayExtra(AlarmDaysOfWeek.WEEKDAY_ARRAY);
+                            ReminderTime weekly = new WeeklyReminder(hour, minute, weekdays);
 
-                    }else if(reminderType == ReminderTime.DAILY){
-                        ReminderTime daily = new DailyReminder(hour, minute);
+                            alarmModel.addReminder(weekly);//make new time
+                            break;
+                        case ReminderTime.MONTHLY:
+                            weekdays = prevIntent.getBooleanArrayExtra(AlarmDaysOfWeek.WEEKDAY_ARRAY);
+                            int weekNumber = prevIntent.getIntExtra(AlarmMonthly.WEEK_NUMBER,-1);
+                            ReminderTime monthly = new MonthlyReminder(hour, minute, weekNumber, weekdays);
 
-                        alarmModel.addReminder(daily);//make new time
-
-                        dbHelper.createAlarm(alarmModel);//add to db
-                        AlarmManagerHelper.setAlarms(context);//trigger setting alarm
-                    }else if(reminderType == ReminderTime.WEEKLY){
-                        boolean[] weekdays = prevIntent.getBooleanArrayExtra(AlarmDaysOfWeek.WEEKDAY_ARRAY);
-                        ReminderTime weekly = new WeeklyReminder(hour, minute, weekdays);
-
-                        alarmModel.addReminder(weekly);//make new time
-
-                        dbHelper.createAlarm(alarmModel);//add to db
-                        AlarmManagerHelper.setAlarms(context);//trigger setting alarm
-                    }else if(reminderType == ReminderTime.MONTHLY){
-
-                        boolean[] weekdays = prevIntent.getBooleanArrayExtra(AlarmDaysOfWeek.WEEKDAY_ARRAY);
-                        int weekNumber = prevIntent.getIntExtra(AlarmMonthly.WEEK_NUMBER,-1);
-                        ReminderTime monthly = new MonthlyReminder(hour, minute, weekNumber, weekdays);
-
-                        alarmModel.addReminder(monthly);//make new time
-
-                        dbHelper.createAlarm(alarmModel);//add to db
-                        AlarmManagerHelper.setAlarms(context);//trigger setting alarm
-                    }else{
-                        System.out.println("reminder type seems not to be recognized");
+                            alarmModel.addReminder(monthly);//make new time
+                            break;
                     }
+                    dbHelper.createAlarm(alarmModel);//add to db
+                    AlarmManagerHelper.setAlarms(context);//trigger setting alarm
 
                     Intent i = new Intent(Timepicker.this, AlarmListActivity.class);
                     startActivity(i);

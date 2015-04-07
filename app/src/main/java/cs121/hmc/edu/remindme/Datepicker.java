@@ -44,13 +44,10 @@ public class Datepicker extends Activity {
                         i.putExtra(SetName.ALARM_NAME, alarmName);
                         i.putExtra(AlarmFrequency.REMINDER_TYPE, reminderType);
                         i.putExtra(DATE_YEAR, datePicker.getYear());
-                        System.out.println("year selected: " +datePicker.getYear());
                         //month starts counting at 0 so must add 1
                         int month = datePicker.getMonth()+1;
                         i.putExtra(DATE_MONTH, month);
-                        System.out.println("month selected: " +month);
                         i.putExtra(DATE_DAY, datePicker.getDayOfMonth());
-                        System.out.println("day selected: " +datePicker.getDayOfMonth());
                         startActivity(i);
                     }else{
                         System.out.println("One time reminder seems not to be recognized");

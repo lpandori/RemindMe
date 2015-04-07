@@ -22,8 +22,6 @@ public class SetName extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.set_name);
 
-        //SQLiteDatabase.deleteDatabase( new File("/data/data/cs121.hmc.edu.remindme/databases/alarmclock.db"));
-        //TODO used to clear out db errors
 
         Button next = (Button) findViewById(R.id.btn_next);
         next.setOnClickListener(new View.OnClickListener() {

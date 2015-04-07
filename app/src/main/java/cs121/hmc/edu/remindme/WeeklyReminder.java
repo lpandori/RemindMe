@@ -19,6 +19,7 @@ public class WeeklyReminder implements ReminderTime {
     //(i.e. DAY_OF_WEEK is 1-7)
 
     private long id;
+    private int snoozeCounter = 0;
     boolean[] weekdays;
     int hour;
     int min;
@@ -72,6 +73,11 @@ public class WeeklyReminder implements ReminderTime {
     public void setId(long id) { this.id = id;}
 
     @Override
+    public int getSnoozeCounter(){return snoozeCounter;}
+    @Override
+    public void setSnoozeCounter(int snoozeCounter){this.snoozeCounter = snoozeCounter;}
+
+    @Override
     public int getHour() { return hour; }
 
     @Override
@@ -99,7 +105,7 @@ public class WeeklyReminder implements ReminderTime {
         if(weekdays[nowWeekday-1] && (hour > nowHour || (nowHour == hour && min > nowMin))){
             //set for today
             setTime.set(Calendar.DAY_OF_WEEK, nowWeekday);
-            return setTime.getTimeInMillis();
+            return setTime.getTimeInMillis() + snoozeCounter*minToMillis;
         }
 
         //if alarm between tomorrow and saturday
@@ -108,7 +114,7 @@ public class WeeklyReminder implements ReminderTime {
             //if there is a timer for this weekday
             if(weekdays[i-1]){//timer exists for this weekday (be careful to reach into correct index)
                 setTime.set(Calendar.DAY_OF_WEEK, i);
-                return setTime.getTimeInMillis();
+                return setTime.getTimeInMillis() + snoozeCounter*minToMillis;
             }
         }
 
@@ -116,7 +122,7 @@ public class WeeklyReminder implements ReminderTime {
         for(int i = Calendar.SUNDAY; i < nowWeekday; i++){
             if(weekdays[i-1]){//timer exists for this weekday (be careful to reach into correct index)
                 setTime.set(Calendar.DAY_OF_WEEK, i);
-                return setTime.getTimeInMillis();
+                return setTime.getTimeInMillis() + snoozeCounter*minToMillis;
             }
         }
         return -1;//error occurred

@@ -10,6 +10,7 @@ import java.util.GregorianCalendar;
 public class OneTimeReminder implements ReminderTime {
 
     private long id;
+    private int snoozeCounter = 0;
     //pre: date must include m/d/y AND hour and minute
     private int year;
     private int month;
@@ -119,6 +120,11 @@ public class OneTimeReminder implements ReminderTime {
     public void setId(long id) { this.id = id;}
 
     @Override
+    public int getSnoozeCounter(){return snoozeCounter;}
+    @Override
+    public void setSnoozeCounter(int snoozeCounter){this.snoozeCounter = snoozeCounter;}
+
+    @Override
     public int getHour() { return date.get(Calendar.HOUR_OF_DAY); }
 
     @Override
@@ -127,7 +133,7 @@ public class OneTimeReminder implements ReminderTime {
     @Override
     public long getNextTime() {
         if(hasNextTime()){
-            return date.getTimeInMillis();
+            return date.getTimeInMillis() + snoozeCounter*minToMillis;
         }else{
             return -1;
         }

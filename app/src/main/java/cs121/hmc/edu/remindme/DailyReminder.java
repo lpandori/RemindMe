@@ -8,6 +8,7 @@ import java.util.Calendar;
 public class DailyReminder implements ReminderTime{
 
     private long id;
+    private int snoozeCounter;
     private int hour;
     private int min;
 
@@ -45,6 +46,10 @@ public class DailyReminder implements ReminderTime{
     @Override
     public void setId(long id) { this.id = id;}
 
+    @Override
+    public int getSnoozeCounter(){return snoozeCounter;}
+    @Override
+    public void setSnoozeCounter(int snoozeCounter){this.snoozeCounter = snoozeCounter;}
 
     @Override
     public int getHour() { return hour; }
@@ -72,7 +77,7 @@ public class DailyReminder implements ReminderTime{
             setTime.set(Calendar.MINUTE, min);
             setTime.add(Calendar.DATE, 1); //set reminder for tomorrow
         }
-        return setTime.getTimeInMillis();
+        return setTime.getTimeInMillis() + snoozeCounter*minToMillis;
     }
 
     @Override

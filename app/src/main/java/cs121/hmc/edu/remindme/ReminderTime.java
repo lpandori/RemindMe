@@ -14,6 +14,8 @@ public interface ReminderTime {
     public static int WEEKLY = 3;
     public static int MONTHLY = 4;
 
+    public static int minToMillis = 60000;
+
     //return what type of reminder it is
     public int getReminderType();
 
@@ -35,6 +37,10 @@ public interface ReminderTime {
     //pre: will always be the same as it's db id
     public long getId();
     public void setId(long id);
+
+    //getter and setter for snoozeCounter
+    public int getSnoozeCounter();
+    public void setSnoozeCounter(int snoozeCounter);
 
     //returns the soonest upcoming alarm time (in milliseconds)
     public long getNextTime();

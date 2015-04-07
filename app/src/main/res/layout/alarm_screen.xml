@@ -13,7 +13,7 @@
         android:text="Alarm!"
         android:textSize="38dp" />
 
-    <TextView
+    <!--TextView
         android:id="@+id/alarm_screen_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -21,19 +21,19 @@
         android:layout_below="@+id/alarm_screen_title"
         android:layout_marginTop="28dp"
         android:text="00 : 00"
-        android:textSize="52dp" />
+        android:textSize="52dp" />-->
 
     <TextView
         android:id="@+id/alarm_screen_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/alarm_screen_time"
+        android:layout_below="@+id/alarm_screen_title"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="28dp"
         android:text="Alarm name" />
 
     <Button
-        android:id="@+id/alarm_screen_button"
+        android:id="@+id/alarm_screen_button_dismiss"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
@@ -41,5 +41,14 @@
         android:layout_marginBottom="106dp"
         android:text="Dismiss"
         android:textSize="38dp" />
+
+    <Button
+        android:id="@+id/alarm_screen_button_snooze"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Snooze"
+        android:textSize="38dp"
+        android:layout_above="@+id/alarm_screen_button_dismiss"
+        android:layout_centerHorizontal="true" />
 
 </RelativeLayout>

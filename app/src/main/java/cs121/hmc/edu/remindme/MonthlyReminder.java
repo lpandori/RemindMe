@@ -8,6 +8,7 @@ import java.util.Calendar;
 public class MonthlyReminder implements ReminderTime {
 
     private long id;
+    private int snoozeCounter = 0;
     private int hour;
     private int min;
     private int weekNumber;
@@ -60,6 +61,11 @@ public class MonthlyReminder implements ReminderTime {
     public void setId(long id) { this.id = id;}
 
     @Override
+    public int getSnoozeCounter(){return snoozeCounter;}
+    @Override
+    public void setSnoozeCounter(int snoozeCounter){this.snoozeCounter = snoozeCounter;}
+
+    @Override
     public int getHour() { return hour; }
 
     @Override
@@ -95,7 +101,7 @@ public class MonthlyReminder implements ReminderTime {
                 //set for today
                 setTime.set(Calendar.WEEK_OF_MONTH, weekNumber);
                 setTime.set(Calendar.DAY_OF_WEEK, nowWeekday);
-                return setTime.getTimeInMillis();
+                return setTime.getTimeInMillis() + snoozeCounter*minToMillis;
             }
 
             //if alarm between tomorrow and saturday (end of the week)
@@ -105,7 +111,7 @@ public class MonthlyReminder implements ReminderTime {
                 if(weekdays[i-1]){//timer exists for this weekday (be careful to reach into correct index)
                     setTime.set(Calendar.WEEK_OF_MONTH, weekNumber);
                     setTime.set(Calendar.DAY_OF_WEEK, i);
-                    return setTime.getTimeInMillis();
+                    return setTime.getTimeInMillis() + snoozeCounter*minToMillis;
                 }
             }
 
@@ -116,7 +122,7 @@ public class MonthlyReminder implements ReminderTime {
                 if(weekdays[i-1]){//timer exists for this weekday (be careful to reach into correct index)
                     setTime.set(Calendar.WEEK_OF_MONTH, weekNumber);
                     setTime.set(Calendar.DAY_OF_WEEK, i);
-                    return setTime.getTimeInMillis();
+                    return setTime.getTimeInMillis() + snoozeCounter*minToMillis;
                 }
             }
 
@@ -128,7 +134,7 @@ public class MonthlyReminder implements ReminderTime {
                     if(weekdays[i-1]){//timer exists for this weekday (be careful to reach into correct index)
                         setTime.set(Calendar.WEEK_OF_MONTH, weekNumber);
                         setTime.set(Calendar.DAY_OF_WEEK, i);
-                        return setTime.getTimeInMillis();
+                        return setTime.getTimeInMillis() + snoozeCounter*minToMillis;
                     }
                 }
 
@@ -140,7 +146,7 @@ public class MonthlyReminder implements ReminderTime {
                     if(weekdays[i-1]){//timer exists for this weekday (be careful to reach into correct index)
                         setTime.set(Calendar.WEEK_OF_MONTH, weekNumber);
                         setTime.set(Calendar.DAY_OF_WEEK, i);
-                        return setTime.getTimeInMillis();
+                        return setTime.getTimeInMillis() + snoozeCounter*minToMillis;
                     }
                 }
             }

@@ -26,10 +26,7 @@ public class AlarmFrequency extends Activity{
         Button monthly = (Button) findViewById(R.id.monthly);
 
         Intent thisIntent = getIntent(); // gets the previously created intent
-        final String alarmName = thisIntent.getStringExtra(SetName.ALARM_NAME);//TODO double check that this is ok to do
-        System.out.println("from the alarm frequency the alarm name is: "+alarmName);
-
-        System.out.println(alarmName);
+        final String alarmName = thisIntent.getStringExtra(SetName.ALARM_NAME);
 
         //create a ReminderTime based on which was clicked and pass it as
         once.setOnClickListener(new View.OnClickListener() {
