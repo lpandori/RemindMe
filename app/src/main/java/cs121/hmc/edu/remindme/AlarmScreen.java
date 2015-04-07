@@ -16,6 +16,7 @@ import android.widget.TextView;
 /**
  * Created by heatherseaman on 3/1/15.
  */
+//TODO medium changes to handle new alarmModel
 public class AlarmScreen extends Activity {
 
     public final String TAG = this.getClass().getSimpleName();
@@ -30,40 +31,54 @@ public class AlarmScreen extends Activity {
         //Setting up layout
         this.setContentView(R.layout.alarm_screen);
         String name = getIntent().getStringExtra(AlarmManagerHelper.NAME);
-        int timeHour = getIntent().getIntExtra(AlarmManagerHelper.TIME_HOUR, 0);
-        int timeMinute = getIntent().getIntExtra(AlarmManagerHelper.TIME_MINUTE, 0);
+        final long reminderId = getIntent().getLongExtra(AlarmManagerHelper.REMINDER_ID, -1);
 
         TextView tvName = (TextView) findViewById(R.id.alarm_screen_name);
         tvName.setText(name);
 
-        TextView tvTime = (TextView) findViewById(R.id.alarm_screen_time);
-        tvTime.setText(String.format("%02d : %02d", timeHour, timeMinute));
+        final Context context = this;
 
-        Button dismissButton = (Button) findViewById(R.id.alarm_screen_button);
-        dismissButton.setOnClickListener(new View.OnClickListener() {
+        Button snoozeButton = (Button) findViewById(R.id.alarm_screen_button_snooze);
+        snoozeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mPlayer.stop();
+                //mPlayer.stop();
+                AlarmDBHelper dbHelper = new AlarmDBHelper(context);
+                dbHelper.snoozeReminder(reminderId);
                 finish();
+                //automatically alarms are being reset
             }
         });
 
-        String tone = getIntent().getStringExtra(AlarmManagerHelper.TONE);
-        mPlayer = new MediaPlayer();
-        try {
-            if (tone != null && !tone.equals("")) {
-                Uri toneUri = Uri.parse(tone);
-                if (toneUri != null) {
-                    mPlayer.setDataSource(this, toneUri);
-                    mPlayer.setAudioStreamType(AudioManager.STREAM_ALARM);
-                    mPlayer.setLooping(true);
-                    mPlayer.prepare();
-                    mPlayer.start();
-                }
+        Button dismissButton = (Button) findViewById(R.id.alarm_screen_button_dismiss);
+        dismissButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //mPlayer.stop();
+                AlarmDBHelper dbHelper = new AlarmDBHelper(context);
+                dbHelper.dismiss(reminderId);
+                finish();
+                //automatically alarms are being reset
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        });
+
+        //TODO temporarily removed
+//        String tone = getIntent().getStringExtra(AlarmManagerHelper.TONE);
+//        mPlayer = new MediaPlayer();
+//        try {
+//            if (tone != null && !tone.equals("")) {
+//                Uri toneUri = Uri.parse(tone);
+//                if (toneUri != null) {
+//                    mPlayer.setDataSource(this, toneUri);
+//                    mPlayer.setAudioStreamType(AudioManager.STREAM_ALARM);
+//                    mPlayer.setLooping(true);
+//                    mPlayer.prepare();
+//                    mPlayer.start();
+//                }
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
 
         // Ensure wakelock release
         Runnable releaseWakeLock = new Runnable() {

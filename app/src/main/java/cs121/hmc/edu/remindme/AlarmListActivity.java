@@ -23,10 +23,10 @@ public class AlarmListActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mContext = this;
-        mAdapter = new AlarmListAdapter(this, dbHelper.getAlarms());
+        //mAdapter = new AlarmListAdapter(this, dbHelper.getAlarms());//TODO removed for now
         setContentView(R.layout.activity_alarm_list);
         ListView alarmList=(ListView)findViewById(R.id.list);
-        alarmList.setAdapter(mAdapter);
+        //alarmList.setAdapter(mAdapter); TODO removed for now
     }
 
 
@@ -42,7 +42,7 @@ public class AlarmListActivity extends ActionBarActivity {
 
         switch (item.getItemId()) {
             case R.id.action_add_new_alarm: {
-                startAlarmDetailsActivity(-1);
+                startSetNameActivity();
                 break;
             }
         }
@@ -59,10 +59,11 @@ public class AlarmListActivity extends ActionBarActivity {
         }
     }
 
-    public void setAlarmEnabled(long id, boolean isEnabled) {
-        AlarmManagerHelper.cancelAlarms(this);
-        AlarmModel model = dbHelper.getAlarm(id);
-        model.isEnabled = isEnabled;
+
+    //sets alarm passed on name (name must be unique)
+    public void setAlarmEnabled(long id, String name, boolean isEnabled) {
+        AlarmModel model = dbHelper.getAlarm(id, name);//TODO test this
+        model.setEnabled(isEnabled);
         dbHelper.updateAlarm(model);
         // refreshing the adapter after the state of the toggle has changed
         // in the first list view item
@@ -71,9 +72,25 @@ public class AlarmListActivity extends ActionBarActivity {
         AlarmManagerHelper.setAlarms(this);
     }
 
-    public void startAlarmDetailsActivity(long id) {
+    public void startAlarmFrequencyActivity(long id) {
+        //Intent intent = new Intent(this, AlarmDetailsActivity.class);
+        //intent.putExtra("id", id);
+        //startActivityForResult(intent, 0);
+        Intent intent = new Intent(AlarmListActivity.this,AlarmFrequency.class);
+        //intent.putExtra("id",id);
+        startActivity(intent);
+
+    }
+
+    public void startAlarmDetailsActivity(long id){
         Intent intent = new Intent(this, AlarmDetailsActivity.class);
         intent.putExtra("id", id);
-        startActivityForResult(intent, 0);
+        startActivityForResult(intent,0);
+    }
+
+    public void startSetNameActivity(){
+        Intent intent = new Intent(AlarmListActivity.this, SetName.class);
+        //intent.putExtra("id",id);
+        startActivity(intent);
     }
 }
