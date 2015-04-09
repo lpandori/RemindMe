@@ -53,7 +53,7 @@ public class AlarmDetailsActivity extends ActionBarActivity {
         mContext = this;
         mAdapter = new ReminderListAdapter(this, dbHelper.getAlarm(alarmId).getReminders());
         setContentView(R.layout.activity_details);
-        ListView alarmList=(ListView)findViewById(R.id.reminder_list);
+        ListView alarmList = (ListView)findViewById(R.id.reminder_list);
 
         alarmList.setAdapter(mAdapter);
         touchListener =
@@ -140,7 +140,7 @@ public class AlarmDetailsActivity extends ActionBarActivity {
         public View getView(int position, View convertView, ViewGroup parent) {
             if (convertView == null) {
                 LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                convertView = inflater.inflate(R.layout.alarm_list_item, parent, false);
+                convertView = inflater.inflate(R.layout.reminder_list_item, parent, false);
             }
 
             // get Item implemented above
@@ -175,7 +175,7 @@ public class AlarmDetailsActivity extends ActionBarActivity {
             TextView txtDisplay = (TextView) convertView.findViewById(R.id.reminder_text);
             txtDisplay.setText(toDisplay);
             TextView txtTime = (TextView) convertView.findViewById(R.id.reminder_item_time);
-            txtTime.setText(String.format("%02d : %02d", timeHour, timeMinute));
+            txtTime.setText(String.format("%02d : %02d", Integer.parseInt(timeHour), Integer.parseInt(timeMinute)));
 
 
 //            ToggleButton btnToggle = (ToggleButton) convertView.findViewById(R.id.alarm_item_toggle);
