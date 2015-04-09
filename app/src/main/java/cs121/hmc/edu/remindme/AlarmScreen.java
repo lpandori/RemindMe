@@ -1,28 +1,35 @@
 package cs121.hmc.edu.remindme;
 
 import android.app.Activity;
+import android.content.ClipData;
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.PowerManager;
+import android.view.DragEvent;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 /**
  * Created by heatherseaman on 3/1/15.
  */
-//TODO medium changes to handle new alarmModel
 public class AlarmScreen extends Activity {
 
     public final String TAG = this.getClass().getSimpleName();
     private MediaPlayer mPlayer;
     private PowerManager.WakeLock mWakeLock;
     private static final int WAKELOCK_TIMEOUT = 60 * 1000;
+    private Context context= this;
+    private long reminderId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,38 +38,25 @@ public class AlarmScreen extends Activity {
         //Setting up layout
         this.setContentView(R.layout.alarm_screen);
         String name = getIntent().getStringExtra(AlarmManagerHelper.NAME);
-        final long reminderId = getIntent().getLongExtra(AlarmManagerHelper.REMINDER_ID, -1);
+        reminderId = getIntent().getLongExtra(AlarmManagerHelper.REMINDER_ID, -1);
 
         TextView tvName = (TextView) findViewById(R.id.alarm_screen_name);
         tvName.setText(name);
 
-        final Context context = this;
 
-        Button snoozeButton = (Button) findViewById(R.id.alarm_screen_button_snooze);
-        snoozeButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //mPlayer.stop();
-                AlarmDBHelper dbHelper = new AlarmDBHelper(context);
-                dbHelper.snoozeReminder(reminderId);
-                finish();
-                //automatically alarms are being reset
-            }
-        });
+//        Button dismissButton = (Button) findViewById(R.id.alarm_screen_button);
+//        dismissButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                mPlayer.stop();
+//                finish();
+//            }
+//        });
 
-        Button dismissButton = (Button) findViewById(R.id.alarm_screen_button_dismiss);
-        dismissButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //mPlayer.stop();
-                AlarmDBHelper dbHelper = new AlarmDBHelper(context);
-                dbHelper.dismiss(reminderId);
-                finish();
-                //automatically alarms are being reset
-            }
-        });
+        findViewById(R.id.dismiss_start).setOnTouchListener(new DismissTouchListener());
+        findViewById(R.id.dismiss_end).setOnDragListener(new DismissDragListener());
 
-        //TODO temporarily removed
+
 //        String tone = getIntent().getStringExtra(AlarmManagerHelper.TONE);
 //        mPlayer = new MediaPlayer();
 //        try {
@@ -91,6 +85,9 @@ public class AlarmScreen extends Activity {
                 if (mWakeLock != null && mWakeLock.isHeld()) {
                     mWakeLock.release();
                 }
+                if(mPlayer != null) {
+                    mPlayer.release();
+                }
             }
         };
 
@@ -98,6 +95,52 @@ public class AlarmScreen extends Activity {
 
 
     }
+
+    private final class DismissTouchListener implements View.OnTouchListener {
+        public boolean onTouch(View view, MotionEvent motionEvent) {
+            if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
+                ClipData data = ClipData.newPlainText("", "");
+                View.DragShadowBuilder shadowBuilder = new View.DragShadowBuilder(view);
+                view.startDrag(data, shadowBuilder, view, 0);
+                view.setVisibility(View.INVISIBLE);
+                return true;
+            }
+            else return false;
+        }
+    }
+
+    class DismissDragListener implements View.OnDragListener {
+
+//        Drawable enterShape = getResources().getDrawable(R.drawable.oval_selected);
+//        Drawable normalShape = getResources().getDrawable(R.drawable.oval_droptarget);
+
+        @Override
+        public boolean onDrag(View v, DragEvent event) {
+            int action = event.getAction();
+            switch (action) {
+                case DragEvent.ACTION_DROP:
+                    // Dropped, reassign View to ViewGroup
+                    View view = (View) event.getLocalState();
+                    ViewGroup owner = (ViewGroup) view.getParent();
+                    owner.removeView(view);
+                    LinearLayout container = (LinearLayout) v;
+                    container.addView(view);
+                    view.setVisibility(View.INVISIBLE);
+//                    mPlayer.stop();
+//                    mWakeLock.release();
+//                    finish();
+                    AlarmDBHelper dbHelper = new AlarmDBHelper(context);
+                    dbHelper.dismiss(reminderId);
+                    finish();
+                    break;
+                default:
+                    break;
+            }
+            return true;
+        }
+
+    }
+
 
     @Override
     protected  void onResume() {
@@ -127,7 +170,11 @@ public class AlarmScreen extends Activity {
     protected void onPause() {
         super.onPause();
 
-        if(mWakeLock != null & mWakeLock.isHeld()) {
+        if(mPlayer != null) {
+            mPlayer.release();
+        }
+
+        if((mWakeLock != null) && mWakeLock.isHeld()) {
             mWakeLock.release();
         }
     }

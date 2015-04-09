@@ -98,10 +98,6 @@ public class WeeklyReminder implements ReminderTime {
         setTime.set(Calendar.SECOND, 00);
 
         //check if alarm needs to happen today
-        //TODO fucked this up :(
-        //TODO setting it as today kinda regardless of if the alarm happens today
-        //probably cludged this :(
-        //need to test this
         if(weekdays[nowWeekday-1] && (hour > nowHour || (nowHour == hour && min > nowMin))){
             //set for today
             setTime.set(Calendar.DAY_OF_WEEK, nowWeekday);

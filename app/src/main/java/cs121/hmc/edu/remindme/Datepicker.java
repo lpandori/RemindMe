@@ -30,7 +30,7 @@ public class Datepicker extends Activity {
         setCurrentDate();
 
         Intent prevIntent = getIntent(); // gets the previously created intent
-        final String alarmName = prevIntent.getStringExtra(SetName.ALARM_NAME);//TODO double check that this is ok to do
+        final String alarmName = prevIntent.getStringExtra(SetName.ALARM_NAME);
         final int reminderType = prevIntent.getIntExtra(AlarmFrequency.REMINDER_TYPE, -1);
         System.out.println("from the date picker the alarmname is: "+alarmName);
         System.out.println("from the date picker the remindertype is: "+reminderType);

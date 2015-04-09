@@ -1,18 +1,27 @@
 package cs121.hmc.edu.remindme;
 
+import android.content.Context;
 import android.content.Intent;
-import android.media.RingtoneManager;
+import android.graphics.Color;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
-//import android.widget.CheckBox;
+import android.view.ViewGroup;
 import android.view.Window;
-import android.widget.EditText;
-import android.widget.LinearLayout;
+import android.widget.AbsListView;
+import android.widget.BaseAdapter;
+import android.widget.CompoundButton;
+import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.TimePicker;
+import android.widget.ToggleButton;
+
+import com.hudomju.swipe.SwipeToDismissTouchListener;
+import com.hudomju.swipe.adapter.ListViewAdapter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by heatherseaman on 2/14/15.
@@ -21,154 +30,211 @@ import android.widget.TimePicker;
 
 
 //TODO commented out for now
-public class AlarmDetailsActivity{ //extends ActionBarActivity {
+public class AlarmDetailsActivity extends ActionBarActivity {
 
-//    private AlarmModel alarmDetails;
-//    private AlarmDBHelper dbHelper = new AlarmDBHelper(this);
-//    private TimePicker timePicker;
-//    private EditText snoozeInput; //TODO
-//    private EditText edtName;
-//    private CustomSwitch chkWeekly;
-//    private CustomSwitch chkSunday;
-//    private CustomSwitch chkMonday;
-//    private CustomSwitch chkTuesday;
-//    private CustomSwitch chkWednesday;
-//    private CustomSwitch chkThursday;
-//    private CustomSwitch chkFriday;
-//    private CustomSwitch chkSaturday;
-//    private TextView txtToneSelection;
-//
-//    @Override
-//    protected void onCreate(Bundle savedInstanceState) {
-//
-//        super.onCreate(savedInstanceState);
-//        supportRequestWindowFeature(Window.FEATURE_ACTION_BAR);
-//
+    private AlarmDBHelper dbHelper = new AlarmDBHelper(this);
+    private ReminderListAdapter mAdapter;
+    private Context mContext;
+    public static SwipeToDismissTouchListener<ListViewAdapter> touchListener;
+
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        supportRequestWindowFeature(Window.FEATURE_ACTION_BAR);
+
 //        getSupportActionBar().setTitle("Create New Alarm");
 //        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-//
-//        setContentView(R.layout.activity_details);
-//        timePicker = (TimePicker) findViewById(R.id.alarm_details_time_picker);
-//        snoozeInput = (EditText) findViewById(R.id.alarm_details_snooze_picker);//TODO
-//        edtName = (EditText) findViewById(R.id.alarm_details_name);
-//        chkWeekly = (CustomSwitch) findViewById(R.id.alarm_details_label_repeat_weekly);
-//        chkSunday = (CustomSwitch) findViewById(R.id.alarm_details_label_sunday);
-//        chkMonday = (CustomSwitch) findViewById(R.id.alarm_details_label_monday);
-//        chkTuesday = (CustomSwitch) findViewById(R.id.alarm_details_label_tuesday);
-//        chkWednesday = (CustomSwitch) findViewById(R.id.alarm_details_label_wednesday);
-//        chkThursday = (CustomSwitch) findViewById(R.id.alarm_details_label_thursday);
-//        chkFriday = (CustomSwitch) findViewById(R.id.alarm_details_label_friday);
-//        chkSaturday = (CustomSwitch) findViewById(R.id.alarm_details_label_saturday);
-//        txtToneSelection = (TextView) findViewById(R.id.alarm_label_tone_selection);
-//
-//
-//        snoozeInput.setText("20");//TODO move this to a more appropriate place
-//
-//        long id = getIntent().getExtras().getLong("id");
-//
-//        if (id == -1) {
-//            alarmDetails = new AlarmModel();
-//        } else {
-//            alarmDetails = dbHelper.getAlarm(id);
-//            timePicker.setCurrentMinute(alarmDetails.timeMinute);
-//            timePicker.setCurrentHour(alarmDetails.timeHour);
-//
-//            //snoozeInput.setText("20");//TODO add default based on storage from AlarmModel
-//            //snoozePicker.setValue(10);//TODO do this from alarmDetails.snooze
-//
-//            edtName.setText(alarmDetails.name);
-//            chkWeekly.setChecked(alarmDetails.repeatWeekly);
-//            chkSunday.setChecked(alarmDetails.getRepeatingDay(AlarmModel.SUNDAY));
-//            chkMonday.setChecked(alarmDetails.getRepeatingDay(AlarmModel.MONDAY));
-//            chkTuesday.setChecked(alarmDetails.getRepeatingDay(AlarmModel.TUESDAY));
-//            chkWednesday.setChecked(alarmDetails.getRepeatingDay(AlarmModel.WEDNESDAY));
-//            chkThursday.setChecked(alarmDetails.getRepeatingDay(AlarmModel.THURSDAY));
-//            chkFriday.setChecked(alarmDetails.getRepeatingDay(AlarmModel.FRIDAY));
-//            chkSaturday.setChecked(alarmDetails.getRepeatingDay(AlarmModel.SATURDAY));
-//
-//            txtToneSelection.setText(RingtoneManager.getRingtone(this, alarmDetails.alarmTone).getTitle(this));
+
+        Intent prevIntent = getIntent(); // gets the previously created intent
+        final long alarmId = prevIntent.getLongExtra("id", -1);
+
+        mContext = this;
+        mAdapter = new ReminderListAdapter(this, dbHelper.getAlarm(alarmId).getReminders());
+        setContentView(R.layout.activity_details);
+        ListView alarmList=(ListView)findViewById(R.id.reminder_list);
+
+        alarmList.setAdapter(mAdapter);
+        touchListener =
+                new SwipeToDismissTouchListener<>(
+                        new ListViewAdapter(alarmList),
+                        new SwipeToDismissTouchListener.DismissCallbacks<ListViewAdapter>() {
+                            @Override
+                            public boolean canDismiss (int position) {
+                                return true;
+                            }
+                            @Override
+                            public void onDismiss(ListViewAdapter lvAdapter, int position) {
+                                mAdapter.remove(position);
+                                View thisView = lvAdapter.getChildAt(position);
+                                long viewId = (long) thisView.getTag();
+                                dbHelper.deleteAlarm(viewId);
+                            }
+                        });
+
+        alarmList.setOnScrollListener((AbsListView.OnScrollListener) touchListener.makeScrollListener());
+
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_alarm_details, menu);
+        return true;
+    }
+
+    /*
+     * ADAPTER CLASS!!!! YAY
+     */
+    static class ReminderListAdapter extends BaseAdapter {
+        private Context mContext;
+        private ArrayList<ReminderTime> mReminders;
+        private AlarmDBHelper dbHelper = new AlarmDBHelper(mContext);
+
+        public ReminderListAdapter(Context context, ArrayList<ReminderTime> reminders) {
+            mContext = context;
+            mReminders = reminders;
+        }
+
+
+//        public void setAlarms(ArrayList<ReminderTime> reminders) {
+//            mReminders = reminders;
 //        }
+
+        /*
+         * Gets the count of the number of reminder times
+         */
+        @Override
+        public int getCount() {
+            if (mReminders != null) {
+                return mReminders.size();
+            }
+            return 0;
+        }
+
+        @Override
+        public Object getItem(int position) {
+            if (mReminders != null) {
+                return mReminders.get(position);
+            }
+            return null;
+        }
+
+        @Override
+        public long getItemId(int position) {
+            if (mReminders != null) {
+                return mReminders.get(position).getId();
+            }
+            return 0;
+        }
+
+        public void remove(int position) {
+            if (mReminders != null) {
+                mReminders.remove(position);
+                notifyDataSetChanged();
+            }
+        }
+
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            if (convertView == null) {
+                LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                convertView = inflater.inflate(R.layout.alarm_list_item, parent, false);
+            }
+
+            // get Item implemented above
+            final ReminderTime reminderTime = (ReminderTime) getItem(position);
+            String toDisplay = "";
+            String timeHour = "" + reminderTime.getHour();
+            String timeMinute = "" + reminderTime.getMin();
+            char[] dayLetters = {'s','m','t','w','t','f','s'};
+            switch(reminderTime.getReminderType()){
+                case ReminderTime.ONE_TIME:
+                    toDisplay = reminderTime.getDateString();
+                    break;
+                case ReminderTime.DAILY:
+                    toDisplay = "DAILY at";
+                    break;
+                case ReminderTime.WEEKLY:
+                    String dayOfWeek = reminderTime.getWeekdays();
+                    char[] weekBools = dayOfWeek.toCharArray();
+                    for(int i=0; i < weekBools.length;i++){
+                        toDisplay += weekBools[i] == '0' ? dayLetters[i] : Character.toUpperCase(dayLetters[i]);
+                    }
+
+                    break;
+                case ReminderTime.MONTHLY:
+                    toDisplay = "Every " + reminderTime.getWeekOfMonth();
+                    String week = reminderTime.getWeekdays();
+                    int dayIndex = week.indexOf('1');
+                    toDisplay += " " + dayLetters[dayIndex];
+                    break;
+            }
+
+            TextView txtDisplay = (TextView) convertView.findViewById(R.id.reminder_text);
+            txtDisplay.setText(toDisplay);
+            TextView txtTime = (TextView) convertView.findViewById(R.id.reminder_item_time);
+            txtTime.setText(String.format("%02d : %02d", timeHour, timeMinute));
+
+
+//            ToggleButton btnToggle = (ToggleButton) convertView.findViewById(R.id.alarm_item_toggle);
+//            btnToggle.setChecked(model.isEnabled());
+//            btnToggle.setTag(model.getId());
+//            btnToggle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//                @Override
+//                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+//                    ((AlarmListActivity) mContext).setAlarmEnabled(((Long)
+//                            buttonView.getTag()), isChecked);
+//                    dbHelper.updateAlarm(model);
 //
-//        final LinearLayout ringToneContainer = (LinearLayout) findViewById(R.id.alarm_ringtone_container);
-//        ringToneContainer.setOnClickListener(new View.OnClickListener() {
-//
-//            @Override
-//            public void onClick(View v) {
-//                Intent intent = new Intent(RingtoneManager.ACTION_RINGTONE_PICKER);
-//                startActivityForResult(intent , 1);
-//            }
-//        });
-//
-//    }
-//
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        getMenuInflater().inflate(R.menu.menu_alarm_details, menu);
-//        return true;
-//    }
-//
-//    @Override
-//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        super.onActivityResult(requestCode, resultCode, data);
-//        if (resultCode == RESULT_OK) {
-//            switch (requestCode) {
-//                case 1: {
-//                    //alarmDetails.alarmTone = data.getParcelableExtra(RingtoneManager.EXTRA_RINGTONE_PICKED_URI);TODO removed without checking
-//                    //TextView txtToneSelection = (TextView) findViewById(R.id.alarm_label_tone_selection);
-//                    //txtToneSelection.setText(RingtoneManager.getRingtone(this, alarmDetails.alarmTone).getTitle(this));
-//                    break;
 //                }
-//                default: {
-//                    break;
-//                }
+//            });
+            View deleteView = convertView.findViewById(R.id.txt_delete);
+            setOnClickForDelete(deleteView);
+            convertView.setTag(reminderTime.getId());
+
+            convertView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (touchListener.existPendingDismisses()){
+                        touchListener.undoPendingDismiss();
+                    } else {
+                        ((AlarmListActivity) mContext).startAlarmDetailsActivity((Long) v.getTag());
+                    }
+
+                }
+            });
+
+
+            convertView.setOnTouchListener(touchListener);
+
+            return convertView;
+        }
+
+        private void setOnClickForDelete(View deleteView) {
+
+            deleteView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (touchListener.existPendingDismisses()){
+                        touchListener.processPendingDismisses();
+                    }
+
+                }
+            });
+        }
+
+//        private void updateTextColor(TextView view, boolean isOn) {
+//            if (isOn) {
+//                view.setTextColor(Color.GREEN);
+//            } else {
+//                view.setTextColor(Color.BLACK);
 //            }
 //        }
-//    }
-//
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        switch(item.getItemId()) {
-//            case android.R.id.home: {
-//                finish();
-//                break;
-//            }
-//            case R.id.action_save_alarm_details: {
-//                updateModelFromLayout();
-//                AlarmDBHelper dbHelper = new AlarmDBHelper(this);
-//
-//                // When we create a new alarm we need to make sure
-//                // to initalize the ID as -1 so we can know that it
-//                // did not come from the database and to use the
-//                // create method, otherwise we update
-//                if (alarmDetails.id < 0) {
-//                    dbHelper.createAlarm(alarmDetails);
-//                } else {
-//                    dbHelper.updateAlarm(alarmDetails);
-//                }
-//
-//                AlarmManagerHelper.setAlarms(this);
-//
-//                setResult(RESULT_OK);
-//                finish();
-//            }
-//        }
-//        return super.onOptionsItemSelected(item);
-//    }
-//
-//    private void updateModelFromLayout() {
-//        alarmDetails.timeMinute = timePicker.getCurrentMinute();
-//        alarmDetails.timeHour = timePicker.getCurrentHour();
-//        //TODO
-//        alarmDetails.snooze = Integer.parseInt( snoozeInput.getText().toString() );
-//        alarmDetails.name = edtName.getText().toString();
-//        alarmDetails.repeatWeekly = chkWeekly.isChecked();
-//        alarmDetails.setRepeatingDay(AlarmModel.SUNDAY, chkSunday.isChecked());
-//        alarmDetails.setRepeatingDay(AlarmModel.MONDAY, chkMonday.isChecked());
-//        alarmDetails.setRepeatingDay(AlarmModel.TUESDAY, chkTuesday.isChecked());
-//        alarmDetails.setRepeatingDay(AlarmModel.WEDNESDAY, chkWednesday.isChecked());
-//        alarmDetails.setRepeatingDay(AlarmModel.THURSDAY, chkThursday.isChecked());
-//        alarmDetails.setRepeatingDay(AlarmModel.FRIDAY, chkFriday.isChecked());
-//        alarmDetails.setRepeatingDay(AlarmModel.SATURDAY, chkSaturday.isChecked());
-//        alarmDetails.isEnabled = true;
-//    }
+
+
+    }
+
+
 }

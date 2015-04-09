@@ -160,7 +160,7 @@ public class AlarmDBHelper extends SQLiteOpenHelper {
         for(ReminderTime r : model.getReminders()){
 
             ContentValues values = new ContentValues();
-            values.put(AlarmContract.Alarm.COLUMN_NAME_ALARM_NAME, model.getId());
+            values.put(AlarmContract.Alarm.COLUMN_NAME_ALARM_ID, model.getId());
             values.put(AlarmContract.Alarm.COLUMN_NAME_ALARM_NAME, model.name);
             values.put(AlarmContract.Alarm.COLUMN_NAME_ALARM_ENABLED, model.isEnabled());
             values.put(AlarmContract.Alarm.COLUMN_NAME_ALARM_SNOOZE, model.getSnooze());
@@ -254,10 +254,10 @@ public class AlarmDBHelper extends SQLiteOpenHelper {
     //TODO edited this method to select for alarm name (i.e. "take meds") instead of id
     //TODO CHECK that this even works
     //this allows us to use our new alarm model
-    public AlarmModel getAlarm(long id, String name) {
+    public AlarmModel getAlarm(long id) {
         SQLiteDatabase db = getReadableDatabase();
         String select = "SELECT * FROM " + AlarmContract.Alarm.TABLE_NAME + " WHERE "
-                + AlarmContract.Alarm.COLUMN_NAME_ALARM_NAME + " = " +"'"+ name+"'"; //TODO, check that this works
+                + AlarmContract.Alarm.COLUMN_NAME_ALARM_ID + " = " +id; //TODO, check that this works
         Cursor c = db.rawQuery(select, null);
         AlarmModel toReturn = populateModel(c);
         c.close();
@@ -279,13 +279,12 @@ public class AlarmDBHelper extends SQLiteOpenHelper {
         return numRowsChanged;//TODO pretty dubious about this method
     }
 
-    //TODO this method is not currently used
-    //probably returns the number of rows deleted
-    public int deleteAlarm(String name) {
 
-        //TODO deleting based on name which may not be unique
+    //deletes all rows related to a given alarm
+    public int deleteAlarm(long id) {
+
         return getWritableDatabase().delete(AlarmContract.Alarm.TABLE_NAME,
-                AlarmContract.Alarm.COLUMN_NAME_ALARM_NAME + " = ?", new String[] { name });
+                AlarmContract.Alarm.COLUMN_NAME_ALARM_ID + " = "+id, null);
     }
 
     //makes a list of all current alarms
@@ -308,8 +307,8 @@ public class AlarmDBHelper extends SQLiteOpenHelper {
 
         while(c1.moveToNext()){
 
-            int alarmId =
-                    c1.getInt(c1.getColumnIndex(AlarmContract.Alarm.COLUMN_NAME_ALARM_ID));
+            long alarmId =
+                    c1.getLong(c1.getColumnIndex(AlarmContract.Alarm.COLUMN_NAME_ALARM_ID));
 
             String reminderTimeQuery = "SELECT * FROM " + AlarmContract.Alarm.TABLE_NAME +
                     " WHERE " + AlarmContract.Alarm.COLUMN_NAME_ALARM_ID + " = " + alarmId;

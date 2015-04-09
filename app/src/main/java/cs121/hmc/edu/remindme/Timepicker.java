@@ -48,6 +48,8 @@ public class Timepicker extends Activity {
                     int minute = timePicker.getCurrentMinute();
                     boolean[] weekdays;
 
+                    System.out.println(reminderType);
+
                     switch(reminderType){
                         case ReminderTime.ONE_TIME:
 
@@ -57,7 +59,6 @@ public class Timepicker extends Activity {
 
                             ReminderTime oneTime = new OneTimeReminder(year, month, day, hour, minute);
                             alarmModel.addReminder(oneTime);//make new time
-
                             break;
                         case ReminderTime.DAILY:
                             ReminderTime daily = new DailyReminder(hour, minute);

@@ -38,7 +38,7 @@ public class AlarmManagerHelper extends BroadcastReceiver{
                 if(alarm.isEnabled()){
 
                     long timeInMillis = alarm.getNextReminderTime();
-                    PendingIntent pIntent = createPendingIntent(context, alarm);//TODO need to redo this
+                    PendingIntent pIntent = createPendingIntent(context, alarm);
                     if(timeInMillis > 0) {
                         setAlarm(context, timeInMillis, pIntent);
                     }
