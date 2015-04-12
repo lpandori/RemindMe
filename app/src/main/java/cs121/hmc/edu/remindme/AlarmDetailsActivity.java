@@ -87,8 +87,11 @@ public class AlarmDetailsActivity extends ActionBarActivity {
                             public void onDismiss(ListViewAdapter lvAdapter, int position) {
                                 mAdapter.remove(position);
                                 View thisView = lvAdapter.getChildAt(position);
-                                long viewId = (long) thisView.getTag();
-                                dbHelper.deleteAlarm(viewId);
+                                long reminderId = (long) thisView.getTag();
+                                //dbHelper.deleteAlarm(viewId);
+                                AlarmManagerHelper.cancelAlarms(mContext);
+                                dbHelper.deleteReminder(reminderId);
+                                AlarmManagerHelper.setAlarms(mContext);
                             }
                         });
 
