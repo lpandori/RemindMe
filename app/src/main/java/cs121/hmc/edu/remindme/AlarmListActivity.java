@@ -47,6 +47,15 @@ public class AlarmListActivity extends ActionBarActivity {
         mAdapter = new AlarmListAdapter(this, dbHelper.getAlarms());
         setContentView(R.layout.activity_alarm_list);
         ListView alarmList=(ListView)findViewById(R.id.list);
+
+//
+//        addReminder.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                startActivity
+//            }
+//        });
+
         alarmList.setAdapter(mAdapter);
         touchListener =
                 new SwipeToDismissTouchListener<>(
@@ -110,9 +119,10 @@ public class AlarmListActivity extends ActionBarActivity {
         AlarmManagerHelper.setAlarms(this);
     }
 
-    public void startAlarmDetailsActivity(long id) {
+    public void startAlarmDetailsActivity(long id, String title) {
         Intent intent = new Intent(this, AlarmDetailsActivity.class);
         intent.putExtra("id", id);
+        intent.putExtra("alarm-title", title);
         startActivity(intent);
     }
 
@@ -203,7 +213,7 @@ public class AlarmListActivity extends ActionBarActivity {
                     if (touchListener.existPendingDismisses()){
                         touchListener.undoPendingDismiss();
                     } else {
-                        ((AlarmListActivity) mContext).startAlarmDetailsActivity((Long) v.getTag());
+                        ((AlarmListActivity) mContext).startAlarmDetailsActivity((Long) v.getTag(), model.name);
                     }
 
                 }

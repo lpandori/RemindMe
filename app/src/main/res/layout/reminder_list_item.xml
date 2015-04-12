@@ -8,23 +8,29 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
-        android:layout_margin="16dp" >
+        android:padding="16dp">
 
         <TextView
             android:id="@+id/reminder_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
             android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
+            android:layout_centerVertical="true"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Some Text Here"/>
 
         <TextView
             android:id="@+id/reminder_item_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
+            android:layout_toRightOf="@+id/reminder_text"
+            android:layout_centerVertical="true"
+            android:text="00:00"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            />
 
 
 
@@ -36,7 +42,7 @@
         android:orientation="horizontal"
         android:weightSum="3"
         android:visibility="gone"
-        android:layout_gravity="center|left">
+        android:layout_gravity="center|start">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -54,8 +60,6 @@
                 android:clickable="false"
                 android:hapticFeedbackEnabled="true"
                 android:textColor="@android:color/black"
-                android:textAlignment="center"
-                android:editable="true"
                 android:textStyle="bold"
                 android:layout_gravity="center" />
         </LinearLayout>

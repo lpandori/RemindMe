@@ -7,17 +7,7 @@
         android:id="@+id/alarm_item"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:layout_margin="16dp" >
-
-        <!--<TextView-->
-            <!--android:id="@+id/alarm_item_time"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_alignParentLeft="true"-->
-            <!--android:layout_alignParentTop="true"-->
-            <!--android:text="00 : 00"-->
-            <!--android:textAppearance="?android:attr/textAppearanceLarge" />-->
+        android:layout_gravity="center_vertical">
 
         <TextView
             android:id="@+id/alarm_item_name"

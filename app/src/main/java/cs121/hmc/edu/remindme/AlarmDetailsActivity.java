@@ -49,12 +49,16 @@ public class AlarmDetailsActivity extends ActionBarActivity {
 
         Intent prevIntent = getIntent(); // gets the previously created intent
         final long alarmId = prevIntent.getLongExtra("id", -1);
+        final String alarmTitle = prevIntent.getStringExtra("alarm-title");
 
         mContext = this;
         mAdapter = new ReminderListAdapter(this, dbHelper.getAlarm(alarmId).getReminders());
         setContentView(R.layout.activity_details);
-        ListView alarmList = (ListView)findViewById(R.id.reminder_list);
 
+        getSupportActionBar().setTitle(alarmTitle);
+        ListView alarmList = (ListView)findViewById(R.id.reminder_list);
+        View addReminder = ((LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.add_reminder, null, false);
+        alarmList.addFooterView(addReminder);
         alarmList.setAdapter(mAdapter);
         touchListener =
                 new SwipeToDismissTouchListener<>(
@@ -199,10 +203,8 @@ public class AlarmDetailsActivity extends ActionBarActivity {
                 public void onClick(View v) {
                     if (touchListener.existPendingDismisses()){
                         touchListener.undoPendingDismiss();
-                    } else {
-                        ((AlarmListActivity) mContext).startAlarmDetailsActivity((Long) v.getTag());
                     }
-
+                    // TODO:create edit activity here
                 }
             });
 
