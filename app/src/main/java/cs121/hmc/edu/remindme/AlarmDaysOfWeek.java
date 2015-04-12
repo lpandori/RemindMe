@@ -17,14 +17,17 @@ import java.util.ArrayList;
  */
 public class AlarmDaysOfWeek extends Activity {
 
-    //maybe we need to create a list of booleans for what days
-    //of the week are chosen
+
+    public static String WEEKDAY_ARRAY= "weekday_array";
+
+
     AlarmFrequency alarmfreq = new AlarmFrequency();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.set_days);
         super.onCreate(savedInstanceState);
+
 
         final CustomSwitch sunday = (CustomSwitch) findViewById(R.id.Sunday);
         final CustomSwitch monday = (CustomSwitch) findViewById(R.id.Monday);
@@ -33,7 +36,7 @@ public class AlarmDaysOfWeek extends Activity {
         final CustomSwitch thursday = (CustomSwitch) findViewById(R.id.Thursday);
         final CustomSwitch friday = (CustomSwitch) findViewById(R.id.Friday);
         final CustomSwitch saturday = (CustomSwitch) findViewById(R.id.Saturday);
-        ArrayList<CustomSwitch> customSwitches = new ArrayList<>();
+        final ArrayList<CustomSwitch> customSwitches = new ArrayList<>();
         customSwitches.add(sunday);
         customSwitches.add(monday);
         customSwitches.add(tuesday);
@@ -41,15 +44,35 @@ public class AlarmDaysOfWeek extends Activity {
         customSwitches.add(thursday);
         customSwitches.add(friday);
         customSwitches.add(saturday);
+
+
         Button next = (Button) findViewById(R.id.btn_next);
+
+        //get passed in data
+        final Intent prevIntent = getIntent(); //gets the previously created intent
+        final String alarmName = prevIntent.getStringExtra(SetName.ALARM_NAME);//TODO double check that this is ok to do
+        final int reminderType = prevIntent.getIntExtra(AlarmFrequency.REMINDER_TYPE, -1);
+
         next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(AlarmDaysOfWeek.this, Timepicker.class);
-                //for each checkbox that .isChecked() pass it in an extra as
-                //true. else pass it in an extra as false
-                startActivity(i);
 
+               if(reminderType == ReminderTime.WEEKLY) {
+                   boolean[] weekdays = new boolean[7];//boolean string i.e "0011010"
+                   int x = 0;
+                   for(CustomSwitch c: customSwitches){
+                       weekdays[x] = c.isChecked();
+                       x++;
+                   }
+
+                   Intent i = new Intent(AlarmDaysOfWeek.this, Timepicker.class);
+                   i.putExtra(SetName.ALARM_NAME, alarmName);
+                   i.putExtra(AlarmFrequency.REMINDER_TYPE, reminderType);
+                   i.putExtra(WEEKDAY_ARRAY, weekdays);
+                   startActivity(i);
+               }else{
+                   System.out.println("Weekly reminder seems not to be recognized");
+               }
             }
         });
 

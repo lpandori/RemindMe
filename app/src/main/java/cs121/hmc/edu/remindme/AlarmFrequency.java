@@ -13,6 +13,8 @@ import android.widget.DatePicker;
  * Created by rachelleholmgren on 3/5/15.
  */
 public class AlarmFrequency extends Activity{
+
+    public static String REMINDER_TYPE = "reminder_type";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -22,33 +24,39 @@ public class AlarmFrequency extends Activity{
         Button daily = (Button) findViewById(R.id.daily);
         Button weekly = (Button) findViewById(R.id.weekly);
         Button monthly = (Button) findViewById(R.id.monthly);
+
+        Intent thisIntent = getIntent(); // gets the previously created intent
+        final String alarmName = thisIntent.getStringExtra(SetName.ALARM_NAME);
+
+        //create a ReminderTime based on which was clicked and pass it as
         once.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(AlarmFrequency.this, Datepicker.class);
-                //intent.putextra once
-                //Intent i = new Intent(AlarmFrequency.this, OneTime.class);
-                startActivity(i);
-                //showTimePickerDialog(view);
-                //showDatePickerDialog(view);
 
+                System.out.println("chose one time from alarm frequency");
+                i.putExtra(SetName.ALARM_NAME, alarmName);
+                i.putExtra(REMINDER_TYPE, ReminderTime.ONE_TIME);
+
+                startActivity(i);
             }
         });
         daily.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(AlarmFrequency.this, Timepicker.class);
-                //intent.putextra daily
+                System.out.println("chose daily time from alarm frequency");
+                i.putExtra(SetName.ALARM_NAME, alarmName);
+                i.putExtra(REMINDER_TYPE, ReminderTime.DAILY);
                 startActivity(i);
-
             }
         });
         weekly.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                System.out.println("IN WEEKLY ");
                 Intent i = new Intent(AlarmFrequency.this, AlarmDaysOfWeek.class);
-                //intent.putextra weekly
+                i.putExtra(SetName.ALARM_NAME, alarmName);
+                i.putExtra(REMINDER_TYPE, ReminderTime.WEEKLY);
                 startActivity(i);
             }
         });
@@ -56,19 +64,12 @@ public class AlarmFrequency extends Activity{
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(AlarmFrequency.this, AlarmMonthly.class);
-                //intent.putextra monthly
+                i.putExtra(SetName.ALARM_NAME, alarmName);
+                i.putExtra(REMINDER_TYPE, ReminderTime.MONTHLY);
                 startActivity(i);
             }
         });
 
-    }
-    public void showTimePickerDialog(View v) {
-        DialogFragment newFragment = new TimePickerFragment();
-        newFragment.show(getFragmentManager(), "timePicker");
-    }
-    public void showDatePickerDialog(View v) {
-        DialogFragment newFragment = new DatePickerFragment();
-        newFragment.show(getFragmentManager(), "datePicker");
     }
 
 }

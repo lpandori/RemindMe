@@ -1,16 +1,22 @@
 package cs121.hmc.edu.remindme;
 
 import android.app.Activity;
+import android.content.ClipData;
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.PowerManager;
+import android.view.DragEvent;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 /**
@@ -22,6 +28,8 @@ public class AlarmScreen extends Activity {
     private MediaPlayer mPlayer;
     private PowerManager.WakeLock mWakeLock;
     private static final int WAKELOCK_TIMEOUT = 60 * 1000;
+    private Context context= this;
+    private long reminderId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,39 +38,41 @@ public class AlarmScreen extends Activity {
         //Setting up layout
         this.setContentView(R.layout.alarm_screen);
         String name = getIntent().getStringExtra(AlarmManagerHelper.NAME);
-        int timeHour = getIntent().getIntExtra(AlarmManagerHelper.TIME_HOUR, 0);
-        int timeMinute = getIntent().getIntExtra(AlarmManagerHelper.TIME_MINUTE, 0);
+        reminderId = getIntent().getLongExtra(AlarmManagerHelper.REMINDER_ID, -1);
 
         TextView tvName = (TextView) findViewById(R.id.alarm_screen_name);
         tvName.setText(name);
-        TextView tvTime = (TextView) findViewById(R.id.alarm_screen_time);
-        tvTime.setText(String.format("02d : %02d", timeHour, timeMinute));
 
-        Button dismissButton = (Button) findViewById(R.id.alarm_screen_button);
-        dismissButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mPlayer.stop();
-                finish();
-            }
-        });
 
-        String tone = getIntent().getStringExtra(AlarmManagerHelper.TONE);
-        mPlayer = new MediaPlayer();
-        try {
-            if (tone != null && !tone.equals("")) {
-                Uri toneUri = Uri.parse(tone);
-                if (toneUri != null) {
-                    mPlayer.setDataSource(this, toneUri);
-                    mPlayer.setAudioStreamType(AudioManager.STREAM_ALARM);
-                    mPlayer.setLooping(true);
-                    mPlayer.prepare();
-                    mPlayer.start();
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+//        Button dismissButton = (Button) findViewById(R.id.alarm_screen_button);
+//        dismissButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                mPlayer.stop();
+//                finish();
+//            }
+//        });
+
+        findViewById(R.id.dismiss_start).setOnTouchListener(new DismissTouchListener());
+        findViewById(R.id.dismiss_end).setOnDragListener(new DismissDragListener());
+
+
+//        String tone = getIntent().getStringExtra(AlarmManagerHelper.TONE);
+//        mPlayer = new MediaPlayer();
+//        try {
+//            if (tone != null && !tone.equals("")) {
+//                Uri toneUri = Uri.parse(tone);
+//                if (toneUri != null) {
+//                    mPlayer.setDataSource(this, toneUri);
+//                    mPlayer.setAudioStreamType(AudioManager.STREAM_ALARM);
+//                    mPlayer.setLooping(true);
+//                    mPlayer.prepare();
+//                    mPlayer.start();
+//                }
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
 
         // Ensure wakelock release
         Runnable releaseWakeLock = new Runnable() {
@@ -75,6 +85,9 @@ public class AlarmScreen extends Activity {
                 if (mWakeLock != null && mWakeLock.isHeld()) {
                     mWakeLock.release();
                 }
+                if(mPlayer != null) {
+                    mPlayer.release();
+                }
             }
         };
 
@@ -82,6 +95,52 @@ public class AlarmScreen extends Activity {
 
 
     }
+
+    private final class DismissTouchListener implements View.OnTouchListener {
+        public boolean onTouch(View view, MotionEvent motionEvent) {
+            if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
+                ClipData data = ClipData.newPlainText("", "");
+                View.DragShadowBuilder shadowBuilder = new View.DragShadowBuilder(view);
+                view.startDrag(data, shadowBuilder, view, 0);
+                view.setVisibility(View.INVISIBLE);
+                return true;
+            }
+            else return false;
+        }
+    }
+
+    class DismissDragListener implements View.OnDragListener {
+
+//        Drawable enterShape = getResources().getDrawable(R.drawable.oval_selected);
+//        Drawable normalShape = getResources().getDrawable(R.drawable.oval_droptarget);
+
+        @Override
+        public boolean onDrag(View v, DragEvent event) {
+            int action = event.getAction();
+            switch (action) {
+                case DragEvent.ACTION_DROP:
+                    // Dropped, reassign View to ViewGroup
+                    View view = (View) event.getLocalState();
+                    ViewGroup owner = (ViewGroup) view.getParent();
+                    owner.removeView(view);
+                    LinearLayout container = (LinearLayout) v;
+                    container.addView(view);
+                    view.setVisibility(View.INVISIBLE);
+//                    mPlayer.stop();
+//                    mWakeLock.release();
+//                    finish();
+                    AlarmDBHelper dbHelper = new AlarmDBHelper(context);
+                    dbHelper.dismiss(reminderId);
+                    finish();
+                    break;
+                default:
+                    break;
+            }
+            return true;
+        }
+
+    }
+
 
     @Override
     protected  void onResume() {
@@ -97,10 +156,10 @@ public class AlarmScreen extends Activity {
         // Dismiss the keyguard if unsecured
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
 
-        // Acquire Wakelock
+//        Acquire Wakelock
         PowerManager pm = (PowerManager) getApplicationContext().getSystemService(Context.POWER_SERVICE);
         if (mWakeLock == null) {
-            mWakeLock = pm.newWakeLock((PowerManager.ACQUIRE_CAUSES_WAKEUP), TAG);
+            mWakeLock = pm.newWakeLock((PowerManager.FULL_WAKE_LOCK | PowerManager.SCREEN_BRIGHT_WAKE_LOCK |PowerManager.ACQUIRE_CAUSES_WAKEUP), TAG);
         }
         if(!mWakeLock.isHeld()) {
             mWakeLock.acquire();
@@ -111,7 +170,11 @@ public class AlarmScreen extends Activity {
     protected void onPause() {
         super.onPause();
 
-        if(mWakeLock != null & mWakeLock.isHeld()) {
+        if(mPlayer != null) {
+            mPlayer.release();
+        }
+
+        if((mWakeLock != null) && mWakeLock.isHeld()) {
             mWakeLock.release();
         }
     }
