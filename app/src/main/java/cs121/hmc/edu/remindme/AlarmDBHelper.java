@@ -265,21 +265,6 @@ public class AlarmDBHelper extends SQLiteOpenHelper {
         return toReturn;
     }
 
-    //TODO edit this to select for id, title (one or both not sure yet)
-    //returns number of rows affected
-    public long updateAlarm(AlarmModel model) {
-        ArrayList<ContentValues> valuesList = populateContent(model);
-
-        long numRowsChanged = 0;
-        for(ContentValues values : valuesList){
-            numRowsChanged += getWritableDatabase().update(AlarmContract.Alarm.TABLE_NAME, values,
-                    AlarmContract.Alarm._ID + " = ?", new String[] { values.getAsString(AlarmContract.Alarm._ID)});
-        }
-
-        return numRowsChanged;//TODO pretty dubious about this method
-    }
-
-
     //deletes all rows related to a given alarm
     public int deleteAlarm(long id) {
 

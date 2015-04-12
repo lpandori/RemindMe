@@ -44,14 +44,15 @@ public class AlarmDaysOfWeek extends Activity {
 
         //get passed in data
         final Intent prevIntent = getIntent(); //gets the previously created intent
-        final String alarmName = prevIntent.getStringExtra(SetName.ALARM_NAME);//TODO double check that this is ok to do
+        final String alarmName = prevIntent.getStringExtra(SetName.ALARM_NAME);
         final int reminderType = prevIntent.getIntExtra(AlarmFrequency.REMINDER_TYPE, -1);
+        final boolean existingModel = prevIntent.getBooleanExtra(AlarmDetailsActivity.EXISTING_MODEL, false);
+        final long existingModelId = prevIntent.getLongExtra(AlarmDetailsActivity.EXISTING_MODEL_ID, -1);
 
         next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-               if(reminderType == ReminderTime.WEEKLY) {
                    boolean[] weekdays = new boolean[7];//boolean string i.e "0011010"
                    int x = 0;
                    for(CheckBox c: checkboxes){
@@ -61,12 +62,11 @@ public class AlarmDaysOfWeek extends Activity {
 
                    Intent i = new Intent(AlarmDaysOfWeek.this, Timepicker.class);
                    i.putExtra(SetName.ALARM_NAME, alarmName);
+                   i.putExtra(AlarmDetailsActivity.EXISTING_MODEL, existingModel);
+                   i.putExtra(AlarmDetailsActivity.EXISTING_MODEL_ID, existingModelId);
                    i.putExtra(AlarmFrequency.REMINDER_TYPE, reminderType);
                    i.putExtra(WEEKDAY_ARRAY, weekdays);
                    startActivity(i);
-               }else{
-                   System.out.println("Weekly reminder seems not to be recognized");
-               }
             }
         });
 
