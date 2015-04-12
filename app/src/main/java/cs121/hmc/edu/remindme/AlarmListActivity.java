@@ -112,7 +112,8 @@ public class AlarmListActivity extends ActionBarActivity {
         AlarmManagerHelper.cancelAlarms(this);
         AlarmModel model = dbHelper.getAlarm(id);
         model.setEnabled(isEnabled);
-        dbHelper.updateAlarm(model);
+        dbHelper.deleteAlarm(id);
+        dbHelper.createAlarm(model);
 
         // refreshing the adapter after the state of the toggle has changed
         // in the first list view item
@@ -199,7 +200,6 @@ public class AlarmListActivity extends ActionBarActivity {
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                     ((AlarmListActivity) mContext).setAlarmEnabled(((Long)
                             buttonView.getTag()), isChecked);
-                    dbHelper.updateAlarm(model);
 
                 }
             });
