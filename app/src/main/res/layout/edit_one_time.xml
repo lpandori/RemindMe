@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+
+    <RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="16dp"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:paddingTop="16dp"
+        tools:context=".AlarmDetailsActivity" >
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Edit blank alarm..."
+            android:textColor = "#FFFFFF"
+            android:textSize = "30dp"
+            android:id="@+id/editBlank"
+            android:layout_alignParentTop="true"
+             />
+
+
+    <Button
+        style = "@style/actionbutton"
+        android:id="@+id/btn_next"
+        android:text= "Done"
+        android:textSize="30sp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
+
+
+    </Button>
+
+    <TimePicker
+        android:id="@+id/timePicker"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/timePicker"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="54dp" />
+
+    <DatePicker
+        android:id="@+id/datePicker"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:spinnersShown="false"
+        android:layout_above="@+id/btn_next"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"></DatePicker>
+</RelativeLayout>

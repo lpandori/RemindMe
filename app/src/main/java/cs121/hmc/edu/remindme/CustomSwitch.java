@@ -54,8 +54,8 @@ public class CustomSwitch extends FrameLayout {
         //    Set height and width of the ViewGroup
         RelativeLayout.LayoutParams buttonParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,
                 RelativeLayout.LayoutParams.WRAP_CONTENT);
-        buttonParams.topMargin = 16;
-        buttonParams.bottomMargin = 16;
+        buttonParams.topMargin = 8;
+        buttonParams.bottomMargin = 8;
         buttonParams.addRule(RelativeLayout.ALIGN_PARENT_TOP);
         buttonParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
         buttonParams.addRule(RelativeLayout.ALIGN_RIGHT, 2);

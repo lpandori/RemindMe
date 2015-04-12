@@ -1,62 +1,123 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:paddingBottom="16dp"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+    android:paddingTop="16dp">
 
-    <CheckBox
-        android:layout_width="match_parent"
+    <cs121.hmc.edu.remindme.CustomSwitch
+        android:id="@+id/Sunday"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Sunday"
-        android:textColor="@color/selector_days_of_week"
-        android:id="@+id/Sunday"/>
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@+id/divider1"
+        android:checked="true"
+        android:text="@string/details_sunday" />
 
-    <CheckBox
-        android:layout_width="match_parent"
+    <cs121.hmc.edu.remindme.CustomSwitch
+        android:id="@+id/Monday"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Monday"
-        android:textColor="@color/selector_days_of_week"
-        android:id="@+id/Monday"/>
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@+id/Sunday"
+        android:checked="true"
+        android:text="@string/details_monday" />
 
-    <CheckBox
-        android:layout_width="match_parent"
+    <cs121.hmc.edu.remindme.CustomSwitch
+        android:id="@+id/Tuesday"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Tuesday"
-        android:textColor="@color/selector_days_of_week"
-        android:id="@+id/Tuesday"/>
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@+id/Monday"
+        android:checked="true"
+        android:text="@string/details_tuesday" />
 
-    <CheckBox
-        android:layout_width="match_parent"
+    <cs121.hmc.edu.remindme.CustomSwitch
+        android:id="@+id/Wednesday"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Wednesday"
-        android:textColor="@color/selector_days_of_week"
-        android:id="@+id/Wednesday"/>
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@+id/Tuesday"
+        android:checked="true"
+        android:text="@string/details_wednesday" />
 
-    <CheckBox
-        android:layout_width="match_parent"
+    <cs121.hmc.edu.remindme.CustomSwitch
+        android:id="@+id/Thursday"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Thursday"
-        android:textColor="@color/selector_days_of_week"
-        android:id="@+id/Thursday"/>
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@+id/Wednesday"
+        android:checked="true"
+        android:text="@string/details_thursday" />
 
-    <CheckBox
-        android:layout_width="match_parent"
+    <cs121.hmc.edu.remindme.CustomSwitch
+        android:id="@+id/Friday"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Friday"
-        android:textColor="@color/selector_days_of_week"
-        android:id="@+id/Friday"/>
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@+id/Thursday"
+        android:checked="true"
+        android:text="@string/details_friday" />
 
-    <CheckBox
-        android:layout_width="match_parent"
+    <cs121.hmc.edu.remindme.CustomSwitch
+        android:id="@+id/Saturday"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Saturday"
-        android:textColor="@color/selector_days_of_week"
-        android:id="@+id/Saturday"/>
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@+id/Friday"
+        android:checked="true"
+        android:text="@string/details_saturday" />
+
+    <View
+        android:id="@+id/divider4"
+        style="@style/Divider"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@+id/Saturday" />
+
+
+    <View
+        android:id="@+id/divider3"
+        style="@style/Divider"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@+id/alarm_ringtone_container" />
 
     <Button
+        style = "@style/actionbutton"
         android:id="@+id/btn_next"
         android:text= "Next"
+        android:textSize="25sp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
-
-</LinearLayout>
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+</RelativeLayout>

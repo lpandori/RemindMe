@@ -4,42 +4,91 @@
     android:layout_height="match_parent" >
 
     <TextView
-        android:id="@+id/alarm_screen_title"
+        android:id="@+id/alarm_screen_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="28dp"
-        android:text="Alarm!"
-        android:textSize="38dp" />
+        android:layout_alignParentTop="false"
+        android:layout_marginTop="150dp"
+        android:textSize="38dp"
+        android:text="Hello"
+        android:layout_alignParentRight="false"
+        android:layout_centerHorizontal="true" />
 
     <TextView
         android:id="@+id/alarm_screen_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/alarm_screen_button"
-        android:layout_below="@+id/alarm_screen_title"
+        android:layout_below="@+id/alarm_screen_name"
         android:layout_marginTop="28dp"
-        android:text="00 : 00"
-        android:textSize="52dp" />
+        android:textSize="52dp"
+        android:text="00:00"
+        android:layout_alignParentTop="false"
+        android:gravity="center_horizontal"
+        android:layout_centerHorizontal="true" />
 
-    <TextView
-        android:id="@+id/alarm_screen_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_below="@+id/alarm_screen_time"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="28dp"
-        android:text="Alarm name" />
+        android:gravity="bottom"
+        android:layout_margin="28dp">
 
-    <Button
-        android:id="@+id/alarm_screen_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="106dp"
-        android:text="Dismiss"
-        android:textSize="38dp" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="start|left">
+
+            <FrameLayout
+                android:id="@+id/dismiss_start"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom">
+                <ImageView
+                    android:src="@drawable/oval"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent" />
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_gravity="center"
+                    android:src="@drawable/right_arrow"/>
+
+            </FrameLayout>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/dismiss_end"
+            android:layout_weight="1"
+            android:gravity="end|right">
+
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="right"
+                    android:contentDescription="dismiss target"
+                    android:src="@drawable/oval_droptarget" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="Dismiss"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+            </FrameLayout>
+        </LinearLayout>
+
+
+    </LinearLayout>
 
 </RelativeLayout>
