@@ -48,14 +48,6 @@ public class AlarmListActivity extends ActionBarActivity {
         setContentView(R.layout.activity_alarm_list);
         ListView alarmList=(ListView)findViewById(R.id.list);
 
-//
-//        addReminder.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                startActivity
-//            }
-//        });
-
         alarmList.setAdapter(mAdapter);
         touchListener =
                 new SwipeToDismissTouchListener<>(
