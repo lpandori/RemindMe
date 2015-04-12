@@ -23,10 +23,10 @@ public class Timepicker extends Activity {
             super.onCreate(savedInstanceState);
 
             final Intent prevIntent = getIntent(); // gets the previously created intent
-            final String alarmName = prevIntent.getStringExtra(SetName.ALARM_NAME);//TODO double check that this is ok to do
-            System.out.println("from the time picker the alarm name is: "+alarmName);
+            final String alarmName = prevIntent.getStringExtra(SetName.ALARM_NAME);
             final int reminderType = prevIntent.getIntExtra(AlarmFrequency.REMINDER_TYPE, -1);
-            System.out.println("from the time picker the remindertype is: "+reminderType);
+            final boolean existingModel = prevIntent.getBooleanExtra(AlarmDetailsActivity.EXISTING_MODEL, false);
+            final long existingModelId = prevIntent.getLongExtra(AlarmDetailsActivity.EXISTING_MODEL_ID, -1);
 
             final Context context = this;
             setContentView(R.layout.time_picker);
@@ -36,51 +36,49 @@ public class Timepicker extends Activity {
                 @Override
                 public void onClick(View view) {
 
-                    AlarmModel alarmModel;
-                    if(true){//TODO later change this to if alarmModel with this name DOES NOT already exists in the db
-                        alarmModel = new AlarmModel(alarmName);
-                        alarmModel.setId(System.currentTimeMillis());//TODO check that adding an id in this way is effective
-                    }else{
-                        //TODO implement this later
-                    }
-                    //long reminder_id = System.currentTimeMillis();TODO removed id from constructor, added ny db entry
                     int hour = timePicker.getCurrentHour();
                     int minute = timePicker.getCurrentMinute();
                     boolean[] weekdays;
 
-                    System.out.println(reminderType);
-
+                    ReminderTime r = null;
+                    //use switch to make reminder time
                     switch(reminderType){
                         case ReminderTime.ONE_TIME:
 
                             int year = prevIntent.getIntExtra(Datepicker.DATE_YEAR, -1);
                             int month = prevIntent.getIntExtra(Datepicker.DATE_MONTH, -1);
                             int day = prevIntent.getIntExtra(Datepicker.DATE_DAY, -1);
-
-                            ReminderTime oneTime = new OneTimeReminder(year, month, day, hour, minute);
-                            alarmModel.addReminder(oneTime);//make new time
+                            r = new OneTimeReminder(year, month, day, hour, minute);
                             break;
                         case ReminderTime.DAILY:
-                            ReminderTime daily = new DailyReminder(hour, minute);
-                            alarmModel.addReminder(daily);//make new time
-
+                            r = new DailyReminder(hour, minute);
                             break;
                         case ReminderTime.WEEKLY:
                             weekdays = prevIntent.getBooleanArrayExtra(AlarmDaysOfWeek.WEEKDAY_ARRAY);
-                            ReminderTime weekly = new WeeklyReminder(hour, minute, weekdays);
-
-                            alarmModel.addReminder(weekly);//make new time
+                            r = new WeeklyReminder(hour, minute, weekdays);
                             break;
                         case ReminderTime.MONTHLY:
                             weekdays = prevIntent.getBooleanArrayExtra(AlarmDaysOfWeek.WEEKDAY_ARRAY);
                             int weekNumber = prevIntent.getIntExtra(AlarmMonthly.WEEK_NUMBER,-1);
-                            ReminderTime monthly = new MonthlyReminder(hour, minute, weekNumber, weekdays);
-
-                            alarmModel.addReminder(monthly);//make new time
+                            r = new MonthlyReminder(hour, minute, weekNumber, weekdays);
                             break;
                     }
-                    dbHelper.createAlarm(alarmModel);//add to db
+
+                    if(!existingModel){
+                        AlarmModel alarmModel = new AlarmModel(alarmName);
+                        alarmModel.setId(System.currentTimeMillis());
+                        alarmModel.addReminder(r);
+                        dbHelper.createAlarm(alarmModel);//add to db
+                    }else{
+                        AlarmModel alarmModel = dbHelper.getAlarm(existingModelId);
+                        alarmModel.addReminder(r);
+                        dbHelper.deleteAlarm(existingModelId);
+                        dbHelper.createAlarm(alarmModel);
+                        System.out.println("added new reminder time");
+
+                    }
                     AlarmManagerHelper.setAlarms(context);//trigger setting alarm
+
 
                     Intent i = new Intent(Timepicker.this, AlarmListActivity.class);
                     startActivity(i);

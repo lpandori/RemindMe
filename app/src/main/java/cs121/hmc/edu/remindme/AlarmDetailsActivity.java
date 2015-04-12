@@ -37,6 +37,9 @@ public class AlarmDetailsActivity extends ActionBarActivity {
     private Context mContext;
     public static SwipeToDismissTouchListener<ListViewAdapter> touchListener;
 
+    public static String EXISTING_MODEL = "existing_model";
+    public static String EXISTING_MODEL_ID = "existing_model_id";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +62,18 @@ public class AlarmDetailsActivity extends ActionBarActivity {
         ListView alarmList = (ListView)findViewById(R.id.reminder_list);
         View addReminder = ((LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.add_reminder, null, false);
         alarmList.addFooterView(addReminder);
+        addReminder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //
+                Intent intent = new Intent(mContext, AlarmFrequency.class);
+                intent.putExtra(EXISTING_MODEL_ID, alarmId);//need model id
+                intent.putExtra(SetName.ALARM_NAME, alarmTitle);
+                intent.putExtra(EXISTING_MODEL, true);
+                //need model
+                startActivity(intent);
+            }
+        });
         alarmList.setAdapter(mAdapter);
         touchListener =
                 new SwipeToDismissTouchListener<>(
