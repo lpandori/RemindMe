@@ -24,7 +24,6 @@ public class Datepicker extends Activity {
     public final static String DATE_MONTH = "date_month";
     public final static String DATE_DAY = "date_day";
 
-
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.date_picker);
@@ -33,27 +32,26 @@ public class Datepicker extends Activity {
         Intent prevIntent = getIntent(); // gets the previously created intent
         final String alarmName = prevIntent.getStringExtra(SetName.ALARM_NAME);
         final int reminderType = prevIntent.getIntExtra(AlarmFrequency.REMINDER_TYPE, -1);
-        System.out.println("from the date picker the alarmname is: "+alarmName);
-        System.out.println("from the date picker the remindertype is: "+reminderType);
+        final boolean existingModel = prevIntent.getBooleanExtra(AlarmDetailsActivity.EXISTING_MODEL, false);
+        final long existingModelId = prevIntent.getLongExtra(AlarmDetailsActivity.EXISTING_MODEL_ID, -1);
+
         button = (Button) findViewById(R.id.done);
 
 
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if(reminderType == ReminderTime.ONE_TIME){
-                        Intent i = new Intent(Datepicker.this, Timepicker.class);
-                        i.putExtra(SetName.ALARM_NAME, alarmName);
-                        i.putExtra(AlarmFrequency.REMINDER_TYPE, reminderType);
-                        i.putExtra(DATE_YEAR, datePicker.getYear());
-                        //month starts counting at 0 so must add 1
-                        int month = datePicker.getMonth()+1;
-                        i.putExtra(DATE_MONTH, month);
-                        i.putExtra(DATE_DAY, datePicker.getDayOfMonth());
-                        startActivity(i);
-                    }else{
-                        System.out.println("One time reminder seems not to be recognized");
-                    }
+                    Intent i = new Intent(Datepicker.this, Timepicker.class);
+                    i.putExtra(SetName.ALARM_NAME, alarmName);
+                    i.putExtra(AlarmFrequency.REMINDER_TYPE, reminderType);
+                    i.putExtra(AlarmDetailsActivity.EXISTING_MODEL, existingModel);
+                    i.putExtra(AlarmDetailsActivity.EXISTING_MODEL_ID, existingModelId);
+                    i.putExtra(DATE_YEAR, datePicker.getYear());
+                    //month starts counting at 0 so must add 1
+                    int month = datePicker.getMonth()+1;
+                    i.putExtra(DATE_MONTH, month);
+                    i.putExtra(DATE_DAY, datePicker.getDayOfMonth());
+                    startActivity(i);
                 }
             });
     }
@@ -66,7 +64,6 @@ public class Datepicker extends Activity {
         final Calendar c = Calendar.getInstance();
         int year = c.get(Calendar.YEAR);
         int month = c.get(Calendar.MONTH);
-        System.out.println("month from set current: " + month);
         int day = c.get(Calendar.DAY_OF_MONTH);
         datePicker.updateDate(year,month,day);
 
