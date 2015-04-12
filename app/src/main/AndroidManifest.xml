@@ -33,9 +33,13 @@
         <activity android:name=".AlarmDaysOfWeek"/>
         <activity android:name=".AlarmMonthly"/>
         <activity android:name=".SetName"/>
-        <activity android:name=".OneTime"/>
+        <activity android:name=".OneTimeReminder"/>
         <activity android:name=".Timepicker"></activity>
         <activity android:name=".Datepicker"></activity>
+        <activity android:name=".EditDaily"/>
+        <activity android:name=".EditMonthly"/>
+        <activity android:name=".EditWeekly"/>
+        <activity android:name=".EditOneTime"/>
         <activity android:name=".setSnooze"/>
     </application>
 

@@ -32,6 +32,14 @@
             android:textAppearance="?android:attr/textAppearanceLarge"
             />
 
+        <Button
+            android:id= "@+id/reminder_edit_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Edit"
+            android:layout_alignParentRight="true"
+            />
+
 
 
     </RelativeLayout>
