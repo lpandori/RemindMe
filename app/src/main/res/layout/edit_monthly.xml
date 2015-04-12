@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -9,15 +8,34 @@
     android:paddingTop="@dimen/activity_vertical_margin">
 
     <TextView
+        android:textColor="#FFFFFF"
+        android:textSize="25dp"
+        android:text="Edit blank alarm..."
+        android:id="@+id/editBlank"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <TimePicker
+
+        android:id="@+id/timePicker"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="47dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/editBlank"
+        />
+
+    <TextView
         android:id="@+id/every"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:textSize="25sp"
         android:text = "Every..."
-        android:textColor="#FFFFFF"/>
+        android:textColor="#FFFFFF"
+        android:layout_below="@+id/timePicker"/>
     <Spinner
         android:layout_below="@+id/every"
-
         android:id = "@+id/which_week"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

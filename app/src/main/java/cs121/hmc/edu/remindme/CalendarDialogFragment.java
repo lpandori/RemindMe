@@ -16,13 +16,11 @@ import java.util.Calendar;
  */
 public class CalendarDialogFragment extends DialogFragment{
     private CalendarView calendar;
-    public static CalendarDialogFragment newInstance(){
-        CalendarDialogFragment frag = new CalendarDialogFragment();
-        return frag;
-    }
+
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
+        Dialog dialog;
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity());
         View view = getActivity().getLayoutInflater().inflate(R.layout.calendar_main, null);
         alertDialogBuilder.setView(view);
@@ -41,8 +39,8 @@ public class CalendarDialogFragment extends DialogFragment{
                 dialog.cancel();
             }
         });
-
-        return alertDialogBuilder.create();
+        dialog = alertDialogBuilder.create();
+        return dialog;
     }
 
     @Override

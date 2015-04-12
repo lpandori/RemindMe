@@ -10,113 +10,48 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 
+import java.util.ArrayList;
+
 /**
  * Created by rachelleholmgren on 3/5/15.
  */
 public class AlarmDaysOfWeek extends Activity {
 
+    //maybe we need to create a list of booleans for what days
+    //of the week are chosen
     AlarmFrequency alarmfreq = new AlarmFrequency();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.set_days);
         super.onCreate(savedInstanceState);
-        final CheckBox sunday = (CheckBox) findViewById(R.id.Sunday);
-        final CheckBox monday = (CheckBox) findViewById(R.id.Monday);
-        final CheckBox tuesday = (CheckBox) findViewById(R.id.Tuesday);
-        final CheckBox wednesday = (CheckBox) findViewById(R.id.Wednesday);
-        final CheckBox thursday = (CheckBox) findViewById(R.id.Thursday);
-        final CheckBox friday = (CheckBox) findViewById(R.id.Friday);
-        final CheckBox saturday = (CheckBox) findViewById(R.id.Saturday);
+
+        final CustomSwitch sunday = (CustomSwitch) findViewById(R.id.Sunday);
+        final CustomSwitch monday = (CustomSwitch) findViewById(R.id.Monday);
+        final CustomSwitch tuesday = (CustomSwitch) findViewById(R.id.Tuesday);
+        final CustomSwitch wednesday = (CustomSwitch) findViewById(R.id.Wednesday);
+        final CustomSwitch thursday = (CustomSwitch) findViewById(R.id.Thursday);
+        final CustomSwitch friday = (CustomSwitch) findViewById(R.id.Friday);
+        final CustomSwitch saturday = (CustomSwitch) findViewById(R.id.Saturday);
+        ArrayList<CustomSwitch> customSwitches = new ArrayList<>();
+        customSwitches.add(sunday);
+        customSwitches.add(monday);
+        customSwitches.add(tuesday);
+        customSwitches.add(wednesday);
+        customSwitches.add(thursday);
+        customSwitches.add(friday);
+        customSwitches.add(saturday);
         Button next = (Button) findViewById(R.id.btn_next);
         next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-               Intent i = new Intent(AlarmDaysOfWeek.this, Timepicker.class);
-               startActivity(i);
+                Intent i = new Intent(AlarmDaysOfWeek.this, Timepicker.class);
+                //for each checkbox that .isChecked() pass it in an extra as
+                //true. else pass it in an extra as false
+                startActivity(i);
 
             }
         });
-        sunday.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
-                if(isChecked){
-                    sunday.setBackgroundColor(Color.parseColor("#02798c"));
-                }
-                else{
-                    sunday.setBackgroundColor(Color.WHITE);
-                }
-            }
-        });
-        monday.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
-                if(isChecked){
-                    monday.setBackgroundColor(Color.parseColor("#02798c"));
-                }
-                else{
-                    monday.setBackgroundColor(Color.WHITE);
-                }
-            }
-        });
-        tuesday.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
-                if(isChecked){
-                    tuesday.setBackgroundColor(Color.parseColor("#02798c"));
-                }
-                else{
-                    tuesday.setBackgroundColor(Color.WHITE);
-                }
-            }
-        });
-        wednesday.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
-                if(isChecked){
-                    wednesday.setBackgroundColor(Color.parseColor("#02798c"));
-                }
-                else{
-                    wednesday.setBackgroundColor(Color.WHITE);
-                }
-            }
-        });
-        thursday.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
-                if (isChecked) {
-                    thursday.setBackgroundColor(Color.parseColor("#02798c"));
-                } else {
-                    thursday.setBackgroundColor(Color.WHITE);
-                }
-            }
-        });
-        friday.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
-                if(isChecked){
-                    friday.setBackgroundColor(Color.parseColor("#02798c"));
-                }
-                else{
-                    friday.setBackgroundColor(Color.WHITE);
-                }
-            }
-        });
-        saturday.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
-                if(isChecked){
-                    saturday.setBackgroundColor(Color.parseColor("#02798c"));
-                }
-                else{
-                    saturday.setBackgroundColor(Color.WHITE);
-                }
-            }
-        });
 
-
-    }
-    public void showTimePickerDialog(View v) {
-        DialogFragment newFragment = new TimePickerFragment();
-        newFragment.show(getFragmentManager(), "timePicker");
     }
 }

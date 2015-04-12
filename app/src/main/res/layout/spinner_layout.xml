@@ -4,5 +4,5 @@
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:textSize="16pt"
-    android:textColor="@color/black"
+    android:textColor="#33B5E5"
    />

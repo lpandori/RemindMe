@@ -7,21 +7,21 @@ import android.view.View;
 import android.widget.Button;
 
 /**
- * Created by rachelleholmgren on 3/12/15.
+ * Created by rachelleholmgren on 4/8/15.
  */
-public class SetName extends Activity {
+public class setSnooze extends Activity{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.set_name);
-
+        setContentView(R.layout.set_custom_snooze);
         Button next = (Button) findViewById(R.id.btn_next);
-        next.setOnClickListener(new View.OnClickListener() {
+            next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(SetName.this, setSnooze.class);
+                Intent i = new Intent(setSnooze.this, AlarmFrequency.class);
                 startActivity(i);
             }
         });
     }
 }
+

@@ -29,6 +29,8 @@ public class Timepicker extends Activity {
                 @Override
                 public void onClick(View view) {
                     Intent i = new Intent(Timepicker.this, AlarmListActivity.class);
+                    // pass timePicker.getCurrentHour() &&
+                    //timePicker.getCurrentMinute() as extras
                     startActivity(i);
                 }
             });
