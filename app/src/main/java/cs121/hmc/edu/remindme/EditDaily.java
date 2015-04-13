@@ -23,13 +23,13 @@ public class EditDaily extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-//
         setContentView(R.layout.edit_daily);
         Intent thisIntent = getIntent();
         final int hour = thisIntent.getIntExtra(AlarmDetailsActivity.ALARM_HOUR, -1);
         final int minute = thisIntent.getIntExtra(AlarmDetailsActivity.ALARM_MINUTE, -1);
         final String name = thisIntent.getStringExtra(AlarmDetailsActivity.ALARM_NAME);
         final long id = thisIntent.getLongExtra(AlarmDetailsActivity.EXISTING_MODEL_ID, -1);
+        final long reminderId = thisIntent.getLongExtra(AlarmDetailsActivity.REMINDER_ID, -1);
 
 
         TextView alarmName = (TextView) findViewById(R.id.editBlank);
@@ -43,6 +43,14 @@ public class EditDaily extends Activity {
         doneEditing.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                ReminderTime daily = new DailyReminder(hour,minute);
+                daily.setId(reminderId);
+                //dbHelper.updateReminder(daily); TODO
+
+                //cancelAlarms
+                //update a reminder time in the db directly
+                //setAlarms
 
 
                 Intent i = new Intent(EditDaily.this, AlarmDetailsActivity.class);

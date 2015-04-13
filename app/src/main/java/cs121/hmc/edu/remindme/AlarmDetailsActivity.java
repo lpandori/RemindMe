@@ -37,13 +37,16 @@ public class AlarmDetailsActivity extends ActionBarActivity {
     private Context mContext;
     public static SwipeToDismissTouchListener<ListViewAdapter> touchListener;
 
-
+    public static String ALARM_DATE = "alarm_date";
     public static String EXISTING_MODEL = "existing_model";
     public static String EXISTING_MODEL_ID = "existing_model_id";
     public static String ALARM_HOUR = "timeHour";
     public static String ALARM_MINUTE = "timeMinute";
     public static String ALARM_NAME = "alarm-title";
     public static String alarmTitle = "";
+    public static String REMINDER_ID = "reminder_id";
+    public static String WEEK_OF_MONTH = "week_month";
+    public static String WEEKDAYS = "week_days";
     public static long alarmId = -1;
 
 
@@ -52,9 +55,6 @@ public class AlarmDetailsActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
 
         supportRequestWindowFeature(Window.FEATURE_ACTION_BAR);
-
-//        getSupportActionBar().setTitle("Create New Alarm");
-//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         Intent prevIntent = getIntent(); // gets the previously created intent
         alarmId = prevIntent.getLongExtra(EXISTING_MODEL_ID, -1);
@@ -123,9 +123,7 @@ public class AlarmDetailsActivity extends ActionBarActivity {
         }
 
 
-//        public void setAlarms(ArrayList<ReminderTime> reminders) {
-//            mReminders = reminders;
-//        }
+//
 
         /*
          * Gets the count of the number of reminder times
@@ -171,6 +169,9 @@ public class AlarmDetailsActivity extends ActionBarActivity {
 
             // get Item implemented above
             final ReminderTime reminderTime = (ReminderTime) getItem(position);
+
+            final long reminderId = getItemId(position);
+
             String toDisplay = "";
             final String timeHour = "" + reminderTime.getHour();
             String timeMinute = "" + reminderTime.getMin();
@@ -218,11 +219,20 @@ public class AlarmDetailsActivity extends ActionBarActivity {
                         switch(reminderTime.getReminderType()) {
                             case ReminderTime.ONE_TIME:
                                 j = new Intent(mContext, EditOneTime.class);
+
+                                //parse date
+                                String dString =reminderTime.getDateString();//in format yyyy-mm-dd
+                                j.putExtra(REMINDER_ID, reminderId);
+                                j.putExtra(ALARM_DATE, dString);
+                                j.putExtra(ALARM_HOUR, reminderTime.getHour());
+                                j.putExtra(ALARM_MINUTE, reminderTime.getMin());
+                                j.putExtra(ALARM_NAME, alarmTitle);
+                                j.putExtra(EXISTING_MODEL_ID, alarmId);
+
                                 mContext.startActivity(j);
                                 break;
                             case ReminderTime.DAILY:
                                 j = new Intent(mContext, EditDaily.class);
-
                                 j.putExtra(ALARM_HOUR, reminderTime.getHour());
                                 j.putExtra(ALARM_MINUTE, reminderTime.getMin());
                                 j.putExtra(ALARM_NAME, alarmTitle);
@@ -231,10 +241,22 @@ public class AlarmDetailsActivity extends ActionBarActivity {
                                 break;
                             case ReminderTime.WEEKLY:
                                 j = new Intent(mContext, EditWeekly.class);
+                                j.putExtra(WEEKDAYS, reminderTime.getWeekdays());
+                                j.putExtra(ALARM_HOUR, reminderTime.getHour());
+                                j.putExtra(ALARM_MINUTE, reminderTime.getMin());
+                                j.putExtra(ALARM_NAME, alarmTitle);
+                                j.putExtra(EXISTING_MODEL_ID, alarmId);
                                 mContext.startActivity(j);
                                 break;
                             case ReminderTime.MONTHLY:
                                 j = new Intent(mContext, EditMonthly.class);
+                                j.putExtra(WEEKDAYS, reminderTime.getWeekdays());
+                                j.putExtra(WEEK_OF_MONTH, reminderTime.getWeekOfMonth());
+                                j.putExtra(ALARM_HOUR, reminderTime.getHour());
+                                j.putExtra(ALARM_MINUTE, reminderTime.getMin());
+                                j.putExtra(ALARM_NAME, alarmTitle);
+                                j.putExtra(EXISTING_MODEL_ID, alarmId);
+
                                 mContext.startActivity(j);
                                 break;
                         }

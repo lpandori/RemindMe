@@ -53,6 +53,10 @@ public class WeeklyReminder implements ReminderTime {
         return toReturn;
     }
 
+    //return booleans of weekdays set in remindertime
+    public boolean[] getWeekdaysBool(){
+        return weekdays;
+    }
     //return string rep of one time event (will be empty string for non-relevants)
     @Override
     public String getDateString(){

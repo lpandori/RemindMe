@@ -44,7 +44,7 @@
 
     <Button
         style = "@style/actionbutton"
-        android:id="@+id/btn_next"
+        android:id="@+id/btn_done"
         android:text= "Done"
         android:textSize="30sp"
         android:layout_width="match_parent"
