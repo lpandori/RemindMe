@@ -3,10 +3,7 @@ package cs121.hmc.edu.remindme;
 import android.app.Activity;
 import android.content.ClipData;
 import android.content.Context;
-import android.graphics.drawable.Drawable;
-import android.media.AudioManager;
 import android.media.MediaPlayer;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.PowerManager;
@@ -18,6 +15,8 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+
 
 /**
  * Created by heatherseaman on 3/1/15.
@@ -49,6 +48,7 @@ public class AlarmScreen extends Activity {
 //            @Override
 //            public void onClick(View v) {
 //                mPlayer.stop();
+//                mPlayer.stop();
 //                finish();
 //            }
 //        });
@@ -56,6 +56,18 @@ public class AlarmScreen extends Activity {
         findViewById(R.id.dismiss_start).setOnTouchListener(new DismissTouchListener());
         findViewById(R.id.dismiss_end).setOnDragListener(new DismissDragListener());
 
+        // Add respond action to snooze button - UI for Snooze
+        Button snoozeButton = (Button) findViewById(R.id.snooze);
+        snoozeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+               //Work with alarmDBHelper
+               AlarmDBHelper dbHelper = new AlarmDBHelper(context);
+               dbHelper.snoozeReminder(reminderId);
+               AlarmManagerHelper.setAlarms(context);
+               finish();
+            }
+        });
 
 //        String tone = getIntent().getStringExtra(AlarmManagerHelper.TONE);
 //        mPlayer = new MediaPlayer();

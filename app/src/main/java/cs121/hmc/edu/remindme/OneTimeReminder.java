@@ -1,8 +1,6 @@
 package cs121.hmc.edu.remindme;
 
 import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
 
 /**
  * Created by lepandori on 3/7/15.
@@ -142,6 +140,7 @@ public class OneTimeReminder implements ReminderTime {
     @Override
     public boolean hasNextTime() {
         //check if the current time  is not past the reminder date
-        return !date.before(Calendar.getInstance());
+        // TODO also multiply the minutes between each two snooze
+        return date.getTimeInMillis() + snoozeCounter * minToMillis > Calendar.getInstance().getTimeInMillis();
     }
 }
