@@ -7,11 +7,13 @@ import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.AbsListView;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -109,9 +111,21 @@ public class AlarmDetailsActivity extends ActionBarActivity {
         return true;
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch(item.getItemId()){
+            case R.id.home_button:
+                Intent i = new Intent(AlarmDetailsActivity.this, AlarmListActivity.class);
+                startActivity(i);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
     /*
-     * ADAPTER CLASS!!!! YAY
-     */
+         * ADAPTER CLASS!!!! YAY
+         */
     static class ReminderListAdapter extends BaseAdapter {
         private Context mContext;
         private ArrayList<ReminderTime> mReminders;
@@ -203,6 +217,58 @@ public class AlarmDetailsActivity extends ActionBarActivity {
             TextView txtTime = (TextView) convertView.findViewById(R.id.reminder_item_time);
             txtTime.setText(String.format("%02d : %02d", Integer.parseInt(timeHour), Integer.parseInt(timeMinute)));
 
+            Button btn_edit = (Button) convertView.findViewById(R.id.reminder_edit_button);
+            btn_edit.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent j;
+                    switch(reminderTime.getReminderType()) {
+                        case ReminderTime.ONE_TIME:
+                            j = new Intent(mContext, EditOneTime.class);
+
+                            //parse date
+                            String dString = reminderTime.getDateString();//in format yyyy-mm-dd
+                            j.putExtra(REMINDER_ID, reminderId);
+                            j.putExtra(ALARM_DATE, dString);
+                            j.putExtra(ALARM_HOUR, reminderTime.getHour());
+                            j.putExtra(ALARM_MINUTE, reminderTime.getMin());
+                            j.putExtra(ALARM_NAME, alarmTitle);
+                            j.putExtra(EXISTING_MODEL_ID, alarmId);
+
+                            mContext.startActivity(j);
+                            break;
+                        case ReminderTime.DAILY:
+                            j = new Intent(mContext, EditDaily.class);
+                            j.putExtra(ALARM_HOUR, reminderTime.getHour());
+                            j.putExtra(ALARM_MINUTE, reminderTime.getMin());
+                            j.putExtra(ALARM_NAME, alarmTitle);
+                            j.putExtra(EXISTING_MODEL_ID, alarmId);
+                            mContext.startActivity(j);
+                            break;
+                        case ReminderTime.WEEKLY:
+                            j = new Intent(mContext, EditWeekly.class);
+                            j.putExtra(WEEKDAYS, reminderTime.getWeekdays());
+                            j.putExtra(ALARM_HOUR, reminderTime.getHour());
+                            j.putExtra(ALARM_MINUTE, reminderTime.getMin());
+                            j.putExtra(ALARM_NAME, alarmTitle);
+                            j.putExtra(EXISTING_MODEL_ID, alarmId);
+                            mContext.startActivity(j);
+                            break;
+                        case ReminderTime.MONTHLY:
+                            j = new Intent(mContext, EditMonthly.class);
+                            j.putExtra(WEEKDAYS, reminderTime.getWeekdays());
+                            j.putExtra(WEEK_OF_MONTH, reminderTime.getWeekOfMonth());
+                            j.putExtra(ALARM_HOUR, reminderTime.getHour());
+                            j.putExtra(ALARM_MINUTE, reminderTime.getMin());
+                            j.putExtra(ALARM_NAME, alarmTitle);
+                            j.putExtra(EXISTING_MODEL_ID, alarmId);
+
+                            mContext.startActivity(j);
+                            break;
+                    }
+
+                }
+            });
 
             View deleteView = convertView.findViewById(R.id.txt_delete);
             setOnClickForDelete(deleteView);
@@ -260,8 +326,6 @@ public class AlarmDetailsActivity extends ActionBarActivity {
                                 mContext.startActivity(j);
                                 break;
                         }
-
-
                     }
                 }
             });

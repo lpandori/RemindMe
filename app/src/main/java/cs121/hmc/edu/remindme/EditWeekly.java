@@ -3,13 +3,16 @@ package cs121.hmc.edu.remindme;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
 /**
  * Created by rachelleholmgren on 4/12/15.
  */
-public class EditWeekly extends Activity {
+public class EditWeekly extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,4 +59,23 @@ public class EditWeekly extends Activity {
         saturday.setChecked(sat);
 
     }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_cancel, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.cancel_button: {
+                Intent intent = new Intent(this, AlarmListActivity.class);
+                startActivity(intent);
+                break;
+            }
+        }
+        return super.onOptionsItemSelected(item);
+
+    }
 }
+

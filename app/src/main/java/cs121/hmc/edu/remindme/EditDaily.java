@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
@@ -14,7 +16,7 @@ import android.widget.TimePicker;
 /**
  * Created by rachelleholmgren on 4/12/15.
  */
-public class EditDaily extends Activity {
+public class EditDaily extends ActionBarActivity {
 
     private Context mContext;
     private AlarmDBHelper dbHelper = new AlarmDBHelper(this);
@@ -59,5 +61,24 @@ public class EditDaily extends Activity {
             }
         });
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_cancel, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.cancel_button: {
+                Intent intent = new Intent(this, AlarmListActivity.class);
+                startActivity(intent);
+                return true;
+            }
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 }
