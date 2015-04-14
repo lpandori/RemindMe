@@ -62,9 +62,7 @@ public class AlarmListActivity extends ActionBarActivity {
                                 mAdapter.remove(position);
                                 View thisView = lvAdapter.getChildAt(position);
                                 long viewId = (long) thisView.getTag();
-                                AlarmManagerHelper.cancelAlarms(mContext);
                                 dbHelper.deleteAlarm(viewId);
-                                AlarmManagerHelper.setAlarms(mContext);
                             }
                         });
 
