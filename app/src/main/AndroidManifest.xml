@@ -25,9 +25,19 @@
         </receiver>
         <service android:name=".AlarmService"
             android:enabled="true" />
+        <activity android:name=".AlarmFrequency"/>
 
         <activity android:name=".AlarmDetailsActivity" />
-        <activity android:name=".AlarmScreen" />
+
+
+        <activity android:name=".AlarmScreen"
+                  android:theme="@android:style/Theme.Dialog"/>
+        <activity android:name=".AlarmDaysOfWeek"/>
+        <activity android:name=".AlarmMonthly"/>
+        <activity android:name=".SetName"/>
+        <activity android:name=".OneTime"/>
+        <activity android:name=".Timepicker"></activity>
+        <activity android:name=".Datepicker"></activity>
     </application>
 
 </manifest>

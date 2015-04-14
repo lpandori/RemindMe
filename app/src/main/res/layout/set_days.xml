@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <CheckBox
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Sunday"
+        android:textSize="30sp"
+        android:layout_weight="1"
+        android:textColor="@color/selector_days_of_week"
+        android:id="@+id/Sunday"/>
+
+    <CheckBox
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Monday"
+        android:textSize="30sp"
+        android:layout_weight="1"
+        android:textColor="@color/selector_days_of_week"
+        android:id="@+id/Monday"/>
+
+    <CheckBox
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Tuesday"
+        android:textSize="30sp"
+        android:layout_weight="1"
+        android:textColor="@color/selector_days_of_week"
+        android:id="@+id/Tuesday"/>
+
+    <CheckBox
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Wednesday"
+        android:textSize="30sp"
+        android:layout_weight="1"
+        android:textColor="@color/selector_days_of_week"
+        android:id="@+id/Wednesday"/>
+
+    <CheckBox
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Thursday"
+        android:textSize="30sp"
+        android:layout_weight="1"
+        android:textColor="@color/selector_days_of_week"
+        android:id="@+id/Thursday"/>
+
+    <CheckBox
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Friday"
+        android:textSize="30sp"
+        android:layout_weight="1"
+        android:textColor="@color/selector_days_of_week"
+        android:id="@+id/Friday"/>
+
+    <CheckBox
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Saturday"
+        android:textSize="30sp"
+        android:layout_weight="1"
+        android:textColor="@color/selector_days_of_week"
+        android:id="@+id/Saturday"/>
+
+    <Button
+        style = "@style/orangebutton"
+        android:id="@+id/btn_next"
+        android:text= "Next"
+        android:textSize="30sp"
+        android:layout_weight=".65"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+
+</LinearLayout>
