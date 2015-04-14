@@ -22,12 +22,27 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"/>
-    <Button
-        android:text = "Next"
-        style = "@style/actionbutton"
-        android:id = "@+id/btn_next"
+        android:layout_weight="0.24"/>
+    <TextView
+        android:id="@+id/snooze"
+        android:text="Snooze time in minutes:"
+        android:textSize="25dp"
+        android:textColor="#FFFFFF"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <EditText
+        android:id = "@+id/snoozeTime"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        />
+        android:inputType="number"/>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.94" />
+    <Button
+        style = "@style/actionbutton"
+        android:id= "@+id/btn_next"
+        android:text="Next"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 </LinearLayout>

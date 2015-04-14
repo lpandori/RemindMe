@@ -15,6 +15,7 @@ import android.widget.TimePicker;
  * Created by rachelleholmgren on 4/12/15.
  */
 public class EditMonthly extends ActionBarActivity {
+    public static long id;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,7 +25,7 @@ public class EditMonthly extends ActionBarActivity {
         final int hour = thisIntent.getIntExtra(AlarmDetailsActivity.ALARM_HOUR, -1);
         final int minute = thisIntent.getIntExtra(AlarmDetailsActivity.ALARM_MINUTE, -1);
         final String name = thisIntent.getStringExtra(AlarmDetailsActivity.ALARM_NAME);
-        final long id = thisIntent.getLongExtra(AlarmDetailsActivity.EXISTING_MODEL_ID, -1);
+        id = thisIntent.getLongExtra(AlarmDetailsActivity.EXISTING_MODEL_ID, -1);
         final long reminderId = thisIntent.getLongExtra(AlarmDetailsActivity.REMINDER_ID, -1);
         final int weekNumber = thisIntent.getIntExtra(AlarmDetailsActivity.WEEK_OF_MONTH,-1);
         final String whichdays = thisIntent.getStringExtra(AlarmDetailsActivity.WEEKDAYS);
@@ -89,7 +90,8 @@ public class EditMonthly extends ActionBarActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.cancel_button: {
-                Intent intent = new Intent(this, AlarmListActivity.class);
+                Intent intent = new Intent(this, AlarmDetailsActivity.class);
+                intent.putExtra(AlarmDetailsActivity.EXISTING_MODEL_ID, id);
                 startActivity(intent);
                 break;
             }

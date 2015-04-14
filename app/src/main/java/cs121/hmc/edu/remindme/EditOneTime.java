@@ -16,6 +16,8 @@ import android.widget.TimePicker;
  * Created by rachelleholmgren on 4/12/15.
  */
 public class EditOneTime extends ActionBarActivity {
+    public static long id = -1;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,7 +29,7 @@ public class EditOneTime extends ActionBarActivity {
         final int hour = thisIntent.getIntExtra(AlarmDetailsActivity.ALARM_HOUR, -1);
         final int minute = thisIntent.getIntExtra(AlarmDetailsActivity.ALARM_MINUTE, -1);
         final String name = thisIntent.getStringExtra(AlarmDetailsActivity.ALARM_NAME);
-        final long id = thisIntent.getLongExtra(AlarmDetailsActivity.EXISTING_MODEL_ID, -1);
+        id = thisIntent.getLongExtra(AlarmDetailsActivity.EXISTING_MODEL_ID, -1);
         final String dString = thisIntent.getStringExtra(AlarmDetailsActivity.ALARM_DATE);
 
         int year = Integer.parseInt(dString.substring(0,4));
@@ -60,7 +62,8 @@ public class EditOneTime extends ActionBarActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.cancel_button: {
-                Intent intent = new Intent(this, AlarmListActivity.class);
+                Intent intent = new Intent(this, AlarmDetailsActivity.class);
+                intent.putExtra(AlarmDetailsActivity.EXISTING_MODEL_ID, id);
                 startActivity(intent);
                 break;
             }

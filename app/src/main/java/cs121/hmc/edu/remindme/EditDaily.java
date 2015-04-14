@@ -17,7 +17,7 @@ import android.widget.TimePicker;
  * Created by rachelleholmgren on 4/12/15.
  */
 public class EditDaily extends ActionBarActivity {
-
+    public static long id;
     private Context mContext;
     private AlarmDBHelper dbHelper = new AlarmDBHelper(this);
 
@@ -73,7 +73,8 @@ public class EditDaily extends ActionBarActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.cancel_button: {
-                Intent intent = new Intent(this, AlarmListActivity.class);
+                Intent intent = new Intent(this, AlarmDetailsActivity.class);
+                intent.putExtra(AlarmDetailsActivity.EXISTING_MODEL_ID, id);
                 startActivity(intent);
                 return true;
             }
