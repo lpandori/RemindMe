@@ -1,7 +1,5 @@
 package cs121.hmc.edu.remindme;
 
-import android.net.Uri;
-
 import java.util.ArrayList;
 
 /**
@@ -21,7 +19,7 @@ public class AlarmModel {
     private long id = -1; //TODO remove
     //public Uri alarmTone;
     public String name;
-    private int snooze = 20;//TODO set default for snooze (will remove later)
+    private int snooze = 1;//TODO set default for snooze (will remove later)
     private boolean isEnabled = true;
     private ArrayList<ReminderTime> reminders;
     private ReminderTime currentSet;

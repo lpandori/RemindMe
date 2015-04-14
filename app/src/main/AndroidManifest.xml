@@ -28,7 +28,10 @@
         <activity android:name=".AlarmFrequency"/>
 
         <activity android:name=".AlarmDetailsActivity" />
-        <activity android:name=".AlarmScreen" />
+
+
+        <activity android:name=".AlarmScreen"
+                  android:theme="@android:style/Theme.Dialog"/>
         <activity android:name=".AlarmDaysOfWeek"/>
         <activity android:name=".AlarmMonthly"/>
         <activity android:name=".SetName"/>
