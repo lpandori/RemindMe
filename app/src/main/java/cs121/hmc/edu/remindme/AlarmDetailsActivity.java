@@ -233,6 +233,7 @@ public class AlarmDetailsActivity extends ActionBarActivity {
                                 break;
                             case ReminderTime.DAILY:
                                 j = new Intent(mContext, EditDaily.class);
+                                j.putExtra(REMINDER_ID, reminderId);
                                 j.putExtra(ALARM_HOUR, reminderTime.getHour());
                                 j.putExtra(ALARM_MINUTE, reminderTime.getMin());
                                 j.putExtra(ALARM_NAME, alarmTitle);
@@ -241,6 +242,7 @@ public class AlarmDetailsActivity extends ActionBarActivity {
                                 break;
                             case ReminderTime.WEEKLY:
                                 j = new Intent(mContext, EditWeekly.class);
+                                j.putExtra(REMINDER_ID, reminderId);
                                 j.putExtra(WEEKDAYS, reminderTime.getWeekdays());
                                 j.putExtra(ALARM_HOUR, reminderTime.getHour());
                                 j.putExtra(ALARM_MINUTE, reminderTime.getMin());
@@ -250,6 +252,7 @@ public class AlarmDetailsActivity extends ActionBarActivity {
                                 break;
                             case ReminderTime.MONTHLY:
                                 j = new Intent(mContext, EditMonthly.class);
+                                j.putExtra(REMINDER_ID, reminderId);
                                 j.putExtra(WEEKDAYS, reminderTime.getWeekdays());
                                 j.putExtra(WEEK_OF_MONTH, reminderTime.getWeekOfMonth());
                                 j.putExtra(ALARM_HOUR, reminderTime.getHour());

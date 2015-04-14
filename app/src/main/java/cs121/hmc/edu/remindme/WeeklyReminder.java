@@ -18,7 +18,7 @@ public class WeeklyReminder implements ReminderTime {
     //note: although sunday is in our array at index 0, Calendar.SUNDAY = 1
     //(i.e. DAY_OF_WEEK is 1-7)
 
-    private long id;
+    private long id = -1;
     private int snoozeCounter = 0;
     boolean[] weekdays;
     int hour;
@@ -27,7 +27,6 @@ public class WeeklyReminder implements ReminderTime {
     //construct a weekly reminder
     //weekdays - boolean array indicating which weekdays to repeat on
     public WeeklyReminder(int hour, int min, boolean[] weekdays){
-        //this.id = id;TODO removed reminder
         this.weekdays = weekdays;
         this.hour = hour;
         this.min = min;
