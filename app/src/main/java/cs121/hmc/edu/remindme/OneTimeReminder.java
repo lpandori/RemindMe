@@ -142,6 +142,6 @@ public class OneTimeReminder implements ReminderTime {
     @Override
     public boolean hasNextTime() {
         //check if the current time  is not past the reminder date
-        return !date.before(Calendar.getInstance());
+        return date.getTimeInMillis() + snoozeCounter * minToMillis > Calendar.getInstance().getTimeInMillis();
     }
 }
