@@ -18,7 +18,7 @@ import android.widget.TimePicker;
  */
 public class EditDaily extends ActionBarActivity {
     public static long id;
-    private Context mContext;
+    private Context mContext = this;
     private AlarmDBHelper dbHelper = new AlarmDBHelper(this);
 
     @Override
@@ -27,17 +27,17 @@ public class EditDaily extends ActionBarActivity {
 
         setContentView(R.layout.edit_daily);
         Intent thisIntent = getIntent();
-        final int hour = thisIntent.getIntExtra(AlarmDetailsActivity.ALARM_HOUR, -1);
-        final int minute = thisIntent.getIntExtra(AlarmDetailsActivity.ALARM_MINUTE, -1);
+        int hour = thisIntent.getIntExtra(AlarmDetailsActivity.ALARM_HOUR, -1);
+        int minute = thisIntent.getIntExtra(AlarmDetailsActivity.ALARM_MINUTE, -1);
         final String name = thisIntent.getStringExtra(AlarmDetailsActivity.ALARM_NAME);
         final long id = thisIntent.getLongExtra(AlarmDetailsActivity.EXISTING_MODEL_ID, -1);
-        final long reminderId = thisIntent.getLongExtra(AlarmDetailsActivity.REMINDER_ID, -1);
+        final long reminderId = thisIntent.getLongExtra(AlarmDetailsActivity.REMINDER_ID, 7);
 
 
         TextView alarmName = (TextView) findViewById(R.id.editBlank);
         alarmName.setText(name);
 
-        TimePicker timePicker = (TimePicker) findViewById(R.id.timePicker);
+        final TimePicker timePicker = (TimePicker) findViewById(R.id.timePicker);
         timePicker.setCurrentHour(hour);
         timePicker.setCurrentMinute(minute);
 
@@ -46,14 +46,13 @@ public class EditDaily extends ActionBarActivity {
             @Override
             public void onClick(View v) {
 
-                ReminderTime daily = new DailyReminder(hour,minute);
+                int h = timePicker.getCurrentHour();
+                int m = timePicker.getCurrentMinute();
+                ReminderTime daily = new DailyReminder(h,m);
                 daily.setId(reminderId);
-                //dbHelper.updateReminder(daily); TODO
-
-                //cancelAlarms
-                //update a reminder time in the db directly
-                //setAlarms
-
+                AlarmManagerHelper.cancelAlarms(mContext);
+                dbHelper.updateReminder(daily, id);
+                AlarmManagerHelper.setAlarms(mContext);
 
                 Intent i = new Intent(EditDaily.this, AlarmDetailsActivity.class);
                 i.putExtra(AlarmDetailsActivity.EXISTING_MODEL_ID, id);

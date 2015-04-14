@@ -9,7 +9,7 @@ import java.util.GregorianCalendar;
  */
 public class OneTimeReminder implements ReminderTime {
 
-    private long id;
+    private long id = -1;
     private int snoozeCounter = 0;
     //pre: date must include m/d/y AND hour and minute
     private int year;
@@ -142,6 +142,6 @@ public class OneTimeReminder implements ReminderTime {
     @Override
     public boolean hasNextTime() {
         //check if the current time  is not past the reminder date
-        return !date.before(Calendar.getInstance());
+        return date.getTimeInMillis() + snoozeCounter * minToMillis > Calendar.getInstance().getTimeInMillis();
     }
 }

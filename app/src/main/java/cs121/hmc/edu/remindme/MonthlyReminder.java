@@ -22,7 +22,6 @@ public class MonthlyReminder implements ReminderTime {
 
     //weeknumber is 1-4
     public MonthlyReminder(int hour, int min, int weekNumber, boolean[] weekdays){
-        //this.id = id; TODO removed reminder
         this.hour = hour;
         this.min = min;
         this.weekNumber = weekNumber;

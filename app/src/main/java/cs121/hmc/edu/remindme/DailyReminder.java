@@ -7,7 +7,7 @@ import java.util.Calendar;
  */
 public class DailyReminder implements ReminderTime{
 
-    private long id;
+    private long id = -1;
     private int snoozeCounter;
     private int hour;
     private int min;
