@@ -25,6 +25,7 @@ public class SetName extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.set_name);
+        System.out.println("BLAH!");
 
 
         Button next = (Button) findViewById(R.id.btn_next);

@@ -23,7 +23,6 @@ public class AlarmMonthly extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.set_month);
 
         final Spinner whichWeek = (Spinner) findViewById(R.id.which_week);
@@ -85,6 +84,4 @@ public class AlarmMonthly extends ActionBarActivity {
                 return super.onOptionsItemSelected(item);
         }
     }
-
-
 }

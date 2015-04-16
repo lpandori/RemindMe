@@ -20,17 +20,12 @@ import java.util.ArrayList;
  */
 public class AlarmDaysOfWeek extends ActionBarActivity {
 
-
     public static String WEEKDAY_ARRAY= "weekday_array";
-
-
-    AlarmFrequency alarmfreq = new AlarmFrequency();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        setContentView(R.layout.set_days);
         super.onCreate(savedInstanceState);
-
+        setContentView(R.layout.set_days);
 
         final CustomSwitch sunday = (CustomSwitch) findViewById(R.id.Sunday);
         final CustomSwitch monday = (CustomSwitch) findViewById(R.id.Monday);
@@ -84,7 +79,8 @@ public class AlarmDaysOfWeek extends ActionBarActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_cancel, menu);
-        return super.onCreateOptionsMenu(menu);
+        return true;
+        //return super.onCreateOptionsMenu(menu);
     }
 
     @Override
