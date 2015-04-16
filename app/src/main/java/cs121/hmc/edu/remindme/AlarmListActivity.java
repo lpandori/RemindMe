@@ -47,7 +47,7 @@ public class AlarmListActivity extends ActionBarActivity {
         mAdapter = new AlarmListAdapter(this, dbHelper.getAlarms());
         setContentView(R.layout.activity_alarm_list);
 
-        ListView alarmList=(ListView)findViewById(R.id.list);
+        ListView alarmList=(ListView)findViewById(R.id.alarm_list);
 
         alarmList.setAdapter(mAdapter);
         touchListener =

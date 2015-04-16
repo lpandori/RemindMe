@@ -136,8 +136,11 @@ public class AlarmScreen extends Activity {
                     break;
                 // the drag point has entered the bounding box of the View
                 case DragEvent.ACTION_DRAG_ENTERED:
+                    break;
                     // the user has moved the drag shadow outside the bounding box of the View
                 case DragEvent.ACTION_DRAG_EXITED:
+
+                case DragEvent.ACTION_DROP:
                     // if the view is on the dismiss button, we accept the
                     // the drag item
                     if (v == findViewById(R.id.dismiss_end)) {
@@ -148,6 +151,7 @@ public class AlarmScreen extends Activity {
                         LinearLayout container = (LinearLayout) v;
                         container.addView(view);
                         view.setVisibility(View.INVISIBLE);
+                        v.setVisibility(View.INVISIBLE);
 
                         AlarmDBHelper dbHelper = new AlarmDBHelper(context);
                         dbHelper.dismiss(reminderId);
@@ -164,7 +168,6 @@ public class AlarmScreen extends Activity {
 
                     // drag shadow has been released, the drag point is within
                     // within the bounding box of the View
-                case DragEvent.ACTION_DROP:
 
                 default:
                     View view2 = (View) event.getLocalState();
