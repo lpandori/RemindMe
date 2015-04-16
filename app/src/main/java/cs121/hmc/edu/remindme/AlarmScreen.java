@@ -3,10 +3,7 @@ package cs121.hmc.edu.remindme;
 import android.app.Activity;
 import android.content.ClipData;
 import android.content.Context;
-import android.graphics.drawable.Drawable;
-import android.media.AudioManager;
 import android.media.MediaPlayer;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.PowerManager;
@@ -18,6 +15,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 /**
  * Created by heatherseaman on 3/1/15.
@@ -28,6 +26,8 @@ public class AlarmScreen extends Activity {
     private MediaPlayer mPlayer;
     private PowerManager.WakeLock mWakeLock;
     private static final int WAKELOCK_TIMEOUT = 60 * 1000;
+    private Context context= this;
+    private long reminderId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,14 +36,11 @@ public class AlarmScreen extends Activity {
         //Setting up layout
         this.setContentView(R.layout.alarm_screen);
         String name = getIntent().getStringExtra(AlarmManagerHelper.NAME);
-        int timeHour = getIntent().getIntExtra(AlarmManagerHelper.TIME_HOUR, 0);
-        int timeMinute = getIntent().getIntExtra(AlarmManagerHelper.TIME_MINUTE, 0);
+        reminderId = getIntent().getLongExtra(AlarmManagerHelper.REMINDER_ID, -1);
 
         TextView tvName = (TextView) findViewById(R.id.alarm_screen_name);
         tvName.setText(name);
 
-        TextView tvTime = (TextView) findViewById(R.id.alarm_screen_time);
-        tvTime.setText(String.format("%02d : %02d", timeHour, timeMinute));
 
 //        Button dismissButton = (Button) findViewById(R.id.alarm_screen_button);
 //        dismissButton.setOnClickListener(new View.OnClickListener() {
@@ -58,22 +55,35 @@ public class AlarmScreen extends Activity {
         findViewById(R.id.dismiss_end).setOnDragListener(new DismissDragListener());
 
 
-        String tone = getIntent().getStringExtra(AlarmManagerHelper.TONE);
-        mPlayer = new MediaPlayer();
-        try {
-            if (tone != null && !tone.equals("")) {
-                Uri toneUri = Uri.parse(tone);
-                if (toneUri != null) {
-                    mPlayer.setDataSource(this, toneUri);
-                    mPlayer.setAudioStreamType(AudioManager.STREAM_ALARM);
-                    mPlayer.setLooping(true);
-                    mPlayer.prepare();
-                    mPlayer.start();
-                }
+
+//        String tone = getIntent().getStringExtra(AlarmManagerHelper.TONE);
+//        mPlayer = new MediaPlayer();
+//        try {
+//            if (tone != null && !tone.equals("")) {
+//                Uri toneUri = Uri.parse(tone);
+//                if (toneUri != null) {
+//                    mPlayer.setDataSource(this, toneUri);
+//                    mPlayer.setAudioStreamType(AudioManager.STREAM_ALARM);
+//                    mPlayer.setLooping(true);
+//                    mPlayer.prepare();
+//                    mPlayer.start();
+//                }
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+        // Add respond action to snooze button - UI for Snooze
+        Button snoozeButton = (Button) findViewById(R.id.snooze);
+        snoozeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Work with alarmDBHelper
+                AlarmDBHelper dbHelper = new AlarmDBHelper(context);
+                dbHelper.snoozeReminder(reminderId);
+                AlarmManagerHelper.setAlarms(context);
+                finish();
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        });
 
         // Ensure wakelock release
         Runnable releaseWakeLock = new Runnable() {
@@ -118,20 +128,50 @@ public class AlarmScreen extends Activity {
         @Override
         public boolean onDrag(View v, DragEvent event) {
             int action = event.getAction();
+
+            // Handles each of the expected events
             switch (action) {
-                case DragEvent.ACTION_DROP:
-                    // Dropped, reassign View to ViewGroup
-                    View view = (View) event.getLocalState();
-                    ViewGroup owner = (ViewGroup) view.getParent();
-                    owner.removeView(view);
-                    LinearLayout container = (LinearLayout) v;
-                    container.addView(view);
-                    view.setVisibility(View.INVISIBLE);
-                    mPlayer.stop();
-                    mWakeLock.release();
-                    finish();
+                //signal for the start of a drag and drops operation
+                case DragEvent.ACTION_DRAG_STARTED:
                     break;
+                // the drag point has entered the bounding box of the View
+                case DragEvent.ACTION_DRAG_ENTERED:
+                    // the user has moved the drag shadow outside the bounding box of the View
+                case DragEvent.ACTION_DRAG_EXITED:
+                    // if the view is on the dismiss button, we accept the
+                    // the drag item
+                    if (v == findViewById(R.id.dismiss_end)) {
+                        // Dropped, reassign View to ViewGroup
+                        View view = (View) event.getLocalState();
+                        ViewGroup owner = (ViewGroup) view.getParent();
+                        owner.removeView(view);
+                        LinearLayout container = (LinearLayout) v;
+                        container.addView(view);
+                        view.setVisibility(View.INVISIBLE);
+
+                        AlarmDBHelper dbHelper = new AlarmDBHelper(context);
+                        dbHelper.dismiss(reminderId);
+                        finish();
+                        break;
+                    } else {
+                        View view = (View) event.getLocalState();
+                        view.setVisibility(View.VISIBLE);
+                        Context context = getApplicationContext();
+                        Toast.makeText(context, "You can't drop the image here",
+                                Toast.LENGTH_LONG).show();
+                        break;
+                    }
+
+                    // drag shadow has been released, the drag point is within
+                    // within the bounding box of the View
+                case DragEvent.ACTION_DROP:
+
                 default:
+                    View view2 = (View) event.getLocalState();
+                    view2.setVisibility(View.VISIBLE);
+//                    Context context2 = getApplicationContext();
+//                    Toast.makeText(context2, "You can't drop the image here",
+//                            Toast.LENGTH_LONG).show();
                     break;
             }
             return true;

@@ -46,24 +46,26 @@ public class AlarmListActivity extends ActionBarActivity {
         mContext = this;
         mAdapter = new AlarmListAdapter(this, dbHelper.getAlarms());
         setContentView(R.layout.activity_alarm_list);
-        ListView alarmList=(ListView)findViewById(R.id.alarm_list);
+
+        ListView alarmList=(ListView)findViewById(R.id.list);
+
         alarmList.setAdapter(mAdapter);
         touchListener =
                 new SwipeToDismissTouchListener<>(
-                    new ListViewAdapter(alarmList),
-                    new SwipeToDismissTouchListener.DismissCallbacks<ListViewAdapter>() {
-                        @Override
-                        public boolean canDismiss (int position) {
-                            return true;
-                        }
-                        @Override
-                        public void onDismiss(ListViewAdapter lvAdapter, int position) {
-                            mAdapter.remove(position);
-                            View thisView = lvAdapter.getChildAt(position);
-                            long viewId = (long) thisView.getTag();
-                            dbHelper.deleteAlarm(viewId);
-            }
-        });
+                        new ListViewAdapter(alarmList),
+                        new SwipeToDismissTouchListener.DismissCallbacks<ListViewAdapter>() {
+                            @Override
+                            public boolean canDismiss (int position) {
+                                return true;
+                            }
+                            @Override
+                            public void onDismiss(ListViewAdapter lvAdapter, int position) {
+                                mAdapter.remove(position);
+                                View thisView = lvAdapter.getChildAt(position);
+                                long viewId = (long) thisView.getTag();
+                                dbHelper.deleteAlarm(viewId);
+                            }
+                        });
 
         alarmList.setOnScrollListener((AbsListView.OnScrollListener) touchListener.makeScrollListener());
     }
@@ -80,7 +82,9 @@ public class AlarmListActivity extends ActionBarActivity {
 
         switch (item.getItemId()) {
             case R.id.action_add_new_alarm: {
-                startAlarmDetailsActivity(-1);
+                //startAlarmDetailsActivity(-1);
+                Intent intent = new Intent(this, SetName.class);
+                startActivity(intent);
                 break;
             }
         }
@@ -100,26 +104,29 @@ public class AlarmListActivity extends ActionBarActivity {
     public void setAlarmEnabled(long id, boolean isEnabled) {
         AlarmManagerHelper.cancelAlarms(this);
         AlarmModel model = dbHelper.getAlarm(id);
-        model.isEnabled = isEnabled;
-        dbHelper.updateAlarm(model);
 
+        model.setEnabled(isEnabled);
+        dbHelper.deleteAlarm(id);
+        dbHelper.createAlarm(model);
         // refreshing the adapter after the state of the toggle has changed
         // in the first list view item
         AlarmManagerHelper.setAlarms(this);
     }
 
-    public void startAlarmDetailsActivity(long id) {
+    public void startAlarmDetailsActivity(long id, String title) {
         Intent intent = new Intent(this, AlarmDetailsActivity.class);
-        intent.putExtra("id", id);
-        startActivityForResult(intent, 0);
+        intent.putExtra(AlarmDetailsActivity.EXISTING_MODEL_ID, id);
+        intent.putExtra(AlarmDetailsActivity.ALARM_NAME, title);
+        startActivity(intent);
     }
 
     /*
-
+     * ADAPTER CLASS!!!! YAY
      */
     static class AlarmListAdapter extends BaseAdapter {
         private Context mContext;
         private List<AlarmModel> mAlarms;
+        private AlarmDBHelper dbHelper = new AlarmDBHelper(mContext);
 
         public AlarmListAdapter(Context context, List<AlarmModel> alarms) {
             mContext = context;
@@ -150,7 +157,7 @@ public class AlarmListActivity extends ActionBarActivity {
         @Override
         public long getItemId(int position) {
             if (mAlarms != null) {
-                return mAlarms.get(position).id;
+                return mAlarms.get(position).getId();
             }
             return 0;
         }
@@ -171,34 +178,27 @@ public class AlarmListActivity extends ActionBarActivity {
             }
 
             // get Item implemented above
-            AlarmModel model = (AlarmModel) getItem(position);
+            final AlarmModel model = (AlarmModel) getItem(position);
 
-            TextView txtTime = (TextView) convertView.findViewById(R.id.alarm_item_time);
-            txtTime.setText(String.format("%02d : %02d", model.timeHour, model.timeMinute));
+//            TextView txtTime = (TextView) convertView.findViewById(R.id.alarm_item_time);
+//            txtTime.setText(String.format("%02d : %02d", model.timeHour, model.timeMinute));
             TextView txtName = (TextView) convertView.findViewById(R.id.alarm_item_name);
             txtName.setText(model.name);
 
-            updateTextColor((TextView) convertView.findViewById(R.id.alarm_item_sunday), model.getRepeatingDay(AlarmModel.SUNDAY));
-            updateTextColor((TextView) convertView.findViewById(R.id.alarm_item_monday), model.getRepeatingDay(AlarmModel.MONDAY));
-            updateTextColor((TextView) convertView.findViewById(R.id.alarm_item_tuesday), model.getRepeatingDay(AlarmModel.TUESDAY));
-            updateTextColor((TextView) convertView.findViewById(R.id.alarm_item_wednesday), model.getRepeatingDay(AlarmModel.WEDNESDAY));
-            updateTextColor((TextView) convertView.findViewById(R.id.alarm_item_thursday), model.getRepeatingDay(AlarmModel.THURSDAY));
-            updateTextColor((TextView) convertView.findViewById(R.id.alarm_item_friday), model.getRepeatingDay(AlarmModel.FRDIAY));
-            updateTextColor((TextView) convertView.findViewById(R.id.alarm_item_saturday), model.getRepeatingDay(AlarmModel.SATURDAY));
-
             ToggleButton btnToggle = (ToggleButton) convertView.findViewById(R.id.alarm_item_toggle);
-            btnToggle.setChecked(model.isEnabled);
-            btnToggle.setTag(model.id);
+            btnToggle.setChecked(model.isEnabled());
+            btnToggle.setTag(model.getId());
             btnToggle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                     ((AlarmListActivity) mContext).setAlarmEnabled(((Long)
                             buttonView.getTag()), isChecked);
+
                 }
             });
             View deleteView = convertView.findViewById(R.id.txt_delete);
             setOnClickForDelete(deleteView);
-            convertView.setTag(model.id);
+            convertView.setTag(model.getId());
 
             convertView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -206,7 +206,7 @@ public class AlarmListActivity extends ActionBarActivity {
                     if (touchListener.existPendingDismisses()){
                         touchListener.undoPendingDismiss();
                     } else {
-                        ((AlarmListActivity) mContext).startAlarmDetailsActivity((Long) v.getTag());
+                        ((AlarmListActivity) mContext).startAlarmDetailsActivity((Long) v.getTag(), model.name);
                     }
 
                 }

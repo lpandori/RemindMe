@@ -18,5 +18,24 @@
     <string name="details_alarm_tone_default">Select an alarm tone</string>
     <string name="deleted">Confirm Delete</string>
     <string name="undo">Undo</string>
+    
+    <string-array name="which_week_options">
+        <item> First </item>
+        <item> Second </item>
+        <item> Third </item>
+        <item> Fourth </item>
+    </string-array>
 
+    <string-array name="day_options">
+        <item> Sunday </item>
+        <item> Monday </item>
+        <item> Tuesday </item>
+        <item> Wednesday </item>
+        <item> Thursday </item>
+        <item> Friday </item>
+        <item> Saturday </item>
+    </string-array>
+    <color name ="orange">#FF4A1C</color>
+    <color name ="teal"> #02798c </color>
+    <color name = "black">#000000</color>
 </resources>
