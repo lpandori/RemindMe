@@ -74,12 +74,10 @@ public class AlarmDetailsActivity extends ActionBarActivity {
         addReminder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //
                 Intent intent = new Intent(mContext, AlarmFrequency.class);
                 intent.putExtra(EXISTING_MODEL_ID, alarmId);//need model id
                 intent.putExtra(SetName.ALARM_NAME, alarmTitle);
                 intent.putExtra(EXISTING_MODEL, true);
-                //need model
                 startActivity(intent);
             }
         });

@@ -8,9 +8,12 @@
     <TextView
         android:id="@+id/add_reminder"
         android:layout_width="match_parent"
-        android:layout_height="30dp"
-        android:text="Add a Reminder"
-        android:background="#d04407"
-        android:layout_gravity="center_vertical"/>
+        android:layout_height="66dp"
+        android:paddingTop="18dp"
+        android:paddingBottom="18dp"
+        android:paddingLeft="20dp"
+        android:text="@string/add_reminder"
+        android:textSize="22sp"
+        android:background="#d04407" />
 
 </LinearLayout>
