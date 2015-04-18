@@ -19,8 +19,8 @@ import java.util.List;
 public class AlarmManagerHelper extends BroadcastReceiver{
     public static final String REMINDER_ID = "id";
     public static final String NAME = "name";
-    //public static final String TIME_HOUR = "timeHour";
-    //public static final String TIME_MINUTE = "timeMinute";
+    public static final String TIME_HOUR = "timeHour";
+    public static final String TIME_MINUTE = "timeMinute";
     //public static final String TONE = "alarmTone";
 
     @Override
@@ -48,7 +48,6 @@ public class AlarmManagerHelper extends BroadcastReceiver{
     }
 
     @SuppressLint("NewApi")
-    //used to be: setAlarm(Context context, Calendar calendar, PendingIntent pIntent)
     private static void setAlarm(Context context, long timeInMillis, PendingIntent pIntent) {
 
             AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
@@ -61,7 +60,7 @@ public class AlarmManagerHelper extends BroadcastReceiver{
 
     /*
      * Note: to cancel an alarm we need to build an instance of the pending
-     * intent exactly as we did when the alarm was sent. We need to make sure
+     * intent exactly as we did when the alarm was set. We need to make sure
      * we cancel alarms before we make changes to them, only then can we set them
      * again. Otherwise we might leave scheduled alarms that we can no longer
      * reference.

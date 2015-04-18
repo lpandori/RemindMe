@@ -46,7 +46,8 @@ public class AlarmListActivity extends ActionBarActivity {
         mContext = this;
         mAdapter = new AlarmListAdapter(this, dbHelper.getAlarms());
         setContentView(R.layout.activity_alarm_list);
-        ListView alarmList=(ListView)findViewById(R.id.list);
+
+        ListView alarmList=(ListView)findViewById(R.id.alarm_list);
 
         alarmList.setAdapter(mAdapter);
         touchListener =
@@ -103,10 +104,10 @@ public class AlarmListActivity extends ActionBarActivity {
     public void setAlarmEnabled(long id, boolean isEnabled) {
         AlarmManagerHelper.cancelAlarms(this);
         AlarmModel model = dbHelper.getAlarm(id);
+
         model.setEnabled(isEnabled);
         dbHelper.deleteAlarm(id);
         dbHelper.createAlarm(model);
-
         // refreshing the adapter after the state of the toggle has changed
         // in the first list view item
         AlarmManagerHelper.setAlarms(this);
