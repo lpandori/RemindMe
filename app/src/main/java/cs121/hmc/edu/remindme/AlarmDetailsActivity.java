@@ -72,6 +72,7 @@ public class AlarmDetailsActivity extends ActionBarActivity {
         setContentView(R.layout.activity_details);
 
         getSupportActionBar().setTitle(alarmTitle);
+
         ListView alarmList = (ListView)findViewById(R.id.reminder_list);
         View addReminder = ((LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.add_reminder, null, false);
         alarmList.addFooterView(addReminder);
@@ -208,7 +209,7 @@ public class AlarmDetailsActivity extends ActionBarActivity {
                         e.printStackTrace();
                     }
                     DateFormat outFormat = SimpleDateFormat.getDateInstance();
-                    toDisplay = outFormat.format(date);
+                    toDisplay = outFormat.format(date) + " at ";
                     break;
                 case ReminderTime.DAILY:
                     toDisplay = "Daily at";

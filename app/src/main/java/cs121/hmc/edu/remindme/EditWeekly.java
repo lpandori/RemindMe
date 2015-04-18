@@ -87,6 +87,7 @@ public class EditWeekly extends ActionBarActivity {
 
                 Intent i = new Intent(EditWeekly.this, AlarmDetailsActivity.class);
                 i.putExtra(AlarmDetailsActivity.EXISTING_MODEL_ID, id);
+                i.putExtra(AlarmDetailsActivity.ALARM_NAME, name);
                 startActivity(i);
             }
         });

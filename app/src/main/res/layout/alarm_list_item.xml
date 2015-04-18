@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content" >
@@ -17,10 +18,31 @@
             android:layout_marginRight="8dp"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
-            android:layout_toLeftOf="@+id/alarm_item_toggle"
             android:text="Medium Text"
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
+        <TextView
+            android:id="@+id/alarm_reminderCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/alarm_item_name"
+            android:text="Reminder Count"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        <TextView
+            android:id="@+id/alarm_snoozeTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/alarm_reminderCount"
+            android:layout_toLeftOf="@+id/alarm_item_toggle"
+            android:text="Snooze Time"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
 
         <ToggleButton
             android:id="@+id/alarm_item_toggle"
@@ -31,6 +53,7 @@
             android:layout_alignParentTop="true" />
 
     </RelativeLayout>
+
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -75,5 +98,4 @@
             android:gravity="center" />
 
     </LinearLayout>
-
 </FrameLayout>

@@ -94,6 +94,7 @@ public class EditMonthly extends ActionBarActivity {
                 AlarmManagerHelper.setAlarms(mContext);
 
                 Intent i = new Intent(EditMonthly.this, AlarmDetailsActivity.class);
+                i.putExtra(AlarmDetailsActivity.ALARM_NAME, name);
                 i.putExtra(AlarmDetailsActivity.EXISTING_MODEL_ID, id);
                 startActivity(i);
             }

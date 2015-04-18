@@ -184,6 +184,10 @@ public class AlarmListActivity extends ActionBarActivity {
 //            txtTime.setText(String.format("%02d : %02d", model.timeHour, model.timeMinute));
             TextView txtName = (TextView) convertView.findViewById(R.id.alarm_item_name);
             txtName.setText(model.name);
+            TextView snoozeTime = (TextView) convertView.findViewById(R.id.alarm_snoozeTime);
+            snoozeTime.setText(model.getSnooze());
+            TextView reminderTime = (TextView) convertView.findViewById(R.id.alarm_reminderCount);
+            snoozeTime.setText(model.getReminders().size());
 
             ToggleButton btnToggle = (ToggleButton) convertView.findViewById(R.id.alarm_item_toggle);
             btnToggle.setChecked(model.isEnabled());

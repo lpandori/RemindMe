@@ -66,24 +66,32 @@ public class Timepicker extends ActionBarActivity {
                             r = new MonthlyReminder(hour, minute, weekNumber, weekdays);
                             break;
                     }
-
+                    Intent i = new Intent(Timepicker.this, AlarmDetailsActivity.class);
                     if(!existingModel){
                         AlarmModel alarmModel = new AlarmModel(alarmName);
-                        alarmModel.setId(System.currentTimeMillis());
+                        // we create a unique id using the system time
+                        long alarmId = System.currentTimeMillis();
+                        alarmModel.setId(alarmId);
                         alarmModel.addReminder(r);
+                        i.putExtra(AlarmDetailsActivity.EXISTING_MODEL_ID, alarmId);
+
                         dbHelper.createAlarm(alarmModel);//add to db
                     }else{
                         AlarmModel alarmModel = dbHelper.getAlarm(existingModelId);
                         alarmModel.addReminder(r);
                         dbHelper.deleteAlarm(existingModelId);
                         dbHelper.createAlarm(alarmModel);
+                        i.putExtra(AlarmDetailsActivity.EXISTING_MODEL_ID, existingModelId);
+
                         System.out.println("added new reminder time");
 
                     }
                     AlarmManagerHelper.setAlarms(context);//trigger setting alarm
 
 
-                    Intent i = new Intent(Timepicker.this, AlarmListActivity.class);
+
+                    i.putExtra(AlarmDetailsActivity.ALARM_NAME, alarmName);
+
                     // pass timePicker.getCurrentHour() &&
                     //timePicker.getCurrentMinute() as extras
                     startActivity(i);
