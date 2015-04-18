@@ -30,6 +30,7 @@ public class Timepicker extends ActionBarActivity {
             final int reminderType = prevIntent.getIntExtra(AlarmFrequency.REMINDER_TYPE, -1);
             final boolean existingModel = prevIntent.getBooleanExtra(AlarmDetailsActivity.EXISTING_MODEL, false);
             final long existingModelId = prevIntent.getLongExtra(AlarmDetailsActivity.EXISTING_MODEL_ID, -1);
+            final long
 
             final Context context = this;
             setContentView(R.layout.time_picker);
