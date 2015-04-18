@@ -40,6 +40,9 @@ public class AlarmScreen extends Activity {
 
         TextView tvName = (TextView) findViewById(R.id.alarm_screen_name);
         tvName.setText(name);
+//        TextView tvTime = (TextView) findViewById(R.id.alarm_screen_time);
+//        tvName.setText(name);
+
 
 
 //        Button dismissButton = (Button) findViewById(R.id.alarm_screen_button);

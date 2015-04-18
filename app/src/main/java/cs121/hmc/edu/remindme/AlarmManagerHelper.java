@@ -19,8 +19,8 @@ import java.util.List;
 public class AlarmManagerHelper extends BroadcastReceiver{
     public static final String REMINDER_ID = "id";
     public static final String NAME = "name";
-    //public static final String TIME_HOUR = "timeHour";
-    //public static final String TIME_MINUTE = "timeMinute";
+    public static final String TIME_HOUR = "timeHour";
+    public static final String TIME_MINUTE = "timeMinute";
     //public static final String TONE = "alarmTone";
 
     @Override
@@ -48,7 +48,6 @@ public class AlarmManagerHelper extends BroadcastReceiver{
     }
 
     @SuppressLint("NewApi")
-    //used to be: setAlarm(Context context, Calendar calendar, PendingIntent pIntent)
     private static void setAlarm(Context context, long timeInMillis, PendingIntent pIntent) {
 
             AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
