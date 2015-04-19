@@ -1,16 +1,16 @@
 package cs121.hmc.edu.remindme;
 
 import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
 
 /**
  * Created by lepandori on 3/7/15.
  */
 public class OneTimeReminder implements ReminderTime {
 
-    private long id;
+    private long id = -1;
     private int snoozeCounter = 0;
+    private int minBetweenSnooze = DEFAULT_MIN_BETWEEN_SNOOZE;
+    private long nextAwakeTime = 0; // in seconds
     //pre: date must include m/d/y AND hour and minute
     private int year;
     private int month;
@@ -124,6 +124,12 @@ public class OneTimeReminder implements ReminderTime {
     @Override
     public void setSnoozeCounter(int snoozeCounter){this.snoozeCounter = snoozeCounter;}
 
+    public int getMinBetweenSnooze() { return minBetweenSnooze; }
+    public void setMinBetweenSnooze(int minBetweenSnooze) { this.minBetweenSnooze = minBetweenSnooze; }
+    public long getNextAwakeTime() { return nextAwakeTime; }
+    public void setNextAwakeTime(long nextAwakeTime) { this.nextAwakeTime = nextAwakeTime; }
+
+
     @Override
     public int getHour() { return date.get(Calendar.HOUR_OF_DAY); }
 
@@ -133,15 +139,14 @@ public class OneTimeReminder implements ReminderTime {
     @Override
     public long getNextTime() {
         if(hasNextTime()){
-            return date.getTimeInMillis() + snoozeCounter*minToMillis;
-        }else{
+            return getNextAwakeTime() == 0 ? date.getTimeInMillis() : getNextAwakeTime();
+        } else {
             return -1;
         }
     }
 
     @Override
     public boolean hasNextTime() {
-        //check if the current time  is not past the reminder date
-        return date.getTimeInMillis() + snoozeCounter * minToMillis > Calendar.getInstance().getTimeInMillis();
+        return getNextAwakeTime() == 0 || getNextAwakeTime() > Calendar.getInstance().getTimeInMillis();
     }
 }

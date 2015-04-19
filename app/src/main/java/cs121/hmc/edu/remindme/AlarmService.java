@@ -1,8 +1,6 @@
 package cs121.hmc.edu.remindme;
 
-import android.app.PendingIntent;
 import android.app.Service;
-import android.content.Context;
 import android.content.Intent;
 import android.os.IBinder;
 
@@ -12,7 +10,7 @@ import android.os.IBinder;
  */
 public class AlarmService extends Service {
 
-    public static String TAG = AlarmService.class.getSimpleName();
+    //public static String TAG = AlarmService.class.getSimpleName();
 
     @Override
     public IBinder onBind(Intent intent) {

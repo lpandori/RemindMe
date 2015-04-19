@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent">
+
 
     <TextView
         android:id="@+id/alarm_screen_name"
@@ -14,23 +15,22 @@
         android:layout_alignParentRight="false"
         android:layout_centerHorizontal="true" />
 
-    <TextView
-        android:id="@+id/alarm_screen_time"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/alarm_screen_name"
-        android:layout_marginTop="28dp"
-        android:textSize="52dp"
-        android:text="00:00"
-        android:layout_alignParentTop="false"
-        android:gravity="center_horizontal"
-        android:layout_centerHorizontal="true" />
-
+    <!--<TextView-->
+        <!--android:id="@+id/alarm_screen_time"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_below="@+id/alarm_screen_name"-->
+        <!--android:layout_marginTop="28dp"-->
+        <!--android:textSize="52dp"-->
+        <!--android:text="00:00"-->
+        <!--android:layout_alignParentTop="false"-->
+        <!--android:gravity="center_horizontal"-->
+        <!--android:layout_centerHorizontal="true" />-->
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/alarm_screen_time"
+        android:layout_below="@+id/alarm_screen_name"
         android:gravity="bottom"
         android:layout_margin="28dp">
 
@@ -91,6 +91,7 @@
 
 
     </LinearLayout>
+
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

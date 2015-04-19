@@ -1,21 +1,21 @@
 package cs121.hmc.edu.remindme;
 
 import android.app.Activity;
-import android.app.DialogFragment;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
-import android.widget.ImageButton;
-import android.widget.TimePicker;
 
 import java.util.Calendar;
 
 /**
  * Created by rachelleholmgren on 3/26/15.
  */
-public class Datepicker extends Activity {
+public class Datepicker extends ActionBarActivity {
     private DatePicker datePicker;
     private Button button;
 
@@ -34,6 +34,7 @@ public class Datepicker extends Activity {
         final int reminderType = prevIntent.getIntExtra(AlarmFrequency.REMINDER_TYPE, -1);
         final boolean existingModel = prevIntent.getBooleanExtra(AlarmDetailsActivity.EXISTING_MODEL, false);
         final long existingModelId = prevIntent.getLongExtra(AlarmDetailsActivity.EXISTING_MODEL_ID, -1);
+        final int minBetweenSnooze = prevIntent.getIntExtra(AlarmDetailsActivity.MIN_BETWEEN_SNOOZE, ReminderTime.DEFAULT_MIN_BETWEEN_SNOOZE);
 
         button = (Button) findViewById(R.id.done);
 
@@ -46,6 +47,7 @@ public class Datepicker extends Activity {
                     i.putExtra(AlarmFrequency.REMINDER_TYPE, reminderType);
                     i.putExtra(AlarmDetailsActivity.EXISTING_MODEL, existingModel);
                     i.putExtra(AlarmDetailsActivity.EXISTING_MODEL_ID, existingModelId);
+                    i.putExtra(AlarmDetailsActivity.MIN_BETWEEN_SNOOZE, minBetweenSnooze);
                     i.putExtra(DATE_YEAR, datePicker.getYear());
                     //month starts counting at 0 so must add 1
                     int month = datePicker.getMonth()+1;
@@ -54,6 +56,25 @@ public class Datepicker extends Activity {
                     startActivity(i);
                 }
             });
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_cancel, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.cancel_button: {
+                Intent intent = new Intent(this, AlarmListActivity.class);
+                startActivity(intent);
+                return true;
+            }
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
 

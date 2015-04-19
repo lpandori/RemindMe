@@ -42,10 +42,7 @@
         <item name="android:focusable">true</item>
     </style>
 
-
-
-
-    <style name="MenuTextOrange" parent="android:Theme.Holo.Light.DarkActionBar">
+    <style name="MenuTextOrange" parent="Theme.AppCompat">
         <item name="actionMenuTextColor">@color/orange</item>
         <item name="android:actionMenuTextColor">@color/orange</item>
     </style>

@@ -9,6 +9,8 @@ public class MonthlyReminder implements ReminderTime {
 
     private long id;
     private int snoozeCounter = 0;
+    private int minBetweenSnooze = DEFAULT_MIN_BETWEEN_SNOOZE;
+    private long nextAwakeTime = 0;
     private int hour;
     private int min;
     private int weekNumber;
@@ -22,7 +24,6 @@ public class MonthlyReminder implements ReminderTime {
 
     //weeknumber is 1-4
     public MonthlyReminder(int hour, int min, int weekNumber, boolean[] weekdays){
-        //this.id = id; TODO removed reminder
         this.hour = hour;
         this.min = min;
         this.weekNumber = weekNumber;
@@ -64,6 +65,11 @@ public class MonthlyReminder implements ReminderTime {
     public int getSnoozeCounter(){return snoozeCounter;}
     @Override
     public void setSnoozeCounter(int snoozeCounter){this.snoozeCounter = snoozeCounter;}
+
+    public int getMinBetweenSnooze() { return minBetweenSnooze; }
+    public void setMinBetweenSnooze(int minBetweenSnooze) { this.minBetweenSnooze = minBetweenSnooze; }
+    public long getNextAwakeTime() { return nextAwakeTime; }
+    public void setNextAwakeTime(long nextAwakeTime) { this.nextAwakeTime = nextAwakeTime; }
 
     @Override
     public int getHour() { return hour; }

@@ -1,35 +1,27 @@
 package cs121.hmc.edu.remindme;
 
 
-//import android.app.ListActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.util.Log;
+import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-//import android.view.View;
-//import android.widget.Button;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
-//import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.CompoundButton;
 import android.widget.ListView;
 import android.widget.TextView;
-//import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import com.hudomju.swipe.SwipeToDismissTouchListener;
 import com.hudomju.swipe.adapter.ListViewAdapter;
 
 import java.util.List;
-
-//import static android.widget.Toast.LENGTH_SHORT;
 
 public class AlarmListActivity extends ActionBarActivity {
 
@@ -46,7 +38,8 @@ public class AlarmListActivity extends ActionBarActivity {
         mContext = this;
         mAdapter = new AlarmListAdapter(this, dbHelper.getAlarms());
         setContentView(R.layout.activity_alarm_list);
-        ListView alarmList=(ListView)findViewById(R.id.list);
+
+        ListView alarmList=(ListView)findViewById(R.id.alarm_list);
 
         alarmList.setAdapter(mAdapter);
         touchListener =
@@ -92,7 +85,7 @@ public class AlarmListActivity extends ActionBarActivity {
     }
 
     @Override
-    protected  void onActivityResult(int requestCode, int resultCode, Intent data) {
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if(resultCode == RESULT_OK) {
             mAdapter.setAlarms(dbHelper.getAlarms());
@@ -103,10 +96,10 @@ public class AlarmListActivity extends ActionBarActivity {
     public void setAlarmEnabled(long id, boolean isEnabled) {
         AlarmManagerHelper.cancelAlarms(this);
         AlarmModel model = dbHelper.getAlarm(id);
+
         model.setEnabled(isEnabled);
         dbHelper.deleteAlarm(id);
         dbHelper.createAlarm(model);
-
         // refreshing the adapter after the state of the toggle has changed
         // in the first list view item
         AlarmManagerHelper.setAlarms(this);
@@ -183,6 +176,10 @@ public class AlarmListActivity extends ActionBarActivity {
 //            txtTime.setText(String.format("%02d : %02d", model.timeHour, model.timeMinute));
             TextView txtName = (TextView) convertView.findViewById(R.id.alarm_item_name);
             txtName.setText(model.name);
+            TextView snoozeTime = (TextView) convertView.findViewById(R.id.alarm_snoozeTime);
+            snoozeTime.setText("" + model.getSnooze() + " min snooze");
+            TextView reminderTime = (TextView) convertView.findViewById(R.id.alarm_reminderCount);
+            reminderTime.setText("Reminders:" + model.getReminders().size());
 
             ToggleButton btnToggle = (ToggleButton) convertView.findViewById(R.id.alarm_item_toggle);
             btnToggle.setChecked(model.isEnabled());

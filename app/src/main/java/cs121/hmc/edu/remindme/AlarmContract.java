@@ -19,6 +19,7 @@ public final class AlarmContract {
         public static final String COLUMN_NAME_ALARM_TIME_MINUTE = "minute";
         public static final String COLUMN_NAME_ALARM_SNOOZE = "snooze"; //time in minutes for a snooze
         public static final String COLUMN_NAME_ALARM_SNOOZE_COUNTER = "snooze_counter";//number of times snooze has been hit
+        public static final String COLUMN_NAME_ALARM_NEXT_AWAKE_TIME = "next_awake"; // Next time to awake from snooze
         public static final String COLUMN_NAME_ALARM_ENABLED = "isEnabled";
         public static final String COLUMN_NAME_ALARM_ONE_TIME = "one_time";
         public static final String COLUMN_NAME_ALARM_DAILY = "daily";

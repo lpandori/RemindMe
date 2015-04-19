@@ -1,8 +1,7 @@
 package cs121.hmc.edu.remindme;
 
-import android.net.Uri;
-
 import java.util.ArrayList;
+import java.util.Calendar;
 
 /**
  * Created by heatherseaman on 2/14/15.
@@ -106,6 +105,9 @@ public class AlarmModel {
                     }
                 }
             }
+        }
+        if (currentSmallest - Calendar.getInstance().getTimeInMillis() < 1000) {
+            return -1;
         }
         return currentSmallest;
     }

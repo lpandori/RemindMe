@@ -7,10 +7,13 @@ import java.util.Calendar;
  */
 public class DailyReminder implements ReminderTime{
 
-    private long id;
+    private long id = -1;
     private int snoozeCounter;
+    private int minBetweenSnooze = DEFAULT_MIN_BETWEEN_SNOOZE;
+    private long nextAwakeTime = 0;
     private int hour;
     private int min;
+    private Calendar date;
 
     //constructor for a daily repeating reminder
     //id is the same id in db
@@ -19,6 +22,13 @@ public class DailyReminder implements ReminderTime{
         //this.id = id; TODO removed reminder
         this.hour = hour;
         this.min = min;
+
+        date = Calendar.getInstance();
+
+
+        date.set(Calendar.HOUR_OF_DAY, hour);
+        date.set(Calendar.MINUTE, min);
+        date.set(Calendar.SECOND, 00);
     }
 
     //return what type of reminder it is
@@ -33,7 +43,13 @@ public class DailyReminder implements ReminderTime{
 
     //return string rep of one time event (will be empty string for non-relevants)
     @Override
-    public String getDateString(){ return ""; }
+    public String getDateString(){
+        String  minStr = ((""+min).length() == 2) ? ""+min : "0"+min;
+        String  hourStr = ((""+hour).length() == 2) ? ""+hour : "0"+hour;
+        String date = hourStr + "-" +  minStr;
+
+        return date;
+    }
 
     //return int for the week of each month the alarm goes off (-1 if not applicable)
     @Override
@@ -51,6 +67,11 @@ public class DailyReminder implements ReminderTime{
     @Override
     public void setSnoozeCounter(int snoozeCounter){this.snoozeCounter = snoozeCounter;}
 
+    public int getMinBetweenSnooze() { return minBetweenSnooze; }
+    public void setMinBetweenSnooze(int minBetweenSnooze) { this.minBetweenSnooze = minBetweenSnooze; }
+    public long getNextAwakeTime() { return nextAwakeTime; }
+    public void setNextAwakeTime(long nextAwakeTime) { this.nextAwakeTime = nextAwakeTime; }
+
     @Override
     public int getHour() { return hour; }
 
@@ -60,28 +81,31 @@ public class DailyReminder implements ReminderTime{
     @Override
     public long getNextTime() {
         Calendar now = Calendar.getInstance();
-        Calendar setTime = Calendar.getInstance();//time when setting next alarm
-        int nowHour = now.get(Calendar.HOUR_OF_DAY);
-        int nowMin = now.get(Calendar.MINUTE);
 
-        setTime.set(Calendar.SECOND, 00);
-        //if haven't had alarm today
-        if(hour > nowHour || (nowHour == hour && min > nowMin)){
-            //set for today
-            setTime.set(Calendar.HOUR_OF_DAY, hour);
-            setTime.set(Calendar.MINUTE, min);
+        Calendar setTime = Calendar.getInstance();
+        setTime.set(Calendar.HOUR_OF_DAY, hour);
+        setTime.set(Calendar.MINUTE, min);
 
-        }else{
-            //set for tomorrow
-            setTime.set(Calendar.HOUR_OF_DAY, hour);
-            setTime.set(Calendar.MINUTE, min);
-            setTime.add(Calendar.DATE, 1); //set reminder for tomorrow
+        // According to the daily schedule
+        Calendar timeBySchedule = Calendar.getInstance();
+        timeBySchedule.set(Calendar.HOUR_OF_DAY, hour);
+        timeBySchedule.set(Calendar.MINUTE, min);
+        timeBySchedule.set(Calendar.SECOND, 0);
+        if (timeBySchedule.before(now)) {
+            // The next reminder will be tomorrow
+            timeBySchedule.add(Calendar.DATE, 1);
         }
-        return setTime.getTimeInMillis() + snoozeCounter*minToMillis;
+
+        // See if the snooze should take priority
+        if (getNextAwakeTime() > now.getTimeInMillis()) {
+            return Math.min(timeBySchedule.getTimeInMillis(), getNextAwakeTime());
+        } else {
+            return timeBySchedule.getTimeInMillis();
+        }
     }
 
     @Override
     public boolean hasNextTime() {
-        return true;//daily will always have an upcoming time
+        return true;
     }
 }

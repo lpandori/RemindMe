@@ -18,8 +18,10 @@ public class WeeklyReminder implements ReminderTime {
     //note: although sunday is in our array at index 0, Calendar.SUNDAY = 1
     //(i.e. DAY_OF_WEEK is 1-7)
 
-    private long id;
+    private long id = -1;
     private int snoozeCounter = 0;
+    private int minBetweenSnooze = DEFAULT_MIN_BETWEEN_SNOOZE;
+    private long nextAwakeTime = 0;
     boolean[] weekdays;
     int hour;
     int min;
@@ -27,7 +29,6 @@ public class WeeklyReminder implements ReminderTime {
     //construct a weekly reminder
     //weekdays - boolean array indicating which weekdays to repeat on
     public WeeklyReminder(int hour, int min, boolean[] weekdays){
-        //this.id = id;TODO removed reminder
         this.weekdays = weekdays;
         this.hour = hour;
         this.min = min;
@@ -81,6 +82,11 @@ public class WeeklyReminder implements ReminderTime {
     @Override
     public void setSnoozeCounter(int snoozeCounter){this.snoozeCounter = snoozeCounter;}
 
+    public int getMinBetweenSnooze() { return minBetweenSnooze; }
+    public void setMinBetweenSnooze(int minBetweenSnooze) { this.minBetweenSnooze = minBetweenSnooze; }
+    public long getNextAwakeTime() { return nextAwakeTime; }
+    public void setNextAwakeTime(long nextAwakeTime) { this.nextAwakeTime = nextAwakeTime; }
+
     @Override
     public int getHour() { return hour; }
 
@@ -99,7 +105,7 @@ public class WeeklyReminder implements ReminderTime {
         int nowMin = now.get(Calendar.MINUTE);
         setTime.set(Calendar.HOUR_OF_DAY, hour);
         setTime.set(Calendar.MINUTE, min);
-        setTime.set(Calendar.SECOND, 00);
+        setTime.set(Calendar.SECOND, 0);
 
         //check if alarm needs to happen today
         if(weekdays[nowWeekday-1] && (hour > nowHour || (nowHour == hour && min > nowMin))){

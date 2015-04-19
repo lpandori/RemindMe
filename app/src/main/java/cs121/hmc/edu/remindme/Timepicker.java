@@ -1,9 +1,11 @@
 package cs121.hmc.edu.remindme;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TimePicker;
@@ -13,7 +15,7 @@ import java.util.Calendar;
 /**
  * Created by rachelleholmgren on 3/26/15.
  */
-public class Timepicker extends Activity {
+public class Timepicker extends ActionBarActivity {
         private TimePicker timePicker;
         private Button button;
         private AlarmDBHelper dbHelper = new AlarmDBHelper(this);
@@ -27,6 +29,8 @@ public class Timepicker extends Activity {
             final int reminderType = prevIntent.getIntExtra(AlarmFrequency.REMINDER_TYPE, -1);
             final boolean existingModel = prevIntent.getBooleanExtra(AlarmDetailsActivity.EXISTING_MODEL, false);
             final long existingModelId = prevIntent.getLongExtra(AlarmDetailsActivity.EXISTING_MODEL_ID, -1);
+            final int minBetweenSnooze = prevIntent.getIntExtra(AlarmDetailsActivity.MIN_BETWEEN_SNOOZE, ReminderTime.DEFAULT_MIN_BETWEEN_SNOOZE);
+
 
             final Context context = this;
             setContentView(R.layout.time_picker);
@@ -63,30 +67,58 @@ public class Timepicker extends Activity {
                             r = new MonthlyReminder(hour, minute, weekNumber, weekdays);
                             break;
                     }
-
+                    r.setMinBetweenSnooze(minBetweenSnooze);
+                    Intent i = new Intent(Timepicker.this, AlarmDetailsActivity.class);
                     if(!existingModel){
                         AlarmModel alarmModel = new AlarmModel(alarmName);
-                        alarmModel.setId(System.currentTimeMillis());
+                        // we create a unique id using the system time
+                        long alarmId = System.currentTimeMillis();
+                        alarmModel.setId(alarmId);
                         alarmModel.addReminder(r);
+                        i.putExtra(AlarmDetailsActivity.EXISTING_MODEL_ID, alarmId);
+
                         dbHelper.createAlarm(alarmModel);//add to db
                     }else{
                         AlarmModel alarmModel = dbHelper.getAlarm(existingModelId);
                         alarmModel.addReminder(r);
                         dbHelper.deleteAlarm(existingModelId);
                         dbHelper.createAlarm(alarmModel);
+                        i.putExtra(AlarmDetailsActivity.EXISTING_MODEL_ID, existingModelId);
+
                         System.out.println("added new reminder time");
 
                     }
                     AlarmManagerHelper.setAlarms(context);//trigger setting alarm
 
 
-                    Intent i = new Intent(Timepicker.this, AlarmListActivity.class);
+
+                    i.putExtra(AlarmDetailsActivity.ALARM_NAME, alarmName);
+
                     // pass timePicker.getCurrentHour() &&
                     //timePicker.getCurrentMinute() as extras
                     startActivity(i);
                 }
             });
         }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_cancel, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.cancel_button: {
+                Intent intent = new Intent(this, AlarmListActivity.class);
+                startActivity(intent);
+                return true;
+            }
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
         public void setCurrentTimeOnView(){
             timePicker = (TimePicker) findViewById(R.id.test);
             final Calendar c = Calendar.getInstance();

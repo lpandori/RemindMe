@@ -5,6 +5,9 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -13,14 +16,13 @@ import android.widget.Spinner;
 /**
  * Created by rachelleholmgren on 3/7/15.
  */
-public class AlarmMonthly extends Activity {
+public class AlarmMonthly extends ActionBarActivity {
 
     public static final String WEEK_NUMBER = "week_number";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.set_month);
 
         final Spinner whichWeek = (Spinner) findViewById(R.id.which_week);
@@ -63,5 +65,23 @@ public class AlarmMonthly extends Activity {
             }
         });
 
+    }
+    @Override
+      public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_cancel, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.cancel_button: {
+                Intent intent = new Intent(this, AlarmListActivity.class);
+                startActivity(intent);
+                return true;
+            }
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 }

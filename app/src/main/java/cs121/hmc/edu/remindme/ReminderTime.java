@@ -14,6 +14,8 @@ public interface ReminderTime {
     public static int WEEKLY = 3;
     public static int MONTHLY = 4;
 
+    public static int DEFAULT_MIN_BETWEEN_SNOOZE = 1;
+
     public static int minToMillis = 60000;
 
     //return what type of reminder it is
@@ -41,6 +43,12 @@ public interface ReminderTime {
     //getter and setter for snoozeCounter
     public int getSnoozeCounter();
     public void setSnoozeCounter(int snoozeCounter);
+
+    public int getMinBetweenSnooze();
+    public void setMinBetweenSnooze(int minBetweenSnooze);
+
+    public long getNextAwakeTime();
+    public void setNextAwakeTime(long nextAwakeTime);
 
     //returns the soonest upcoming alarm time (in milliseconds)
     public long getNextTime();

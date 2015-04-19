@@ -15,7 +15,6 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true"
-        android:layout_below="@+id/divider1"
         android:checked="true"
         android:text="@string/details_sunday" />
 
@@ -108,7 +107,7 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true"
-        android:layout_below="@+id/alarm_ringtone_container" />
+        />
 
     <Button
         style = "@style/actionbutton"

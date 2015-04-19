@@ -154,11 +154,11 @@
             android:layout_alignParentRight="true"
             android:layout_alignParentStart="true"
             android:layout_alignParentEnd="true"
-            android:layout_below="@+id/alarm_ringtone_container" />
+            android:layout_below="@+id/divider4" />
 
         <Button
             style = "@style/actionbutton"
-            android:id="@+id/btn_next"
+            android:id="@+id/btn_done"
             android:text= "Next"
             android:textSize="30sp"
             android:layout_width="match_parent"
