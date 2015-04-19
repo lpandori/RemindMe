@@ -19,9 +19,7 @@ import java.util.List;
 public class AlarmManagerHelper extends BroadcastReceiver{
     public static final String REMINDER_ID = "id";
     public static final String NAME = "name";
-    //public static final String TIME_HOUR = "timeHour";
-    //public static final String TIME_MINUTE = "timeMinute";
-    //public static final String TONE = "alarmTone";
+    public static final String TONE = "alarmTone";
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -91,6 +89,7 @@ public class AlarmManagerHelper extends BroadcastReceiver{
         //from the model get currentreminder id :)
 
         intent.putExtra(NAME, model.name);
+        intent.putExtra(TONE, model.alarmTone.toString());
         intent.putExtra(REMINDER_ID, model.getReminderId());//TODO catch -1 case here?
         return PendingIntent.getService(context, (int) model.getId(), intent, PendingIntent.FLAG_UPDATE_CURRENT);
 

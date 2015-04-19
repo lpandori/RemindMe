@@ -45,11 +45,13 @@ public class AlarmDetailsActivity extends ActionBarActivity {
     public static String ALARM_HOUR = "timeHour";
     public static String ALARM_MINUTE = "timeMinute";
     public static String ALARM_NAME = "alarm-title";
+    public static String ALARM_TONE = "alarm_tone";
     public static String alarmTitle = "";
     public static String REMINDER_ID = "reminder_id";
     public static String WEEK_OF_MONTH = "week_month";
     public static String WEEKDAYS = "week_days";
     public static long alarmId = -1;
+    public static String alarm_tone = "Default";
 
 
     @Override
@@ -61,6 +63,7 @@ public class AlarmDetailsActivity extends ActionBarActivity {
         Intent prevIntent = getIntent(); // gets the previously created intent
         alarmId = prevIntent.getLongExtra(EXISTING_MODEL_ID, -1);
         alarmTitle = prevIntent.getStringExtra(ALARM_NAME);
+        alarm_tone = prevIntent.getStringExtra(ALARM_TONE);
         ArrayList<ReminderTime> reminderList = dbHelper.getAlarm(alarmId).getReminders();
 
         mContext = this;
@@ -78,6 +81,7 @@ public class AlarmDetailsActivity extends ActionBarActivity {
                 Intent intent = new Intent(mContext, AlarmFrequency.class);
                 intent.putExtra(EXISTING_MODEL_ID, alarmId);//need model id
                 intent.putExtra(SetName.ALARM_NAME, alarmTitle);
+                intent.putExtra(SetName.ALARM_TONE, alarm_tone);
                 intent.putExtra(EXISTING_MODEL, true);
                 //need model
                 startActivity(intent);
@@ -229,6 +233,7 @@ public class AlarmDetailsActivity extends ActionBarActivity {
                             //parse date
                             String dString = reminderTime.getDateString();//in format yyyy-mm-dd
                             j.putExtra(REMINDER_ID, reminderId);
+                            j.putExtra(ALARM_TONE, alarm_tone);
                             j.putExtra(ALARM_DATE, dString);
                             j.putExtra(ALARM_HOUR, reminderTime.getHour());
                             j.putExtra(ALARM_MINUTE, reminderTime.getMin());
@@ -242,6 +247,7 @@ public class AlarmDetailsActivity extends ActionBarActivity {
                             j.putExtra(ALARM_HOUR, reminderTime.getHour());
                             j.putExtra(ALARM_MINUTE, reminderTime.getMin());
                             j.putExtra(ALARM_NAME, alarmTitle);
+                            j.putExtra(ALARM_TONE, alarm_tone);
                             j.putExtra(EXISTING_MODEL_ID, alarmId);
                             mContext.startActivity(j);
                             break;
@@ -251,6 +257,7 @@ public class AlarmDetailsActivity extends ActionBarActivity {
                             j.putExtra(ALARM_HOUR, reminderTime.getHour());
                             j.putExtra(ALARM_MINUTE, reminderTime.getMin());
                             j.putExtra(ALARM_NAME, alarmTitle);
+                            j.putExtra(ALARM_TONE, alarm_tone);
                             j.putExtra(EXISTING_MODEL_ID, alarmId);
                             mContext.startActivity(j);
                             break;
@@ -261,6 +268,7 @@ public class AlarmDetailsActivity extends ActionBarActivity {
                             j.putExtra(ALARM_HOUR, reminderTime.getHour());
                             j.putExtra(ALARM_MINUTE, reminderTime.getMin());
                             j.putExtra(ALARM_NAME, alarmTitle);
+                            j.putExtra(ALARM_TONE, alarm_tone);
                             j.putExtra(EXISTING_MODEL_ID, alarmId);
 
                             mContext.startActivity(j);
@@ -293,6 +301,7 @@ public class AlarmDetailsActivity extends ActionBarActivity {
                                 j.putExtra(ALARM_HOUR, reminderTime.getHour());
                                 j.putExtra(ALARM_MINUTE, reminderTime.getMin());
                                 j.putExtra(ALARM_NAME, alarmTitle);
+                                j.putExtra(ALARM_TONE, alarm_tone);
                                 j.putExtra(EXISTING_MODEL_ID, alarmId);
 
                                 mContext.startActivity(j);
@@ -303,6 +312,7 @@ public class AlarmDetailsActivity extends ActionBarActivity {
                                 j.putExtra(ALARM_HOUR, reminderTime.getHour());
                                 j.putExtra(ALARM_MINUTE, reminderTime.getMin());
                                 j.putExtra(ALARM_NAME, alarmTitle);
+                                j.putExtra(ALARM_TONE, alarm_tone);
                                 j.putExtra(EXISTING_MODEL_ID, alarmId);
                                 mContext.startActivity(j);
                                 break;
@@ -313,6 +323,7 @@ public class AlarmDetailsActivity extends ActionBarActivity {
                                 j.putExtra(ALARM_HOUR, reminderTime.getHour());
                                 j.putExtra(ALARM_MINUTE, reminderTime.getMin());
                                 j.putExtra(ALARM_NAME, alarmTitle);
+                                j.putExtra(ALARM_TONE, alarm_tone);
                                 j.putExtra(EXISTING_MODEL_ID, alarmId);
                                 mContext.startActivity(j);
                                 break;
@@ -324,6 +335,7 @@ public class AlarmDetailsActivity extends ActionBarActivity {
                                 j.putExtra(ALARM_HOUR, reminderTime.getHour());
                                 j.putExtra(ALARM_MINUTE, reminderTime.getMin());
                                 j.putExtra(ALARM_NAME, alarmTitle);
+                                j.putExtra(ALARM_TONE, alarm_tone);
                                 j.putExtra(EXISTING_MODEL_ID, alarmId);
 
                                 mContext.startActivity(j);

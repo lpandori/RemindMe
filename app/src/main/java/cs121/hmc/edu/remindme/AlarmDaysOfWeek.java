@@ -52,6 +52,7 @@ public class AlarmDaysOfWeek extends ActionBarActivity {
         final int reminderType = prevIntent.getIntExtra(AlarmFrequency.REMINDER_TYPE, -1);
         final boolean existingModel = prevIntent.getBooleanExtra(AlarmDetailsActivity.EXISTING_MODEL, false);
         final long existingModelId = prevIntent.getLongExtra(AlarmDetailsActivity.EXISTING_MODEL_ID, -1);
+        final String alarmTone = prevIntent.getStringExtra(SetName.ALARM_TONE);
 
         next.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -66,6 +67,7 @@ public class AlarmDaysOfWeek extends ActionBarActivity {
 
                    Intent i = new Intent(AlarmDaysOfWeek.this, Timepicker.class);
                    i.putExtra(SetName.ALARM_NAME, alarmName);
+                   i.putExtra(SetName.ALARM_TONE, alarmTone);
                    i.putExtra(AlarmDetailsActivity.EXISTING_MODEL, existingModel);
                    i.putExtra(AlarmDetailsActivity.EXISTING_MODEL_ID, existingModelId);
                    i.putExtra(AlarmFrequency.REMINDER_TYPE, reminderType);

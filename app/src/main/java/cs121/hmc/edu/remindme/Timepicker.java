@@ -30,6 +30,8 @@ public class Timepicker extends ActionBarActivity {
             final int reminderType = prevIntent.getIntExtra(AlarmFrequency.REMINDER_TYPE, -1);
             final boolean existingModel = prevIntent.getBooleanExtra(AlarmDetailsActivity.EXISTING_MODEL, false);
             final long existingModelId = prevIntent.getLongExtra(AlarmDetailsActivity.EXISTING_MODEL_ID, -1);
+            final String alarmTone = prevIntent.getStringExtra(SetName.ALARM_TONE);
+            System.out.println(alarmTone);
 
             final Context context = this;
             setContentView(R.layout.time_picker);
@@ -69,6 +71,7 @@ public class Timepicker extends ActionBarActivity {
 
                     if(!existingModel){
                         AlarmModel alarmModel = new AlarmModel(alarmName);
+                        alarmModel.setAlarmTone(alarmTone);
                         alarmModel.setId(System.currentTimeMillis());
                         alarmModel.addReminder(r);
                         dbHelper.createAlarm(alarmModel);//add to db
@@ -81,7 +84,8 @@ public class Timepicker extends ActionBarActivity {
 
                     }
                     AlarmManagerHelper.setAlarms(context);//trigger setting alarm
-
+                    System.out.println("ALARM NAME IS " + alarmName);
+                    System.out.println("ALARM TONE IS " + alarmTone);
 
                     Intent i = new Intent(Timepicker.this, AlarmListActivity.class);
                     // pass timePicker.getCurrentHour() &&

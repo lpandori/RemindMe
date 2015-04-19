@@ -3,7 +3,9 @@ package cs121.hmc.edu.remindme;
 import android.app.Activity;
 import android.content.ClipData;
 import android.content.Context;
+import android.media.AudioManager;
 import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.PowerManager;
@@ -36,7 +38,9 @@ public class AlarmScreen extends Activity {
         //Setting up layout
         this.setContentView(R.layout.alarm_screen);
         String name = getIntent().getStringExtra(AlarmManagerHelper.NAME);
+        String tone = getIntent().getStringExtra(AlarmManagerHelper.TONE);
         reminderId = getIntent().getLongExtra(AlarmManagerHelper.REMINDER_ID, -1);
+
 
         TextView tvName = (TextView) findViewById(R.id.alarm_screen_name);
         tvName.setText(name);
@@ -55,22 +59,22 @@ public class AlarmScreen extends Activity {
         findViewById(R.id.dismiss_end).setOnDragListener(new DismissDragListener());
 
 
-//        String tone = getIntent().getStringExtra(AlarmManagerHelper.TONE);
-//        mPlayer = new MediaPlayer();
-//        try {
-//            if (tone != null && !tone.equals("")) {
-//                Uri toneUri = Uri.parse(tone);
-//                if (toneUri != null) {
-//                    mPlayer.setDataSource(this, toneUri);
-//                    mPlayer.setAudioStreamType(AudioManager.STREAM_ALARM);
-//                    mPlayer.setLooping(true);
-//                    mPlayer.prepare();
-//                    mPlayer.start();
-//                }
-//            }
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
+
+        mPlayer = new MediaPlayer();
+        try {
+            if (tone != null && !tone.equals("")) {
+                Uri toneUri = Uri.parse(tone);
+                if (toneUri != null) {
+                    mPlayer.setDataSource(this, toneUri);
+                    mPlayer.setAudioStreamType(AudioManager.STREAM_ALARM);
+                    mPlayer.setLooping(true);
+                    mPlayer.prepare();
+                    mPlayer.start();
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         // Add respond action to snooze button - UI for Snooze
         Button snoozeButton = (Button) findViewById(R.id.snooze);
         snoozeButton.setOnClickListener(new View.OnClickListener() {
@@ -80,6 +84,7 @@ public class AlarmScreen extends Activity {
                 AlarmDBHelper dbHelper = new AlarmDBHelper(context);
                 dbHelper.snoozeReminder(reminderId);
                 AlarmManagerHelper.setAlarms(context);
+                mPlayer.stop();
                 finish();
             }
         });

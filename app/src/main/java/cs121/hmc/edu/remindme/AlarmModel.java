@@ -1,5 +1,7 @@
 package cs121.hmc.edu.remindme;
 
+import android.media.Ringtone;
+import android.media.RingtoneManager;
 import android.net.Uri;
 
 import java.util.ArrayList;
@@ -19,11 +21,11 @@ public class AlarmModel {
     public static final int SATURDAY = 6;
 
     private long id = -1; //TODO remove
-    //public Uri alarmTone;
     public String name;
     private int snooze = 20;//TODO set default for snooze (will remove later)
     private boolean isEnabled = true;
     private ArrayList<ReminderTime> reminders;
+    public Uri alarmTone;
     private ReminderTime currentSet;
 
     /**
@@ -32,6 +34,7 @@ public class AlarmModel {
     public AlarmModel(String name) {
         this.name = name;
         reminders = new ArrayList<ReminderTime>();
+        alarmTone = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
     }
 
     //setter and getter for model id
@@ -44,7 +47,6 @@ public class AlarmModel {
 
     //return the id of the reminder time that is the most upcoming
     public long getReminderId(){
-
         if(currentSet != null) {
             return currentSet.getId();
         }else{
@@ -83,6 +85,15 @@ public class AlarmModel {
     //enable or disable
     public void setEnabled(boolean isEnabled) {
         this.isEnabled = isEnabled;
+    }
+
+    public Uri getAlarmTone() {
+        return alarmTone;
+    }
+
+    public void setAlarmTone(String alarm) {
+       Uri converted = Uri.parse(alarm);
+       alarmTone = converted;
     }
 
     //from the list of reminders return the next one (closest upcoming)
