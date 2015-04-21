@@ -72,6 +72,10 @@ public class SetName extends ActionBarActivity {
         if(resultCode == RESULT_OK){
             switch(requestCode){
                 case 1: {
+                      Uri ringtone = data.getParcelableExtra(RingtoneManager.EXTRA_RINGTONE_PICKED_URI);
+                      RingtoneManager.setActualDefaultRingtoneUri(this,RingtoneManager.TYPE_NOTIFICATION, ringtone);
+
+
                       alarmModel.alarmTone = data.getParcelableExtra(RingtoneManager.EXTRA_RINGTONE_PICKED_URI);
                       TextView txtToneSelection = (TextView) findViewById(R.id.alarm_label_tone_selection);
                       txtToneSelection.setText(RingtoneManager.getRingtone(this, alarmModel.alarmTone).getTitle(this));

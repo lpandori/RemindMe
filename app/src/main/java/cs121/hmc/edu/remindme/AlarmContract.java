@@ -28,7 +28,7 @@ public final class AlarmContract {
         public static final String COLUMN_NAME_ALARM_WHICH_WEEKDAYS = "whichweekdays";
         public static final String COLUMN_NAME_ALARM_WHICH_WEEK_OF_MONTH = "whichweekofmonth";
                     //(1st, 2nd, 3rd, 4th)
-        public static final String COLUMN_NAME_ALARM_TONE = "alarm_tone";
+        public static final String COLUMN_NAME_ALARM_TONE = "tone";
 
     }
 

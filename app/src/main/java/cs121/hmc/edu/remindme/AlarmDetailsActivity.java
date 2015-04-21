@@ -81,6 +81,7 @@ public class AlarmDetailsActivity extends ActionBarActivity {
                 Intent intent = new Intent(mContext, AlarmFrequency.class);
                 intent.putExtra(EXISTING_MODEL_ID, alarmId);//need model id
                 intent.putExtra(SetName.ALARM_NAME, alarmTitle);
+                System.out.println("ALARM TONE FROM DETAILS is " + alarm_tone);
                 intent.putExtra(SetName.ALARM_TONE, alarm_tone);
                 intent.putExtra(EXISTING_MODEL, true);
                 //need model
@@ -139,9 +140,6 @@ public class AlarmDetailsActivity extends ActionBarActivity {
             mContext = context;
             mReminders = reminders;
         }
-
-
-//
 
         /*
          * Gets the count of the number of reminder times
@@ -239,7 +237,6 @@ public class AlarmDetailsActivity extends ActionBarActivity {
                             j.putExtra(ALARM_MINUTE, reminderTime.getMin());
                             j.putExtra(ALARM_NAME, alarmTitle);
                             j.putExtra(EXISTING_MODEL_ID, alarmId);
-
                             mContext.startActivity(j);
                             break;
                         case ReminderTime.DAILY:

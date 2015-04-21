@@ -89,6 +89,7 @@ public class AlarmManagerHelper extends BroadcastReceiver{
         //from the model get currentreminder id :)
 
         intent.putExtra(NAME, model.name);
+        System.out.println("TONE FROM MANAGER HELPER IS: " + model.alarmTone.toString());
         intent.putExtra(TONE, model.alarmTone.toString());
         intent.putExtra(REMINDER_ID, model.getReminderId());//TODO catch -1 case here?
         return PendingIntent.getService(context, (int) model.getId(), intent, PendingIntent.FLAG_UPDATE_CURRENT);

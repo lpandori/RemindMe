@@ -5,6 +5,8 @@ import android.content.ClipData;
 import android.content.Context;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
+import android.media.Ringtone;
+import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -39,6 +41,7 @@ public class AlarmScreen extends Activity {
         this.setContentView(R.layout.alarm_screen);
         String name = getIntent().getStringExtra(AlarmManagerHelper.NAME);
         String tone = getIntent().getStringExtra(AlarmManagerHelper.TONE);
+        System.out.println("TONE IS FROM ALARM SCREEN: " + tone);
         reminderId = getIntent().getLongExtra(AlarmManagerHelper.REMINDER_ID, -1);
 
 
@@ -57,20 +60,34 @@ public class AlarmScreen extends Activity {
 
         findViewById(R.id.dismiss_start).setOnTouchListener(new DismissTouchListener());
         findViewById(R.id.dismiss_end).setOnDragListener(new DismissDragListener());
-
-
-
+//
+//        Uri toneUri = Uri.parse(tone);
+//        mPlayer = MediaPlayer.create(this, toneUri);
+//        mPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+//            @Override
+//            public void onPrepared(MediaPlayer mp) {
+//                mp.start();
+//            }
+//        });
         mPlayer = new MediaPlayer();
         try {
             if (tone != null && !tone.equals("")) {
                 Uri toneUri = Uri.parse(tone);
-                if (toneUri != null) {
-                    mPlayer.setDataSource(this, toneUri);
-                    mPlayer.setAudioStreamType(AudioManager.STREAM_ALARM);
-                    mPlayer.setLooping(true);
-                    mPlayer.prepare();
-                    mPlayer.start();
-                }
+                System.out.println("TONE is: " + tone);
+                System.out.println("URITONE is: " + toneUri);
+                Uri defaultRingtoneUri = RingtoneManager.getActualDefaultRingtoneUri(getApplicationContext(), RingtoneManager.TYPE_RINGTONE);
+                Ringtone defaultRingtone = RingtoneManager.getRingtone(getApplicationContext(), defaultRingtoneUri);
+                defaultRingtone.play();
+//                if (toneUri != null) {
+//                    mPlayer.setDataSource(this, toneUri);
+//                    mPlayer.setAudioStreamType(AudioManager.STREAM_ALARM);
+//                    mPlayer.setLooping(true);
+//                    mPlayer.prepare();
+//                    mPlayer.start();
+//                }
+//                else{
+//                    System.out.println("TONE URI IS NULL!");
+//                }
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -84,6 +101,7 @@ public class AlarmScreen extends Activity {
                 AlarmDBHelper dbHelper = new AlarmDBHelper(context);
                 dbHelper.snoozeReminder(reminderId);
                 AlarmManagerHelper.setAlarms(context);
+
                 mPlayer.stop();
                 finish();
             }

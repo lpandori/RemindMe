@@ -17,7 +17,7 @@ import java.util.List;
 
 public class AlarmDBHelper extends SQLiteOpenHelper {
 
-    public static final int DATABASE_VERSION = 2;
+    public static final int DATABASE_VERSION = 3;
     public static final String DATABASE_NAME = "alarmclock.db";
 
     private static final String SQL_CREATE_ALARM =
@@ -67,19 +67,20 @@ public class AlarmDBHelper extends SQLiteOpenHelper {
         AlarmModel alarmModel = new AlarmModel("test");
         int i = 0;
         while(c.moveToNext()){
-            if(i == 0){//need to look at the first row
+           if(i == 0){//need to look at the first row
                 String alarmName = c.getString(c.getColumnIndex(AlarmContract.Alarm.COLUMN_NAME_ALARM_NAME));
-                //alarmModel = new AlarmModel(alarmName);
+                alarmModel = new AlarmModel(alarmName);
                 boolean isEnabled = c.getInt(c.getColumnIndex(AlarmContract.Alarm.COLUMN_NAME_ALARM_ENABLED)) > 0;
                 long model_id = c.getLong(c.getColumnIndex(AlarmContract.Alarm.COLUMN_NAME_ALARM_ID));
                 int snooze = c.getInt(c.getColumnIndex(AlarmContract.Alarm.COLUMN_NAME_ALARM_SNOOZE));
-                alarmModel.alarmTone = c.getString(c.getColumnIndex(AlarmContract.Alarm.COLUMN_NAME_ALARM_TONE)) != "" ? Uri.parse(c.getString(c.getColumnIndex(AlarmContract.Alarm.COLUMN_NAME_ALARM_TONE))) : null;
-                //String alarmTone = c.getString(c.getColumnIndex(AlarmContract.Alarm.COLUMN_NAME_ALARM_TONE));
-                alarmModel = new AlarmModel(alarmName);
+                alarmModel.alarmTone = Uri.parse(c.getString(c.getColumnIndex(AlarmContract.Alarm.COLUMN_NAME_ALARM_TONE)));
+
+                //System.out.println("ALARM TONE IS : " + alarmTone);
+
                 alarmModel.setEnabled(isEnabled);
                 alarmModel.setId(model_id);
                 alarmModel.setSnooze(snooze);
-             //model.setAlarmTone(alarmTone);
+
             }
             i++;
 
@@ -153,7 +154,9 @@ public class AlarmDBHelper extends SQLiteOpenHelper {
     }
 
     private ContentValues populateReminderContent(ReminderTime r, long mId,
-                                                  String mName, boolean enabled, int snooze, long reminderId){
+                                                  String mName, boolean enabled, int snooze, long reminderId
+                                                  ,String tone
+                                                    ){
         ContentValues values = new ContentValues();
         if(r.getId() != -1){
             values.put(AlarmContract.Alarm._ID, r.getId());
@@ -168,7 +171,7 @@ public class AlarmDBHelper extends SQLiteOpenHelper {
         values.put(AlarmContract.Alarm.COLUMN_NAME_ALARM_WHICH_WEEKDAYS, r.getWeekdays());
         values.put(AlarmContract.Alarm.COLUMN_NAME_ALARM_WHICH_WEEK_OF_MONTH, r.getWeekOfMonth());
         values.put(AlarmContract.Alarm.COLUMN_NAME_ALARM_SNOOZE_COUNTER, r.getSnoozeCounter());
-        //values.put(AlarmContract.Alarm.COLUMN_NAME_ALARM_TONE, tone);
+        values.put(AlarmContract.Alarm.COLUMN_NAME_ALARM_TONE, tone);
 
         int isOneTime = 0;
         int isDaily = 0;
@@ -203,8 +206,10 @@ public class AlarmDBHelper extends SQLiteOpenHelper {
 
 
 
+            System.out.println("MODEL ALARM TONE: " + model.getAlarmTone().toString());
+
             ContentValues values = populateReminderContent(r, model.getId(), model.name,
-                    model.isEnabled(), model.getSnooze(), model.getReminderId());
+                    model.isEnabled(), model.getSnooze(), model.getReminderId(), model.getAlarmTone().toString());
 
             valueList.add(values);
 
@@ -234,7 +239,7 @@ public class AlarmDBHelper extends SQLiteOpenHelper {
         AlarmModel parentAlarm = getAlarm(mId);
 
         ContentValues rVals = populateReminderContent(reminder, parentAlarm.getId(),
-            parentAlarm.name, parentAlarm.isEnabled(), parentAlarm.getSnooze(), reminder.getId());
+            parentAlarm.name, parentAlarm.isEnabled(), parentAlarm.getSnooze(), reminder.getId(), parentAlarm.getAlarmTone().toString());
 
         long rId = reminder.getId();
 
