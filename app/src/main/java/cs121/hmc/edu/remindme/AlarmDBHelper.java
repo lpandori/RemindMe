@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.net.Uri;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -16,7 +17,7 @@ import java.util.List;
 
 public class AlarmDBHelper extends SQLiteOpenHelper {
 
-    public static final int DATABASE_VERSION = 1;
+    public static final int DATABASE_VERSION = 3;
     public static final String DATABASE_NAME = "alarmclock.db";
 
     private static final String SQL_CREATE_ALARM =
@@ -36,7 +37,8 @@ public class AlarmDBHelper extends SQLiteOpenHelper {
                     AlarmContract.Alarm.COLUMN_NAME_ALARM_MONTHLY+ " BOOLEAN," +
                     AlarmContract.Alarm.COLUMN_NAME_ALARM_DATE+ " TEXT," + //text as input type "yyyy-mm-dd"
                     AlarmContract.Alarm.COLUMN_NAME_ALARM_WHICH_WEEKDAYS+ " TEXT," + //stored as string of 0s and 1s, starting on sunday
-                    AlarmContract.Alarm.COLUMN_NAME_ALARM_WHICH_WEEK_OF_MONTH + " INTEGER" + " )";
+                    AlarmContract.Alarm.COLUMN_NAME_ALARM_WHICH_WEEK_OF_MONTH + " INTEGER," +
+                    AlarmContract.Alarm.COLUMN_NAME_ALARM_TONE + " TEXT" +" )";
 
 
     private static final String SQL_DELETE_AlARM = "DROP TABLE IF EXISTS " + AlarmContract.Alarm.TABLE_NAME;
@@ -62,19 +64,24 @@ public class AlarmDBHelper extends SQLiteOpenHelper {
     private AlarmModel populateModel(Cursor c) {
 
         //String alarmName = c.getString(c.getColumnIndex(AlarmContract.Alarm.COLUMN_NAME_ALARM_NAME));
-        AlarmModel model = null;// = new AlarmModel(alarmName);TODO using null feels hacky
-
+        //AlarmModel model = null;// = new AlarmModel(alarmName);TODO using null feels hacky
+        AlarmModel alarmModel = new AlarmModel("test");
         int i = 0;
         while(c.moveToNext()){
-            if(i == 0){//need to look at the first row
+           if(i == 0){//need to look at the first row
                 String alarmName = c.getString(c.getColumnIndex(AlarmContract.Alarm.COLUMN_NAME_ALARM_NAME));
+                alarmModel = new AlarmModel(alarmName);
                 boolean isEnabled = c.getInt(c.getColumnIndex(AlarmContract.Alarm.COLUMN_NAME_ALARM_ENABLED)) > 0;
                 long model_id = c.getLong(c.getColumnIndex(AlarmContract.Alarm.COLUMN_NAME_ALARM_ID));
                 int snooze = c.getInt(c.getColumnIndex(AlarmContract.Alarm.COLUMN_NAME_ALARM_SNOOZE));
-                model = new AlarmModel(alarmName);
-                model.setEnabled(isEnabled);
-                model.setId(model_id);
-                model.setSnooze(snooze);
+                alarmModel.alarmTone = Uri.parse(c.getString(c.getColumnIndex(AlarmContract.Alarm.COLUMN_NAME_ALARM_TONE)));
+
+                //System.out.println("ALARM TONE IS : " + alarmTone);
+
+                alarmModel.setEnabled(isEnabled);
+                alarmModel.setId(model_id);
+                alarmModel.setSnooze(snooze);
+
             }
             i++;
 
@@ -84,7 +91,7 @@ public class AlarmDBHelper extends SQLiteOpenHelper {
             int min = c.getInt(c.getColumnIndex(AlarmContract.Alarm.COLUMN_NAME_ALARM_TIME_MINUTE));
 
             long id = c.getLong(c.getColumnIndex(AlarmContract.Alarm._ID));
-            long nextAwakeTime = model.isEnabled() ? c.getLong(c.getColumnIndex(AlarmContract.Alarm.COLUMN_NAME_ALARM_NEXT_AWAKE_TIME)) : 0;
+            long nextAwakeTime = alarmModel.isEnabled() ? c.getLong(c.getColumnIndex(AlarmContract.Alarm.COLUMN_NAME_ALARM_NEXT_AWAKE_TIME)) : 0;
             int snoozeCounter = c.getInt(c.getColumnIndex(AlarmContract.Alarm.COLUMN_NAME_ALARM_SNOOZE_COUNTER));
 
             //find which reminder type is in this row
@@ -104,7 +111,7 @@ public class AlarmDBHelper extends SQLiteOpenHelper {
                 int month = Integer.parseInt(dateString.substring(5,7));
                 int day = Integer.parseInt(dateString.substring(8,10));
                 reminderTime = new OneTimeReminder(year, month, day, hour, min);
-                reminderTime.setMinBetweenSnooze(model.getSnooze());
+                reminderTime.setMinBetweenSnooze(alarmModel.getSnooze());
 
             }else if(isDaily){
 
@@ -127,17 +134,17 @@ public class AlarmDBHelper extends SQLiteOpenHelper {
 
             reminderTime.setSnoozeCounter(snoozeCounter);//TODO write
             reminderTime.setNextAwakeTime(nextAwakeTime);//TODO write
-            reminderTime.setMinBetweenSnooze(model.getSnooze());
+            reminderTime.setMinBetweenSnooze(alarmModel.getSnooze());
 
             reminderTime.setId(id);
 
-            model.addReminder(reminderTime);
+            alarmModel.addReminder(reminderTime);
         }
 
-        if(model.getReminders().size() == 0){
+        if(alarmModel.getReminders().size() == 0){
             return null;
         }else{
-            return model;
+            return alarmModel;
         }
 
     }
@@ -153,7 +160,9 @@ public class AlarmDBHelper extends SQLiteOpenHelper {
     }
 
     private ContentValues populateReminderContent(ReminderTime r, long mId,
-                                                  String mName, boolean enabled, int snooze){
+                                                  String mName, boolean enabled, int snooze, long reminderId
+                                                  ,String tone
+                                                    ){
         ContentValues values = new ContentValues();
         if(r.getId() != -1){
             values.put(AlarmContract.Alarm._ID, r.getId());
@@ -167,8 +176,12 @@ public class AlarmDBHelper extends SQLiteOpenHelper {
         values.put(AlarmContract.Alarm.COLUMN_NAME_ALARM_WHICH_WEEKDAYS, r.getWeekdays());
         values.put(AlarmContract.Alarm.COLUMN_NAME_ALARM_WHICH_WEEK_OF_MONTH, r.getWeekOfMonth());
         values.put(AlarmContract.Alarm.COLUMN_NAME_ALARM_SNOOZE_COUNTER, r.getSnoozeCounter());
+
         values.put(AlarmContract.Alarm.COLUMN_NAME_ALARM_SNOOZE, r.getMinBetweenSnooze());
         values.put(AlarmContract.Alarm.COLUMN_NAME_ALARM_NEXT_AWAKE_TIME, r.getNextAwakeTime());
+
+        values.put(AlarmContract.Alarm.COLUMN_NAME_ALARM_TONE, tone);
+
 
         int isOneTime = 0;
         int isDaily = 0;
@@ -197,8 +210,14 @@ public class AlarmDBHelper extends SQLiteOpenHelper {
     private ArrayList<ContentValues> populateContent(AlarmModel model) {
         ArrayList<ContentValues> valueList= new ArrayList<ContentValues>();
         for(ReminderTime r : model.getReminders()){
+
+
+            System.out.println("MODEL ALARM TONE: " + model.getAlarmTone().toString());
+
             ContentValues values = populateReminderContent(r, model.getId(), model.name,
-                    model.isEnabled(), model.getSnooze());
+                    model.isEnabled(), model.getSnooze(), model.getReminderId(), model.getAlarmTone().toString());
+
+
             valueList.add(values);
         }
         return valueList;
@@ -225,7 +244,7 @@ public class AlarmDBHelper extends SQLiteOpenHelper {
         AlarmModel parentAlarm = getAlarm(mId);
 
         ContentValues rVals = populateReminderContent(reminder, parentAlarm.getId(),
-            parentAlarm.name, parentAlarm.isEnabled(), parentAlarm.getSnooze());
+            parentAlarm.name, parentAlarm.isEnabled(), parentAlarm.getSnooze(), reminder.getId(), parentAlarm.getAlarmTone().toString());
 
         long rId = reminder.getId();
 
