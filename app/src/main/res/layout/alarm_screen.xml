@@ -26,10 +26,7 @@
         <!--android:layout_alignParentTop="false"-->
         <!--android:gravity="center_horizontal"-->
         <!--android:layout_centerHorizontal="true" />-->
-<<<<<<< HEAD
-=======
 
->>>>>>> rachelle
 
     <LinearLayout
         android:layout_width="match_parent"

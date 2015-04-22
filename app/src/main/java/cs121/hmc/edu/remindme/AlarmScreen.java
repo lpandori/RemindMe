@@ -11,6 +11,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.PowerManager;
+import android.util.Log;
 import android.view.DragEvent;
 import android.view.MotionEvent;
 import android.view.View;
@@ -31,11 +32,13 @@ public class AlarmScreen extends Activity {
     private PowerManager.WakeLock mWakeLock;
     private static final int WAKELOCK_TIMEOUT = 60 * 1000;
     private Context context= this;
+    private Context mContext;
     private long reminderId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mContext = getApplicationContext();
 
         //Setting up layout
         this.setContentView(R.layout.alarm_screen);
@@ -67,33 +70,24 @@ public class AlarmScreen extends Activity {
 
 
 
-//        String tone = getIntent().getStringExtra(AlarmManagerHelper.TONE);
-//        mPlayer = new MediaPlayer();
-//        try {
-//            if (tone != null && !tone.equals("")) {
-//                Uri toneUri = Uri.parse(tone);
 
-//
-//        Uri toneUri = Uri.parse(tone);
-//        mPlayer = MediaPlayer.create(this, toneUri);
-//        mPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-//            @Override
-//            public void onPrepared(MediaPlayer mp) {
-//                mp.start();
-//            }
-//        });
         mPlayer = new MediaPlayer();
         try {
             if (tone != null && !tone.equals("")) {
                 Uri toneUri = Uri.parse(tone);
+                //MediaPlayer mPlayer = MediaPlayer.create(mContext, toneUri);
+
                 System.out.println("TONE is: " + tone);
-                System.out.println("URITONE is: " + toneUri);
+                System.out.println("URITONE is: " + toneUri.toString());
 //                Uri defaultRingtoneUri = RingtoneManager.getActualDefaultRingtoneUri(getApplicationContext(), RingtoneManager.TYPE_RINGTONE);
 //                Ringtone defaultRingtone = RingtoneManager.getRingtone(getApplicationContext(), defaultRingtoneUri);
 //                defaultRingtone.play();
+                if(toneUri instanceof Uri){
+                    Log.d("URI?", "I AM A URI!!!!!!!!!!");
+                }
 
                 if (toneUri != null) {
-                    mPlayer.setDataSource(this, toneUri);
+                    mPlayer.setDataSource(getApplicationContext(), toneUri);
                     mPlayer.setAudioStreamType(AudioManager.STREAM_ALARM);
                     mPlayer.setLooping(true);
                     mPlayer.prepare();

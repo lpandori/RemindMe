@@ -29,13 +29,13 @@ public class Timepicker extends ActionBarActivity {
             final int reminderType = prevIntent.getIntExtra(AlarmFrequency.REMINDER_TYPE, -1);
             final boolean existingModel = prevIntent.getBooleanExtra(AlarmDetailsActivity.EXISTING_MODEL, false);
             final long existingModelId = prevIntent.getLongExtra(AlarmDetailsActivity.EXISTING_MODEL_ID, -1);
-<<<<<<< HEAD
+
             final int minBetweenSnooze = prevIntent.getIntExtra(AlarmDetailsActivity.MIN_BETWEEN_SNOOZE, ReminderTime.DEFAULT_MIN_BETWEEN_SNOOZE);
 
-=======
+
             final String alarmTone = prevIntent.getStringExtra(SetName.ALARM_TONE);
             System.out.println(alarmTone);
->>>>>>> rachelle
+
 
             final Context context = this;
             setContentView(R.layout.time_picker);
@@ -76,14 +76,14 @@ public class Timepicker extends ActionBarActivity {
                     Intent i = new Intent(Timepicker.this, AlarmDetailsActivity.class);
                     if(!existingModel){
                         AlarmModel alarmModel = new AlarmModel(alarmName);
-<<<<<<< HEAD
+
                         // we create a unique id using the system time
                         long alarmId = System.currentTimeMillis();
                         alarmModel.setId(alarmId);
-=======
+
                         alarmModel.setAlarmTone(alarmTone);
                         alarmModel.setId(System.currentTimeMillis());
->>>>>>> rachelle
+
                         alarmModel.addReminder(r);
                         i.putExtra(AlarmDetailsActivity.EXISTING_MODEL_ID, alarmId);
 
