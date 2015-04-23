@@ -1,6 +1,5 @@
 package cs121.hmc.edu.remindme;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,7 +7,6 @@ import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -30,6 +28,7 @@ public class EditDaily extends ActionBarActivity {
         int hour = thisIntent.getIntExtra(AlarmDetailsActivity.ALARM_HOUR, -1);
         int minute = thisIntent.getIntExtra(AlarmDetailsActivity.ALARM_MINUTE, -1);
         final String name = thisIntent.getStringExtra(AlarmDetailsActivity.ALARM_NAME);
+        final String alarm_tone = thisIntent.getStringExtra(AlarmDetailsActivity.ALARM_TONE);
         final long id = thisIntent.getLongExtra(AlarmDetailsActivity.EXISTING_MODEL_ID, -1);
         final long reminderId = thisIntent.getLongExtra(AlarmDetailsActivity.REMINDER_ID, 7);
 
@@ -57,6 +56,7 @@ public class EditDaily extends ActionBarActivity {
                 Intent i = new Intent(EditDaily.this, AlarmDetailsActivity.class);
                 i.putExtra(AlarmDetailsActivity.ALARM_NAME, name);
                 i.putExtra(AlarmDetailsActivity.EXISTING_MODEL_ID, id);
+                i.putExtra(AlarmDetailsActivity.ALARM_TONE, alarm_tone);
                 startActivity(i);
             }
         });

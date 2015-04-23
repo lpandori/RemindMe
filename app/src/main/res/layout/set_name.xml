@@ -36,6 +36,25 @@
         android:layout_height="wrap_content"
         android:inputType="number"/>
 
+    <LinearLayout
+        android:id = "@+id/alarm_ringtone_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="25dp">
+        <TextView
+            android:id="@+id/alarm_label_tone"
+            android:text="Alarm Tone"
+            android:textSize="18sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/alarm_label_tone_selection"
+            android:text="Silent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        </LinearLayout>
+
     <Button
         style = "@style/actionbutton"
         android:id= "@+id/btn_next"

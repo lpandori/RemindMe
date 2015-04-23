@@ -47,14 +47,19 @@ public class AlarmDetailsActivity extends ActionBarActivity {
     public static String ALARM_HOUR = "timeHour";
     public static String ALARM_MINUTE = "timeMinute";
     public static String ALARM_NAME = "alarm-title";
+    public static String ALARM_TONE = "alarm_tone";
     public static String alarmTitle = "";
     public static String REMINDER_ID = "reminder_id";
     public static String WEEK_OF_MONTH = "week_month";
     public static String WEEKDAYS = "week_days";
     public static String MIN_BETWEEN_SNOOZE = "snooze";
     public static long alarmId = -1;
+
     private static String[] weekdays = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
     private static String[] stringIndices = {"1st", "2nd", "3rd", "4th", "5th"};
+
+
+    public static String alarm_tone = "Default";
 
 
 
@@ -67,6 +72,7 @@ public class AlarmDetailsActivity extends ActionBarActivity {
         Intent prevIntent = getIntent(); // gets the previously created intent
         alarmId = prevIntent.getLongExtra(EXISTING_MODEL_ID, -1);
         alarmTitle = prevIntent.getStringExtra(ALARM_NAME);
+        alarm_tone = prevIntent.getStringExtra(ALARM_TONE);
         ArrayList<ReminderTime> reminderList = dbHelper.getAlarm(alarmId).getReminders();
 
         mContext = this;
@@ -84,6 +90,8 @@ public class AlarmDetailsActivity extends ActionBarActivity {
                 Intent intent = new Intent(mContext, AlarmFrequency.class);
                 intent.putExtra(EXISTING_MODEL_ID, alarmId);//need model id
                 intent.putExtra(SetName.ALARM_NAME, alarmTitle);
+                System.out.println("ALARM TONE FROM DETAILS is " + alarm_tone);
+                intent.putExtra(AlarmDetailsActivity.ALARM_TONE, alarm_tone);
                 intent.putExtra(EXISTING_MODEL, true);
                 startActivity(intent);
             }
@@ -140,9 +148,6 @@ public class AlarmDetailsActivity extends ActionBarActivity {
             mContext = context;
             mReminders = reminders;
         }
-
-
-//
 
         /*
          * Gets the count of the number of reminder times
@@ -243,12 +248,12 @@ public class AlarmDetailsActivity extends ActionBarActivity {
                             //parse date
                             String dString = reminderTime.getDateString();//in format yyyy-mm-dd
                             j.putExtra(REMINDER_ID, reminderId);
+                            j.putExtra(ALARM_TONE, alarm_tone);
                             j.putExtra(ALARM_DATE, dString);
                             j.putExtra(ALARM_HOUR, reminderTime.getHour());
                             j.putExtra(ALARM_MINUTE, reminderTime.getMin());
                             j.putExtra(ALARM_NAME, alarmTitle);
                             j.putExtra(EXISTING_MODEL_ID, alarmId);
-
                             mContext.startActivity(j);
                             break;
                         case ReminderTime.DAILY:
@@ -256,9 +261,22 @@ public class AlarmDetailsActivity extends ActionBarActivity {
                             j.putExtra(ALARM_HOUR, reminderTime.getHour());
                             j.putExtra(ALARM_MINUTE, reminderTime.getMin());
                             j.putExtra(ALARM_NAME, alarmTitle);
+                            j.putExtra(ALARM_TONE, alarm_tone);
                             j.putExtra(EXISTING_MODEL_ID, alarmId);
                             mContext.startActivity(j);
                             break;
+
+                        case ReminderTime.WEEKLY:
+                            j = new Intent(mContext, EditWeekly.class);
+                            j.putExtra(WEEKDAYS, reminderTime.getWeekdays());
+                            j.putExtra(ALARM_HOUR, reminderTime.getHour());
+                            j.putExtra(ALARM_MINUTE, reminderTime.getMin());
+                            j.putExtra(ALARM_NAME, alarmTitle);
+                            j.putExtra(ALARM_TONE, alarm_tone);
+                            j.putExtra(EXISTING_MODEL_ID, alarmId);
+                            mContext.startActivity(j);
+                            break;
+
                         case ReminderTime.MONTHLY:
                             j = new Intent(mContext, EditMonthly.class);
                             j.putExtra(WEEKDAYS, reminderTime.getWeekdays());
@@ -266,6 +284,7 @@ public class AlarmDetailsActivity extends ActionBarActivity {
                             j.putExtra(ALARM_HOUR, reminderTime.getHour());
                             j.putExtra(ALARM_MINUTE, reminderTime.getMin());
                             j.putExtra(ALARM_NAME, alarmTitle);
+                            j.putExtra(ALARM_TONE, alarm_tone);
                             j.putExtra(EXISTING_MODEL_ID, alarmId);
 
                             mContext.startActivity(j);
@@ -297,6 +316,7 @@ public class AlarmDetailsActivity extends ActionBarActivity {
                                 j.putExtra(ALARM_HOUR, reminderTime.getHour());
                                 j.putExtra(ALARM_MINUTE, reminderTime.getMin());
                                 j.putExtra(ALARM_NAME, alarmTitle);
+                                j.putExtra(ALARM_TONE, alarm_tone);
                                 j.putExtra(EXISTING_MODEL_ID, alarmId);
 
                                 mContext.startActivity(j);
@@ -307,9 +327,23 @@ public class AlarmDetailsActivity extends ActionBarActivity {
                                 j.putExtra(ALARM_HOUR, reminderTime.getHour());
                                 j.putExtra(ALARM_MINUTE, reminderTime.getMin());
                                 j.putExtra(ALARM_NAME, alarmTitle);
+                                j.putExtra(ALARM_TONE, alarm_tone);
                                 j.putExtra(EXISTING_MODEL_ID, alarmId);
                                 mContext.startActivity(j);
                                 break;
+
+                            case ReminderTime.WEEKLY:
+                                j = new Intent(mContext, EditWeekly.class);
+                                j.putExtra(REMINDER_ID, reminderId);
+                                j.putExtra(WEEKDAYS, reminderTime.getWeekdays());
+                                j.putExtra(ALARM_HOUR, reminderTime.getHour());
+                                j.putExtra(ALARM_MINUTE, reminderTime.getMin());
+                                j.putExtra(ALARM_NAME, alarmTitle);
+                                j.putExtra(ALARM_TONE, alarm_tone);
+                                j.putExtra(EXISTING_MODEL_ID, alarmId);
+                                mContext.startActivity(j);
+                                break;
+
                             case ReminderTime.MONTHLY:
                                 j = new Intent(mContext, EditMonthly.class);
                                 j.putExtra(REMINDER_ID, reminderId);
@@ -318,6 +352,7 @@ public class AlarmDetailsActivity extends ActionBarActivity {
                                 j.putExtra(ALARM_HOUR, reminderTime.getHour());
                                 j.putExtra(ALARM_MINUTE, reminderTime.getMin());
                                 j.putExtra(ALARM_NAME, alarmTitle);
+                                j.putExtra(ALARM_TONE, alarm_tone);
                                 j.putExtra(EXISTING_MODEL_ID, alarmId);
 
                                 mContext.startActivity(j);

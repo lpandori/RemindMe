@@ -1,6 +1,5 @@
 package cs121.hmc.edu.remindme;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
@@ -31,7 +30,7 @@ public class AlarmFrequency extends ActionBarActivity {
         final int snoozeTime = thisIntent.getIntExtra(AlarmDetailsActivity.MIN_BETWEEN_SNOOZE, ReminderTime.DEFAULT_MIN_BETWEEN_SNOOZE);
         final boolean existingModel = thisIntent.getBooleanExtra(AlarmDetailsActivity.EXISTING_MODEL, false);
         final long existingModelId = thisIntent.getLongExtra(AlarmDetailsActivity.EXISTING_MODEL_ID, -1);
-
+        final String alarmTone = thisIntent.getStringExtra(AlarmDetailsActivity.ALARM_TONE);
 
 
         //create a ReminderTime based on which was clicked and pass it as
@@ -39,7 +38,8 @@ public class AlarmFrequency extends ActionBarActivity {
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(AlarmFrequency.this, Datepicker.class);
-
+                i.putExtra(SetName.ALARM_TONE, alarmTone);
+                System.out.println(alarmTone);
                 i.putExtra(SetName.ALARM_NAME, alarmName);
                 i.putExtra(AlarmDetailsActivity.EXISTING_MODEL, existingModel);
                 i.putExtra(AlarmDetailsActivity.EXISTING_MODEL_ID, existingModelId);
@@ -53,6 +53,7 @@ public class AlarmFrequency extends ActionBarActivity {
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(AlarmFrequency.this, Timepicker.class);
+                i.putExtra(SetName.ALARM_TONE, alarmTone);
                 i.putExtra(SetName.ALARM_NAME, alarmName);
                 i.putExtra(AlarmDetailsActivity.EXISTING_MODEL, existingModel);
                 i.putExtra(AlarmDetailsActivity.EXISTING_MODEL_ID, existingModelId);
@@ -65,6 +66,7 @@ public class AlarmFrequency extends ActionBarActivity {
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(AlarmFrequency.this, AlarmDaysOfWeek.class);
+                i.putExtra(SetName.ALARM_TONE, alarmTone);
                 i.putExtra(SetName.ALARM_NAME, alarmName);
                 i.putExtra(AlarmDetailsActivity.EXISTING_MODEL, existingModel);
                 i.putExtra(AlarmDetailsActivity.EXISTING_MODEL_ID, existingModelId);
@@ -77,6 +79,7 @@ public class AlarmFrequency extends ActionBarActivity {
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(AlarmFrequency.this, AlarmMonthly.class);
+                i.putExtra(SetName.ALARM_TONE, alarmTone);
                 i.putExtra(SetName.ALARM_NAME, alarmName);
                 i.putExtra(AlarmDetailsActivity.EXISTING_MODEL, existingModel);
                 i.putExtra(AlarmDetailsActivity.EXISTING_MODEL_ID, existingModelId);

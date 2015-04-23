@@ -3,10 +3,15 @@ package cs121.hmc.edu.remindme;
 import android.app.Activity;
 import android.content.ClipData;
 import android.content.Context;
+import android.media.AudioManager;
 import android.media.MediaPlayer;
+import android.media.Ringtone;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.PowerManager;
+import android.util.Log;
 import android.view.DragEvent;
 import android.view.MotionEvent;
 import android.view.View;
@@ -27,16 +32,21 @@ public class AlarmScreen extends Activity {
     private PowerManager.WakeLock mWakeLock;
     private static final int WAKELOCK_TIMEOUT = 60 * 1000;
     private Context context= this;
+    private Context mContext;
     private long reminderId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mContext = getApplicationContext();
 
         //Setting up layout
         this.setContentView(R.layout.alarm_screen);
         String name = getIntent().getStringExtra(AlarmManagerHelper.NAME);
+        String tone = getIntent().getStringExtra(AlarmManagerHelper.TONE);
+        System.out.println("TONE IS FROM ALARM SCREEN: " + tone);
         reminderId = getIntent().getLongExtra(AlarmManagerHelper.REMINDER_ID, -1);
+
 
         TextView tvName = (TextView) findViewById(R.id.alarm_screen_name);
         tvName.setText(name);
@@ -59,22 +69,37 @@ public class AlarmScreen extends Activity {
 
 
 
-//        String tone = getIntent().getStringExtra(AlarmManagerHelper.TONE);
-//        mPlayer = new MediaPlayer();
-//        try {
-//            if (tone != null && !tone.equals("")) {
-//                Uri toneUri = Uri.parse(tone);
-//                if (toneUri != null) {
-//                    mPlayer.setDataSource(this, toneUri);
-//                    mPlayer.setAudioStreamType(AudioManager.STREAM_ALARM);
-//                    mPlayer.setLooping(true);
-//                    mPlayer.prepare();
-//                    mPlayer.start();
-//                }
-//            }
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
+
+
+        mPlayer = new MediaPlayer();
+        try {
+            if (tone != null && !tone.equals("")) {
+                Uri toneUri = Uri.parse(tone);
+                //MediaPlayer mPlayer = MediaPlayer.create(mContext, toneUri);
+
+                System.out.println("TONE is: " + tone);
+                System.out.println("URITONE is: " + toneUri.toString());
+//                Uri defaultRingtoneUri = RingtoneManager.getActualDefaultRingtoneUri(getApplicationContext(), RingtoneManager.TYPE_RINGTONE);
+//                Ringtone defaultRingtone = RingtoneManager.getRingtone(getApplicationContext(), defaultRingtoneUri);
+//                defaultRingtone.play();
+                if(toneUri instanceof Uri){
+                    Log.d("URI?", "I AM A URI!!!!!!!!!!");
+                }
+
+                if (toneUri != null) {
+                    mPlayer.setDataSource(getApplicationContext(), toneUri);
+                    mPlayer.setAudioStreamType(AudioManager.STREAM_ALARM);
+                    mPlayer.setLooping(true);
+                    mPlayer.prepare();
+                    mPlayer.start();
+                }
+                else{
+                    System.out.println("TONE URI IS NULL!");
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         // Add respond action to snooze button - UI for Snooze
         Button snoozeButton = (Button) findViewById(R.id.snooze);
         snoozeButton.setOnClickListener(new View.OnClickListener() {
@@ -84,6 +109,8 @@ public class AlarmScreen extends Activity {
                 AlarmDBHelper dbHelper = new AlarmDBHelper(context);
                 dbHelper.snoozeReminder(reminderId);
                 AlarmManagerHelper.setAlarms(context);
+
+                mPlayer.stop();
                 finish();
             }
         });

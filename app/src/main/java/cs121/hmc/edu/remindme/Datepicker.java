@@ -1,6 +1,5 @@
 package cs121.hmc.edu.remindme;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
@@ -30,10 +29,12 @@ public class Datepicker extends ActionBarActivity {
         setCurrentDate();
 
         Intent prevIntent = getIntent(); // gets the previously created intent
+        final String alarmTone = prevIntent.getStringExtra(SetName.ALARM_TONE);
         final String alarmName = prevIntent.getStringExtra(SetName.ALARM_NAME);
         final int reminderType = prevIntent.getIntExtra(AlarmFrequency.REMINDER_TYPE, -1);
         final boolean existingModel = prevIntent.getBooleanExtra(AlarmDetailsActivity.EXISTING_MODEL, false);
         final long existingModelId = prevIntent.getLongExtra(AlarmDetailsActivity.EXISTING_MODEL_ID, -1);
+        final String alarm_tone = prevIntent.getStringExtra(AlarmDetailsActivity.ALARM_TONE);
         final int minBetweenSnooze = prevIntent.getIntExtra(AlarmDetailsActivity.MIN_BETWEEN_SNOOZE, ReminderTime.DEFAULT_MIN_BETWEEN_SNOOZE);
 
         button = (Button) findViewById(R.id.done);
@@ -43,11 +44,14 @@ public class Datepicker extends ActionBarActivity {
                 @Override
                 public void onClick(View view) {
                     Intent i = new Intent(Datepicker.this, Timepicker.class);
+                    i.putExtra(SetName.ALARM_TONE, alarmTone);
+                    System.out.println(alarmTone);
                     i.putExtra(SetName.ALARM_NAME, alarmName);
                     i.putExtra(AlarmFrequency.REMINDER_TYPE, reminderType);
                     i.putExtra(AlarmDetailsActivity.EXISTING_MODEL, existingModel);
                     i.putExtra(AlarmDetailsActivity.EXISTING_MODEL_ID, existingModelId);
                     i.putExtra(AlarmDetailsActivity.MIN_BETWEEN_SNOOZE, minBetweenSnooze);
+                    i.putExtra(AlarmDetailsActivity.ALARM_TONE, alarm_tone);
                     i.putExtra(DATE_YEAR, datePicker.getYear());
                     //month starts counting at 0 so must add 1
                     int month = datePicker.getMonth()+1;

@@ -104,10 +104,11 @@ public class AlarmListActivity extends ActionBarActivity {
         AlarmManagerHelper.setAlarms(this);
     }
 
-    public void startAlarmDetailsActivity(long id, String title) {
+    public void startAlarmDetailsActivity(long id, String title, String ringtone) {
         Intent intent = new Intent(this, AlarmDetailsActivity.class);
         intent.putExtra(AlarmDetailsActivity.EXISTING_MODEL_ID, id);
         intent.putExtra(AlarmDetailsActivity.ALARM_NAME, title);
+        intent.putExtra(AlarmDetailsActivity.ALARM_TONE, ringtone);
         startActivity(intent);
     }
 
@@ -201,7 +202,7 @@ public class AlarmListActivity extends ActionBarActivity {
                     if (touchListener.existPendingDismisses()){
                         touchListener.undoPendingDismiss();
                     } else {
-                        ((AlarmListActivity) mContext).startAlarmDetailsActivity((Long) v.getTag(), model.name);
+                        ((AlarmListActivity) mContext).startAlarmDetailsActivity((Long) v.getTag(), model.name, model.alarmToneStr);
                     }
 
                 }
