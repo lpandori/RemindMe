@@ -17,18 +17,19 @@
         <activity
             android:screenOrientation = "portrait"
             android:name=".AlarmListActivity"
-            android:label="@string/app_name" >
+            android:label="@string/app_name" />
 
-        </activity>
-        <receiver android:name=".AlarmManagerHelper" >
-            <intent-filter >
-                <action android:name="android.intent.action.BOOT_COMPLETED" />
-            </intent-filter>
-        </receiver>
-        <service android:name=".AlarmService"
-            android:enabled="true" />
-        <activity android:name=".AlarmFrequency"/>
-        <activity android:name=".SplashScreen"
+        <activity
+            android:name=".AlarmDetailsActivity"
+            android:parentActivityName=".AlarmListActivity"
+            android:screenOrientation = "portrait"/>
+
+        <activity
+            android:name=".AlarmFrequency"
+            android:parentActivityName=".AlarmListActivity"/>
+
+        <activity
+            android:name=".SplashScreen"
             android:screenOrientation = "portrait"
             >
             <intent-filter>
@@ -38,41 +39,65 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".AlarmDetailsActivity"
-            android:screenOrientation = "portrait"/>
         <activity android:name=".AlarmScreen"
             android:screenOrientation = "portrait"/>
+
         <activity android:name=".AlarmDaysOfWeek"
+            android:finishOnTaskLaunch="true"
             android:screenOrientation = "portrait"/>
+
         <activity android:name=".AlarmMonthly"
+            android:finishOnTaskLaunch="true"
             android:screenOrientation = "portrait"/>
-        <activity android:name=".SetName"
+
+        <activity
+            android:name=".SetName"
+            android:finishOnTaskLaunch="true"
+            android:parentActivityName=".AlarmListActivity"
             android:screenOrientation = "portrait"/>
-        <activity android:name=".OneTimeReminder"
+
+        <activity
+            android:name=".OneTimeReminder"
+            android:finishOnTaskLaunch="true"
+            android:parentActivityName=".AlarmListActivity"
             android:screenOrientation = "portrait"/>
-        <activity android:name=".Timepicker"
-            android:screenOrientation = "portrait"
-            >
-        </activity>
+
+        <activity
+            android:name=".Timepicker"
+            android:finishOnTaskLaunch="true"
+            android:parentActivityName=".AlarmListActivity"
+            android:screenOrientation = "portrait" />
+
         <activity android:name=".Datepicker"
-            android:screenOrientation = "portrait"
-            ></activity>
+            android:finishOnTaskLaunch="true"
+            android:screenOrientation = "portrait" />
+
         <activity android:name=".EditDaily"
+            android:finishOnTaskLaunch="true"
             android:screenOrientation = "portrait"
             />
         <activity android:name=".EditMonthly"
+            android:finishOnTaskLaunch="true"
             android:screenOrientation = "portrait"
             />
+
         <activity android:name=".EditWeekly"
+            android:finishOnTaskLaunch="true"
             android:screenOrientation = "portrait"
             />
+
         <activity android:name=".EditOneTime"
+            android:finishOnTaskLaunch="true"
             android:screenOrientation = "portrait"
             />
-        <activity android:name=".setSnooze"
-            android:screenOrientation = "portrait"/>
 
-
+        <receiver android:name=".AlarmManagerHelper" >
+            <intent-filter >
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
+        <service android:name=".AlarmService"
+            android:enabled="true" />
 
     </application>
 

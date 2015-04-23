@@ -89,10 +89,11 @@ public class AlarmDetailsActivity extends ActionBarActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(mContext, AlarmFrequency.class);
                 intent.putExtra(EXISTING_MODEL_ID, alarmId);//need model id
-                intent.putExtra(SetName.ALARM_NAME, alarmTitle);
+                intent.putExtra(ALARM_NAME, alarmTitle);
                 System.out.println("ALARM TONE FROM DETAILS is " + alarm_tone);
-                intent.putExtra(AlarmDetailsActivity.ALARM_TONE, alarm_tone);
+                intent.putExtra(ALARM_TONE, alarm_tone);
                 intent.putExtra(EXISTING_MODEL, true);
+                intent.putExtra("prevActivity", "AlarmDetails");
                 startActivity(intent);
             }
         });
@@ -134,6 +135,13 @@ public class AlarmDetailsActivity extends ActionBarActivity {
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        //Display alert message when back button has been pressed
+        Intent i = new Intent(AlarmDetailsActivity.this, AlarmListActivity.class);
+        startActivity(i);
     }
 
     /*
