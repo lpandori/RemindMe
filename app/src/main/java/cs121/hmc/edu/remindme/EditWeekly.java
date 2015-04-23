@@ -1,14 +1,13 @@
 package cs121.hmc.edu.remindme;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
@@ -24,7 +23,7 @@ public class EditWeekly extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.edit_weekly);
-        TextView alarmName = (TextView) findViewById(R.id.editBlank);
+        final TextView alarmName = (TextView) findViewById(R.id.editBlank);
         final TimePicker timePicker = (TimePicker) findViewById(R.id.timePicker);
         final CustomSwitch sunday = (CustomSwitch) findViewById(R.id.alarm_details_label_sunday);
         final CustomSwitch monday = (CustomSwitch) findViewById(R.id.alarm_details_label_monday);
@@ -38,6 +37,7 @@ public class EditWeekly extends ActionBarActivity {
         final int hour = thisIntent.getIntExtra(AlarmDetailsActivity.ALARM_HOUR, -1);
         final int minute = thisIntent.getIntExtra(AlarmDetailsActivity.ALARM_MINUTE, -1);
         final String name = thisIntent.getStringExtra(AlarmDetailsActivity.ALARM_NAME);
+        final String alarm_tone = thisIntent.getStringExtra(AlarmDetailsActivity.ALARM_TONE);
         id = thisIntent.getLongExtra(AlarmDetailsActivity.EXISTING_MODEL_ID, -1);
         final long reminderId = thisIntent.getLongExtra(AlarmDetailsActivity.REMINDER_ID, -1);
         final String whichdays = thisIntent.getStringExtra(AlarmDetailsActivity.WEEKDAYS);
@@ -88,6 +88,7 @@ public class EditWeekly extends ActionBarActivity {
                 Intent i = new Intent(EditWeekly.this, AlarmDetailsActivity.class);
                 i.putExtra(AlarmDetailsActivity.EXISTING_MODEL_ID, id);
                 i.putExtra(AlarmDetailsActivity.ALARM_NAME, name);
+                i.putExtra(AlarmDetailsActivity.ALARM_TONE, alarm_tone);
                 startActivity(i);
             }
         });

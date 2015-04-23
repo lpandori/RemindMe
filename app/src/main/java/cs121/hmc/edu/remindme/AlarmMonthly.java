@@ -1,8 +1,5 @@
 package cs121.hmc.edu.remindme;
 
-import android.app.Activity;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
@@ -41,6 +38,7 @@ public class AlarmMonthly extends ActionBarActivity {
 
         final Intent prevIntent = getIntent(); // gets the previously created intent
         final String alarmName = prevIntent.getStringExtra(SetName.ALARM_NAME);
+        final String alarmTone = prevIntent.getStringExtra(AlarmDetailsActivity.ALARM_TONE);
         final int reminderType = prevIntent.getIntExtra(AlarmFrequency.REMINDER_TYPE, -1);
         final boolean existingModel = prevIntent.getBooleanExtra(AlarmDetailsActivity.EXISTING_MODEL, false);
         final long existingModelId = prevIntent.getLongExtra(AlarmDetailsActivity.EXISTING_MODEL_ID, -1);
@@ -56,6 +54,7 @@ public class AlarmMonthly extends ActionBarActivity {
 
                     Intent i = new Intent(AlarmMonthly.this, Timepicker.class);
                     i.putExtra(SetName.ALARM_NAME, alarmName);
+                    i.putExtra(AlarmDetailsActivity.ALARM_TONE, alarmTone);
                     i.putExtra(AlarmFrequency.REMINDER_TYPE, reminderType);
                     i.putExtra(AlarmDetailsActivity.EXISTING_MODEL, existingModel);
                     i.putExtra(AlarmDetailsActivity.EXISTING_MODEL_ID, existingModelId);

@@ -26,6 +26,7 @@ public class Timepicker extends ActionBarActivity {
 
             final Intent prevIntent = getIntent(); // gets the previously created intent
             final String alarmName = prevIntent.getStringExtra(SetName.ALARM_NAME);
+            final String alarmTone = prevIntent.getStringExtra(SetName.ALARM_TONE);
             final int reminderType = prevIntent.getIntExtra(AlarmFrequency.REMINDER_TYPE, -1);
             final boolean existingModel = prevIntent.getBooleanExtra(AlarmDetailsActivity.EXISTING_MODEL, false);
             final long existingModelId = prevIntent.getLongExtra(AlarmDetailsActivity.EXISTING_MODEL_ID, -1);
@@ -33,7 +34,6 @@ public class Timepicker extends ActionBarActivity {
             final int minBetweenSnooze = prevIntent.getIntExtra(AlarmDetailsActivity.MIN_BETWEEN_SNOOZE, ReminderTime.DEFAULT_MIN_BETWEEN_SNOOZE);
 
 
-            final String alarmTone = prevIntent.getStringExtra(SetName.ALARM_TONE);
             System.out.println(alarmTone);
 
 
@@ -87,6 +87,7 @@ public class Timepicker extends ActionBarActivity {
                         alarmModel.addReminder(r);
                         i.putExtra(AlarmDetailsActivity.EXISTING_MODEL_ID, alarmId);
 
+
                         dbHelper.createAlarm(alarmModel);//add to db
                     }else{
                         AlarmModel alarmModel = dbHelper.getAlarm(existingModelId);
@@ -104,7 +105,7 @@ public class Timepicker extends ActionBarActivity {
 
 
                     i.putExtra(AlarmDetailsActivity.ALARM_NAME, alarmName);
-
+                    i.putExtra(AlarmDetailsActivity.ALARM_TONE, alarmTone);
                     // pass timePicker.getCurrentHour() &&
                     //timePicker.getCurrentMinute() as extras
                     startActivity(i);

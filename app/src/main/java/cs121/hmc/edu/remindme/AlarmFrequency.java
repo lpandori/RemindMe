@@ -1,6 +1,5 @@
 package cs121.hmc.edu.remindme;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
@@ -31,7 +30,7 @@ public class AlarmFrequency extends ActionBarActivity {
         final int snoozeTime = thisIntent.getIntExtra(AlarmDetailsActivity.MIN_BETWEEN_SNOOZE, ReminderTime.DEFAULT_MIN_BETWEEN_SNOOZE);
         final boolean existingModel = thisIntent.getBooleanExtra(AlarmDetailsActivity.EXISTING_MODEL, false);
         final long existingModelId = thisIntent.getLongExtra(AlarmDetailsActivity.EXISTING_MODEL_ID, -1);
-        final String alarmTone = thisIntent.getStringExtra(SetName.ALARM_TONE);
+        final String alarmTone = thisIntent.getStringExtra(AlarmDetailsActivity.ALARM_TONE);
 
 
         //create a ReminderTime based on which was clicked and pass it as

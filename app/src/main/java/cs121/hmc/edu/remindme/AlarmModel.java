@@ -1,9 +1,5 @@
 package cs121.hmc.edu.remindme;
 
-import android.net.Uri;
-
-
-import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
 
@@ -29,6 +25,7 @@ public class AlarmModel {
     private int snooze = 20;//TODO set default for snooze (will remove later)
     private boolean isEnabled = true;
     private ArrayList<ReminderTime> reminders;
+    public String alarmToneStr;
     public Uri alarmTone;
     private ReminderTime currentSet;
 
@@ -38,6 +35,7 @@ public class AlarmModel {
     public AlarmModel(String name) {
         this.name = name;
         reminders = new ArrayList<ReminderTime>();
+        alarmToneStr = "Argo Navis"; // TODO
         alarmTone = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
     }
 
@@ -96,6 +94,7 @@ public class AlarmModel {
     }
 
     public void setAlarmTone(String alarm) {
+        alarmToneStr = alarm;
        Uri converted = Uri.parse(alarm);
        alarmTone = converted;
     }

@@ -1,26 +1,16 @@
 package cs121.hmc.edu.remindme;
 
-import android.app.Activity;
 import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
-import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
-
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.text.InputType;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
-import org.w3c.dom.Text;
-
-import 	java.io.File;
 
 
 /**
@@ -45,7 +35,6 @@ public class SetName extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.set_name);
         Button next = (Button) findViewById(R.id.btn_next);
-        TextView textToneSelection = (TextView) findViewById(R.id.alarm_label_tone_selection);
         next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -56,7 +45,7 @@ public class SetName extends ActionBarActivity {
 
                 TextView tone = (TextView) findViewById(R.id.alarm_label_tone_selection);
                 i.putExtra(ALARM_NAME, name.getText().toString());
-                i.putExtra(ALARM_TONE, ringtone.toString());
+                i.putExtra(ALARM_TONE, tone.getText().toString());
                 try {
                     i.putExtra(AlarmDetailsActivity.MIN_BETWEEN_SNOOZE, Integer.valueOf(snooze.getText().toString()));
                     startActivity(i);

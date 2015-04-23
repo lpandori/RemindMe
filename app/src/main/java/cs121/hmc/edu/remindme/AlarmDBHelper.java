@@ -5,7 +5,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.net.Uri;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -74,13 +73,14 @@ public class AlarmDBHelper extends SQLiteOpenHelper {
                 boolean isEnabled = c.getInt(c.getColumnIndex(AlarmContract.Alarm.COLUMN_NAME_ALARM_ENABLED)) > 0;
                 long model_id = c.getLong(c.getColumnIndex(AlarmContract.Alarm.COLUMN_NAME_ALARM_ID));
                 int snooze = c.getInt(c.getColumnIndex(AlarmContract.Alarm.COLUMN_NAME_ALARM_SNOOZE));
-                alarmModel.alarmTone = Uri.parse(c.getString(c.getColumnIndex(AlarmContract.Alarm.COLUMN_NAME_ALARM_TONE)));
+               String alarm_tone = c.getString(c.getColumnIndex(AlarmContract.Alarm.COLUMN_NAME_ALARM_TONE));
 
                 //System.out.println("ALARM TONE IS : " + alarmTone);
 
                 alarmModel.setEnabled(isEnabled);
                 alarmModel.setId(model_id);
                 alarmModel.setSnooze(snooze);
+               alarmModel.setAlarmTone(alarm_tone);
 
             }
             i++;
