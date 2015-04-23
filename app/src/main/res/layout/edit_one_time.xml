@@ -1,57 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-
-
-<RelativeLayout
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:paddingBottom="16dp"
-    android:paddingLeft="16dp"
-    android:paddingRight="16dp"
-    android:paddingTop="16dp"
-    tools:context=".AlarmDetailsActivity" >
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
 
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Edit blank alarm..."
-        android:textColor = "#FFFFFF"
-        android:textSize = "30dp"
-        android:id="@+id/editBlank"
-        android:layout_alignParentTop="true"
-        />
-
-
-    <TimePicker
-        android:id="@+id/timePicker"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/editBlank"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="54dp" />
-
-    <DatePicker
-        android:id="@+id/datePicker"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:spinnersShown="false"
-        android:layout_below="@+id/timePicker"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"></DatePicker>
+        android:layout_height="match_parent"
+        android:paddingBottom="16dp"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:paddingTop="16dp"
+        tools:context=".AlarmDetailsActivity" >
 
-    <Button
-        style = "@style/actionbutton"
-        android:id="@+id/btn_done"
-        android:text= "Done"
-        android:textSize="30sp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true">
-    </Button>
 
-</RelativeLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Edit blank alarm..."
+            android:textColor = "#FFFFFF"
+            android:textSize = "30dp"
+            android:id="@+id/editBlank"
+            android:layout_alignParentTop="true"
+            />
+
+
+        <TimePicker
+            android:id="@+id/timePicker"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/editBlank"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp" />
+
+        <DatePicker
+            android:id="@+id/datePicker"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:spinnersShown="false"
+            android:layout_below="@+id/timePicker"
+            android:layout_centerHorizontal="true" />
+
+        <Button
+            style = "@style/actionbutton"
+            android:id="@+id/btn_done"
+            android:text= "Done"
+            android:textSize="30sp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginTop="20dp" />
+
+    </RelativeLayout>
+
+</ScrollView>

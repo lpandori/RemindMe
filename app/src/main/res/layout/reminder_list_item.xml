@@ -19,7 +19,7 @@
             android:layout_marginRight="8dp"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
-            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textAppearance="?android:attr/textAppearanceSmall"
             android:text="Some Text Here"/>
 
         <TextView

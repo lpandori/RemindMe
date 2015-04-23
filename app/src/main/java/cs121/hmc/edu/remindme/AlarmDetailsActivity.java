@@ -216,7 +216,7 @@ public class AlarmDetailsActivity extends ActionBarActivity {
                         e.printStackTrace();
                     }
                     DateFormat outFormat = SimpleDateFormat.getDateInstance();
-                    toDisplay = outFormat.format(date) + " at ";
+                    toDisplay = outFormat.format(date) + " at";
                     break;
                 case ReminderTime.DAILY:
                     toDisplay = "Daily at";
@@ -227,7 +227,7 @@ public class AlarmDetailsActivity extends ActionBarActivity {
                     String week = reminderTime.getWeekdays();
                     int dayIndex = week.indexOf('1');
                     String dayString = weekdays[dayIndex];
-                    toDisplay = "Every " + weekString + " " + dayString + " at ";
+                    toDisplay = "Every " + weekString + " " + dayString + " at";
                     break;
             }
 
