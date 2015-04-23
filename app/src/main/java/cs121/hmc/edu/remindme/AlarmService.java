@@ -22,7 +22,7 @@ public class AlarmService extends Service {
 
         Intent alarmIntent = new Intent(getBaseContext(), AlarmScreen.class);
         alarmIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        alarmIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        alarmIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         alarmIntent.putExtras(intent);
         getApplication().startActivity(alarmIntent);
 
