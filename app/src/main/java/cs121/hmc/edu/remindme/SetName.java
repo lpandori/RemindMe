@@ -1,5 +1,7 @@
 package cs121.hmc.edu.remindme;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.media.RingtoneManager;
 import android.net.Uri;
@@ -44,6 +46,7 @@ public class SetName extends ActionBarActivity {
                 EditText name = (EditText)findViewById(R.id.setName);
 
                 TextView tone = (TextView) findViewById(R.id.alarm_label_tone_selection);
+                i.putExtra("prevActivity", "SetName");
                 i.putExtra(ALARM_NAME, name.getText().toString());
                 i.putExtra(ALARM_TONE, tone.getText().toString());
                 try {
@@ -88,5 +91,45 @@ public class SetName extends ActionBarActivity {
             }
         }
 
+    }
+    @Override
+    public void onBackPressed() {
+
+        //Display alert message when back button has been pressed
+        backButtonHandler();
+    }
+
+    public void backButtonHandler() {
+        Intent thisIntent = getIntent(); // gets the previously created intent
+        final String alarmName = thisIntent.getStringExtra(SetName.ALARM_NAME);
+        final long existingModelId = thisIntent.getLongExtra(AlarmDetailsActivity.EXISTING_MODEL_ID, -1);
+        final String alarmTone = thisIntent.getStringExtra(AlarmDetailsActivity.ALARM_TONE);
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(
+                SetName.this);
+        // Setting Dialog Title
+        alertDialog.setTitle("Stop creating a new Reminder?");
+        // Setting Dialog Message
+        alertDialog.setMessage("Are you sure you want to stop creating a new reminder?");
+        // Setting Positive "Yes" Button
+        alertDialog.setPositiveButton("YES",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent i = new Intent(SetName.this, AlarmListActivity.class);
+//                        i.putExtra(SetName.ALARM_NAME, alarmName);
+//                        i.putExtra(AlarmDetailsActivity.EXISTING_MODEL_ID, existingModelId);
+//                        i.putExtra(AlarmDetailsActivity.ALARM_TONE, alarmTone);
+                        startActivity(i);
+                    }
+                });
+        // Setting Negative "NO" Button
+        alertDialog.setNegativeButton("NO",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Write your code here to invoke NO event
+                        dialog.cancel();
+                    }
+                });
+        // Showing Alert Message
+        alertDialog.show();
     }
 }
