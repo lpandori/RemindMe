@@ -74,7 +74,6 @@ public class AlarmListActivity extends ActionBarActivity {
 
         switch (item.getItemId()) {
             case R.id.action_add_new_alarm: {
-                //startAlarmDetailsActivity(-1);
                 Intent intent = new Intent(this, SetName.class);
                 startActivity(intent);
                 break;
