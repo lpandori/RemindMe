@@ -45,7 +45,7 @@ public class SetName extends ActionBarActivity {
 
                 TextView tone = (TextView) findViewById(R.id.alarm_label_tone_selection);
                 i.putExtra(ALARM_NAME, name.getText().toString());
-                i.putExtra(ALARM_TONE, tone.getText().toString());
+                i.putExtra(ALARM_TONE, ringtone.toString());
                 try {
                     i.putExtra(AlarmDetailsActivity.MIN_BETWEEN_SNOOZE, Integer.valueOf(snooze.getText().toString()));
                     startActivity(i);
