@@ -23,6 +23,16 @@ import com.hudomju.swipe.adapter.ListViewAdapter;
 
 import java.util.List;
 
+/*
+ * Class: AlarmOverViewActivity.java
+ * Authors: Heather Seaman, Laura Pandori, Rachelle, Holmgren, Tyra He
+ * Last Updated: 04-23-2015
+ * Description: This class is the main activity which runs on startup immediately after
+ * the splash screen disappears. It displays a list of alarm which are currently set by the
+ * user. From here users can tap an alarm to see all the reminder times associated with
+ * that alarm title. They can also add new alarms.
+ */
+
 public class AlarmOverviewActivity extends ActionBarActivity {
 
     private AlarmDBHelper dbHelper = new AlarmDBHelper(this);
