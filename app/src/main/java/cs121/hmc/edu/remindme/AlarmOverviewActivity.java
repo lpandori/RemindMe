@@ -172,8 +172,6 @@ public class AlarmOverviewActivity extends ActionBarActivity {
             // get Item implemented above
             final AlarmModel model = (AlarmModel) getItem(position);
 
-//            TextView txtTime = (TextView) convertView.findViewById(R.id.alarm_item_time);
-//            txtTime.setText(String.format("%02d : %02d", model.timeHour, model.timeMinute));
             TextView txtName = (TextView) convertView.findViewById(R.id.alarm_item_name);
             txtName.setText(model.name);
             TextView snoozeTime = (TextView) convertView.findViewById(R.id.alarm_snoozeTime);

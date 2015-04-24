@@ -316,6 +316,14 @@ public class AlarmDBHelper extends SQLiteOpenHelper {
                 AlarmContract.Alarm.COLUMN_NAME_ALARM_ID + " = "+id, null);
     }
 
+    //TODO potentially remove this
+    //deletes all rows related to a given reminder
+    public int deleteReminder(long id) {
+
+        return getWritableDatabase().delete(AlarmContract.Alarm.TABLE_NAME,
+                AlarmContract.Alarm._ID + " = "+id, null);
+    }
+
     //makes a list of all current alarms
     //requires nested for loops in our implementation
     public List<AlarmModel> getAlarms() {

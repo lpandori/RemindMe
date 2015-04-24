@@ -111,7 +111,7 @@ public class MainActivity extends ActionBarActivity {
                                 mAdapter.remove(position);
                                 View thisView = lvAdapter.getChildAt(position);
                                 long viewId = (long) thisView.getTag();
-                                dbHelper.deleteAlarm(viewId);
+                                dbHelper.deleteReminder(viewId);
                             }
                         });
 
