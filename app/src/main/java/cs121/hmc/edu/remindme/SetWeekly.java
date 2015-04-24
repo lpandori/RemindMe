@@ -82,7 +82,6 @@ public class SetWeekly extends ActionBarActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_cancel, menu);
         return true;
-        //return super.onCreateOptionsMenu(menu);
     }
 
     @Override

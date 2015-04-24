@@ -12,17 +12,8 @@ public class SplashScreen extends Activity {
     private static int SPLASH_TIME_OUT = 3000;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-//        View decorView = getWindow().getDecorView();
-//        // Hide the status bar.
-//        int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
-//        decorView.setSystemUiVisibility(uiOptions);
-//        // Remember that you should never show the action bar if the
-//        // status bar is hidden, so hide that too if necessary.
-//        ActionBar actionBar = getActionBar();
-//        actionBar.hide();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
-
         new Handler().postDelayed(new Runnable() {
 
             /*
@@ -32,15 +23,10 @@ public class SplashScreen extends Activity {
 
             @Override
             public void run() {
-
                 Intent i = new Intent(SplashScreen.this, AlarmListActivity.class);
                 startActivity(i);
-
-
                 finish();
             }
         }, SPLASH_TIME_OUT);
     }
-
-
 }

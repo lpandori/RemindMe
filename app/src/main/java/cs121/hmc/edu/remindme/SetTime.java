@@ -106,8 +106,6 @@ public class SetTime extends ActionBarActivity {
 
                     i.putExtra(ReminderListActivity.ALARM_NAME, alarmName);
                     i.putExtra(ReminderListActivity.ALARM_TONE, alarmTone);
-                    // pass timePicker.getCurrentHour() &&
-                    //timePicker.getCurrentMinute() as extras
                     startActivity(i);
                 }
             });

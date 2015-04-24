@@ -24,6 +24,7 @@ public class EditDaily extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+
         setContentView(R.layout.edit_daily);
         Intent thisIntent = getIntent();
         int hour = thisIntent.getIntExtra(ReminderListActivity.ALARM_HOUR, -1);
@@ -41,6 +42,7 @@ public class EditDaily extends ActionBarActivity {
         timePicker.setCurrentHour(hour);
         timePicker.setCurrentMinute(minute);
 
+        //when the done button is clicked,
         Button doneEditing = (Button) findViewById(R.id.btn_done);
         doneEditing.setOnClickListener(new View.OnClickListener() {
             @Override

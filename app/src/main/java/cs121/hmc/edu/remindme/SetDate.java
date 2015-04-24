@@ -18,7 +18,7 @@ public class SetDate extends ActionBarActivity {
     private DatePicker datePicker;
     private Button button;
 
-    //keys for passing m,d,y date between activtites
+    //keys for passing m,d,y date between activities
     public final static String DATE_YEAR = "date_year";
     public final static String DATE_MONTH = "date_month";
     public final static String DATE_DAY = "date_day";
