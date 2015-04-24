@@ -29,10 +29,10 @@ public class SetFrequency extends ActionBarActivity {
 
         Intent thisIntent = getIntent(); // gets the previously created intent
         final String alarmName = thisIntent.getStringExtra(SetAlarmInfo.ALARM_NAME);
-        final int snoozeTime = thisIntent.getIntExtra(MainActivity.MIN_BETWEEN_SNOOZE, ReminderTime.DEFAULT_MIN_BETWEEN_SNOOZE);
-        final boolean existingModel = thisIntent.getBooleanExtra(MainActivity.EXISTING_MODEL, false);
-        final long existingModelId = thisIntent.getLongExtra(MainActivity.EXISTING_MODEL_ID, -1);
-        final String alarmTone = thisIntent.getStringExtra(MainActivity.ALARM_TONE);
+        final int snoozeTime = thisIntent.getIntExtra(ReminderListActivity.MIN_BETWEEN_SNOOZE, ReminderTime.DEFAULT_MIN_BETWEEN_SNOOZE);
+        final boolean existingModel = thisIntent.getBooleanExtra(ReminderListActivity.EXISTING_MODEL, false);
+        final long existingModelId = thisIntent.getLongExtra(ReminderListActivity.EXISTING_MODEL_ID, -1);
+        final String alarmTone = thisIntent.getStringExtra(ReminderListActivity.ALARM_TONE);
 
 
         //create a ReminderTime based on which was clicked and pass it as
@@ -43,10 +43,10 @@ public class SetFrequency extends ActionBarActivity {
                 i.putExtra(SetAlarmInfo.ALARM_TONE, alarmTone);
                 System.out.println(alarmTone);
                 i.putExtra(SetAlarmInfo.ALARM_NAME, alarmName);
-                i.putExtra(MainActivity.EXISTING_MODEL, existingModel);
-                i.putExtra(MainActivity.EXISTING_MODEL_ID, existingModelId);
+                i.putExtra(ReminderListActivity.EXISTING_MODEL, existingModel);
+                i.putExtra(ReminderListActivity.EXISTING_MODEL_ID, existingModelId);
                 i.putExtra(REMINDER_TYPE, ReminderTime.ONE_TIME);
-                i.putExtra(MainActivity.MIN_BETWEEN_SNOOZE, snoozeTime);
+                i.putExtra(ReminderListActivity.MIN_BETWEEN_SNOOZE, snoozeTime);
 
                 startActivity(i);
             }
@@ -57,10 +57,10 @@ public class SetFrequency extends ActionBarActivity {
                 Intent i = new Intent(SetFrequency.this, SetTime.class);
                 i.putExtra(SetAlarmInfo.ALARM_TONE, alarmTone);
                 i.putExtra(SetAlarmInfo.ALARM_NAME, alarmName);
-                i.putExtra(MainActivity.EXISTING_MODEL, existingModel);
-                i.putExtra(MainActivity.EXISTING_MODEL_ID, existingModelId);
+                i.putExtra(ReminderListActivity.EXISTING_MODEL, existingModel);
+                i.putExtra(ReminderListActivity.EXISTING_MODEL_ID, existingModelId);
                 i.putExtra(REMINDER_TYPE, ReminderTime.DAILY);
-                i.putExtra(MainActivity.MIN_BETWEEN_SNOOZE, snoozeTime);
+                i.putExtra(ReminderListActivity.MIN_BETWEEN_SNOOZE, snoozeTime);
                 startActivity(i);
             }
         });
@@ -70,10 +70,10 @@ public class SetFrequency extends ActionBarActivity {
                 Intent i = new Intent(SetFrequency.this, SetWeekly.class);
                 i.putExtra(SetAlarmInfo.ALARM_TONE, alarmTone);
                 i.putExtra(SetAlarmInfo.ALARM_NAME, alarmName);
-                i.putExtra(MainActivity.EXISTING_MODEL, existingModel);
-                i.putExtra(MainActivity.EXISTING_MODEL_ID, existingModelId);
+                i.putExtra(ReminderListActivity.EXISTING_MODEL, existingModel);
+                i.putExtra(ReminderListActivity.EXISTING_MODEL_ID, existingModelId);
                 i.putExtra(REMINDER_TYPE, ReminderTime.WEEKLY);
-                i.putExtra(MainActivity.MIN_BETWEEN_SNOOZE, snoozeTime);
+                i.putExtra(ReminderListActivity.MIN_BETWEEN_SNOOZE, snoozeTime);
                 startActivity(i);
             }
         });
@@ -83,10 +83,10 @@ public class SetFrequency extends ActionBarActivity {
                 Intent i = new Intent(SetFrequency.this, SetMonthly.class);
                 i.putExtra(SetAlarmInfo.ALARM_TONE, alarmTone);
                 i.putExtra(SetAlarmInfo.ALARM_NAME, alarmName);
-                i.putExtra(MainActivity.EXISTING_MODEL, existingModel);
-                i.putExtra(MainActivity.EXISTING_MODEL_ID, existingModelId);
+                i.putExtra(ReminderListActivity.EXISTING_MODEL, existingModel);
+                i.putExtra(ReminderListActivity.EXISTING_MODEL_ID, existingModelId);
                 i.putExtra(REMINDER_TYPE, ReminderTime.MONTHLY);
-                i.putExtra(MainActivity.MIN_BETWEEN_SNOOZE, snoozeTime);
+                i.putExtra(ReminderListActivity.MIN_BETWEEN_SNOOZE, snoozeTime);
                 startActivity(i);
             }
         });
@@ -103,7 +103,7 @@ public class SetFrequency extends ActionBarActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.cancel_button: {
-                Intent intent = new Intent(this, AlarmOverviewActivity.class);
+                Intent intent = new Intent(this, AlarmListActivity.class);
                 startActivity(intent);
                 return true;
             }
@@ -122,8 +122,8 @@ public class SetFrequency extends ActionBarActivity {
     public void backButtonHandler() {
         Intent thisIntent = getIntent(); // gets the previously created intent
         final String alarmName = thisIntent.getStringExtra(SetAlarmInfo.ALARM_NAME);
-        final long existingModelId = thisIntent.getLongExtra(MainActivity.EXISTING_MODEL_ID, -1);
-        final String alarmTone = thisIntent.getStringExtra(MainActivity.ALARM_TONE);
+        final long existingModelId = thisIntent.getLongExtra(ReminderListActivity.EXISTING_MODEL_ID, -1);
+        final String alarmTone = thisIntent.getStringExtra(ReminderListActivity.ALARM_TONE);
         final String prevActivity = thisIntent.getStringExtra("prevActivity");
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(
                 SetFrequency.this);
@@ -136,7 +136,7 @@ public class SetFrequency extends ActionBarActivity {
             alertDialog.setPositiveButton("YES",
                     new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
-                            Intent i = new Intent(SetFrequency.this, AlarmOverviewActivity.class);
+                            Intent i = new Intent(SetFrequency.this, AlarmListActivity.class);
                             startActivity(i);
                         }
                     });
@@ -145,10 +145,10 @@ public class SetFrequency extends ActionBarActivity {
             alertDialog.setPositiveButton("YES",
                     new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
-                            Intent i = new Intent(SetFrequency.this, MainActivity.class);
-                            i.putExtra(MainActivity.ALARM_NAME, alarmName);
-                            i.putExtra(MainActivity.EXISTING_MODEL_ID, existingModelId);
-                            i.putExtra(MainActivity.ALARM_TONE, alarmTone);
+                            Intent i = new Intent(SetFrequency.this, ReminderListActivity.class);
+                            i.putExtra(ReminderListActivity.ALARM_NAME, alarmName);
+                            i.putExtra(ReminderListActivity.EXISTING_MODEL_ID, existingModelId);
+                            i.putExtra(ReminderListActivity.ALARM_TONE, alarmTone);
                             startActivity(i);
                             startActivity(i);
                         }

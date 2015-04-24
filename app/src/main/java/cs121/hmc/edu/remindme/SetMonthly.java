@@ -38,10 +38,10 @@ public class SetMonthly extends ActionBarActivity {
 
         final Intent prevIntent = getIntent(); // gets the previously created intent
         final String alarmName = prevIntent.getStringExtra(SetAlarmInfo.ALARM_NAME);
-        final String alarmTone = prevIntent.getStringExtra(MainActivity.ALARM_TONE);
+        final String alarmTone = prevIntent.getStringExtra(ReminderListActivity.ALARM_TONE);
         final int reminderType = prevIntent.getIntExtra(SetFrequency.REMINDER_TYPE, -1);
-        final boolean existingModel = prevIntent.getBooleanExtra(MainActivity.EXISTING_MODEL, false);
-        final long existingModelId = prevIntent.getLongExtra(MainActivity.EXISTING_MODEL_ID, -1);
+        final boolean existingModel = prevIntent.getBooleanExtra(ReminderListActivity.EXISTING_MODEL, false);
+        final long existingModelId = prevIntent.getLongExtra(ReminderListActivity.EXISTING_MODEL_ID, -1);
 
         Button done = (Button) findViewById(R.id.btn_done);
         done.setOnClickListener(new View.OnClickListener() {
@@ -54,10 +54,10 @@ public class SetMonthly extends ActionBarActivity {
 
                     Intent i = new Intent(SetMonthly.this, SetTime.class);
                     i.putExtra(SetAlarmInfo.ALARM_NAME, alarmName);
-                    i.putExtra(MainActivity.ALARM_TONE, alarmTone);
+                    i.putExtra(ReminderListActivity.ALARM_TONE, alarmTone);
                     i.putExtra(SetFrequency.REMINDER_TYPE, reminderType);
-                    i.putExtra(MainActivity.EXISTING_MODEL, existingModel);
-                    i.putExtra(MainActivity.EXISTING_MODEL_ID, existingModelId);
+                    i.putExtra(ReminderListActivity.EXISTING_MODEL, existingModel);
+                    i.putExtra(ReminderListActivity.EXISTING_MODEL_ID, existingModelId);
                     i.putExtra(SetWeekly.WEEKDAY_ARRAY, weekdays);
                     i.putExtra(WEEK_NUMBER, whichWeek.getSelectedItemPosition()+1);
                     startActivity(i);
@@ -75,7 +75,7 @@ public class SetMonthly extends ActionBarActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.cancel_button: {
-                Intent intent = new Intent(this, AlarmOverviewActivity.class);
+                Intent intent = new Intent(this, AlarmListActivity.class);
                 startActivity(intent);
                 return true;
             }
