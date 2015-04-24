@@ -132,8 +132,8 @@ public class AlarmDBHelper extends SQLiteOpenHelper {
 
             }
 
-            reminderTime.setSnoozeCounter(snoozeCounter);//TODO write
-            reminderTime.setNextAwakeTime(nextAwakeTime);//TODO write
+            reminderTime.setSnoozeCounter(snoozeCounter);
+            reminderTime.setNextAwakeTime(nextAwakeTime);
             reminderTime.setMinBetweenSnooze(alarmModel.getSnooze());
 
             reminderTime.setId(id);
@@ -295,13 +295,11 @@ public class AlarmDBHelper extends SQLiteOpenHelper {
 
     }
 
-    //TODO edited this method to select for alarm name (i.e. "take meds") instead of id
-    //TODO CHECK that this even works
-    //this allows us to use our new alarm model
+    //returns alarm model from the database based on id
     public AlarmModel getAlarm(long id) {
         SQLiteDatabase db = getReadableDatabase();
         String select = "SELECT * FROM " + AlarmContract.Alarm.TABLE_NAME + " WHERE "
-                + AlarmContract.Alarm.COLUMN_NAME_ALARM_ID + " = " +id; //TODO, check that this works
+                + AlarmContract.Alarm.COLUMN_NAME_ALARM_ID + " = " +id;
         Cursor c = db.rawQuery(select, null);
         AlarmModel toReturn = populateModel(c);
         c.close();
@@ -314,6 +312,13 @@ public class AlarmDBHelper extends SQLiteOpenHelper {
 
         return getWritableDatabase().delete(AlarmContract.Alarm.TABLE_NAME,
                 AlarmContract.Alarm.COLUMN_NAME_ALARM_ID + " = "+id, null);
+    }
+
+    //deletes all rows related to a given reminder
+    public int deleteReminder(long id) {
+
+        return getWritableDatabase().delete(AlarmContract.Alarm.TABLE_NAME,
+                AlarmContract.Alarm._ID + " = "+id, null);
     }
 
     //makes a list of all current alarms

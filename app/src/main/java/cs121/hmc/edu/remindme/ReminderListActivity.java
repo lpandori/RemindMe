@@ -33,8 +33,12 @@ import java.util.Date;
  */
 
 
+<<<<<<< HEAD:app/src/main/java/cs121/hmc/edu/remindme/MainActivity.java
+public class MainActivity extends ActionBarActivity {
+=======
 
 public class ReminderListActivity extends ActionBarActivity {
+>>>>>>> origin:app/src/main/java/cs121/hmc/edu/remindme/ReminderListActivity.java
 
     private AlarmDBHelper dbHelper = new AlarmDBHelper(this);
     private ReminderListAdapter mAdapter;
@@ -115,7 +119,9 @@ public class ReminderListActivity extends ActionBarActivity {
                                 mAdapter.remove(position);
                                 View thisView = lvAdapter.getChildAt(position);
                                 long viewId = (long) thisView.getTag();
-                                dbHelper.deleteAlarm(viewId);
+                                AlarmManagerHelper.cancelAlarms(mContext);
+                                dbHelper.deleteReminder(viewId);
+                                AlarmManagerHelper.setAlarms(mContext);
                             }
                         });
 
