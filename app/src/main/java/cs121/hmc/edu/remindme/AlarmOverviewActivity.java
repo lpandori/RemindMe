@@ -23,7 +23,7 @@ import com.hudomju.swipe.adapter.ListViewAdapter;
 
 import java.util.List;
 
-public class AlarmListActivity extends ActionBarActivity {
+public class AlarmOverviewActivity extends ActionBarActivity {
 
     private AlarmDBHelper dbHelper = new AlarmDBHelper(this);
 
@@ -74,7 +74,7 @@ public class AlarmListActivity extends ActionBarActivity {
 
         switch (item.getItemId()) {
             case R.id.action_add_new_alarm: {
-                Intent intent = new Intent(this, SetName.class);
+                Intent intent = new Intent(this, SetAlarmInfo.class);
                 startActivity(intent);
                 break;
             }
@@ -105,10 +105,10 @@ public class AlarmListActivity extends ActionBarActivity {
     }
 
     public void startAlarmDetailsActivity(long id, String title, String ringtone) {
-        Intent intent = new Intent(this, AlarmDetailsActivity.class);
-        intent.putExtra(AlarmDetailsActivity.EXISTING_MODEL_ID, id);
-        intent.putExtra(AlarmDetailsActivity.ALARM_NAME, title);
-        intent.putExtra(AlarmDetailsActivity.ALARM_TONE, ringtone);
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.putExtra(MainActivity.EXISTING_MODEL_ID, id);
+        intent.putExtra(MainActivity.ALARM_NAME, title);
+        intent.putExtra(MainActivity.ALARM_TONE, ringtone);
         startActivity(intent);
     }
 
@@ -187,7 +187,7 @@ public class AlarmListActivity extends ActionBarActivity {
             btnToggle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    ((AlarmListActivity) mContext).setAlarmEnabled(((Long)
+                    ((AlarmOverviewActivity) mContext).setAlarmEnabled(((Long)
                             buttonView.getTag()), isChecked);
 
                 }
@@ -202,7 +202,7 @@ public class AlarmListActivity extends ActionBarActivity {
                     if (touchListener.existPendingDismisses()){
                         touchListener.undoPendingDismiss();
                     } else {
-                        ((AlarmListActivity) mContext).startAlarmDetailsActivity((Long) v.getTag(), model.name, model.alarmToneStr);
+                        ((AlarmOverviewActivity) mContext).startAlarmDetailsActivity((Long) v.getTag(), model.name, model.alarmToneStr);
                     }
 
                 }

@@ -16,7 +16,7 @@ import java.util.Calendar;
  *  works closely with the RemindMe database. Functions, such as getReminderType(), getWeekdays(),
  *  getDateString(), and getWeekOfMonth() etc, are all modifying to or reading from the database.
  */
-public class DailyReminder implements ReminderTime{
+public class ReminderDaily implements ReminderTime{
 
     private long id = -1;
     private int snoozeCounter;
@@ -29,7 +29,9 @@ public class DailyReminder implements ReminderTime{
     //constructor for a daily repeating reminder
     //id is the same id in db
     //hour is 0-24 :)
-    public DailyReminder(int hour, int min){
+
+    public ReminderDaily(int hour, int min){
+
         this.hour = hour;
         this.min = min;
 

@@ -14,7 +14,7 @@ import java.util.Calendar;
 /**
  * Created by rachelleholmgren on 3/26/15.
  */
-public class Datepicker extends ActionBarActivity {
+public class SetDate extends ActionBarActivity {
     private DatePicker datePicker;
     private Button button;
 
@@ -29,13 +29,13 @@ public class Datepicker extends ActionBarActivity {
         setCurrentDate();
 
         Intent prevIntent = getIntent(); // gets the previously created intent
-        final String alarmTone = prevIntent.getStringExtra(SetName.ALARM_TONE);
-        final String alarmName = prevIntent.getStringExtra(SetName.ALARM_NAME);
-        final int reminderType = prevIntent.getIntExtra(AlarmFrequency.REMINDER_TYPE, -1);
-        final boolean existingModel = prevIntent.getBooleanExtra(AlarmDetailsActivity.EXISTING_MODEL, false);
-        final long existingModelId = prevIntent.getLongExtra(AlarmDetailsActivity.EXISTING_MODEL_ID, -1);
-        final String alarm_tone = prevIntent.getStringExtra(AlarmDetailsActivity.ALARM_TONE);
-        final int minBetweenSnooze = prevIntent.getIntExtra(AlarmDetailsActivity.MIN_BETWEEN_SNOOZE, ReminderTime.DEFAULT_MIN_BETWEEN_SNOOZE);
+        final String alarmTone = prevIntent.getStringExtra(SetAlarmInfo.ALARM_TONE);
+        final String alarmName = prevIntent.getStringExtra(SetAlarmInfo.ALARM_NAME);
+        final int reminderType = prevIntent.getIntExtra(SetFrequency.REMINDER_TYPE, -1);
+        final boolean existingModel = prevIntent.getBooleanExtra(MainActivity.EXISTING_MODEL, false);
+        final long existingModelId = prevIntent.getLongExtra(MainActivity.EXISTING_MODEL_ID, -1);
+        final String alarm_tone = prevIntent.getStringExtra(MainActivity.ALARM_TONE);
+        final int minBetweenSnooze = prevIntent.getIntExtra(MainActivity.MIN_BETWEEN_SNOOZE, ReminderTime.DEFAULT_MIN_BETWEEN_SNOOZE);
 
         button = (Button) findViewById(R.id.done);
 
@@ -43,15 +43,15 @@ public class Datepicker extends ActionBarActivity {
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent i = new Intent(Datepicker.this, Timepicker.class);
-                    i.putExtra(SetName.ALARM_TONE, alarmTone);
+                    Intent i = new Intent(SetDate.this, SetTime.class);
+                    i.putExtra(SetAlarmInfo.ALARM_TONE, alarmTone);
                     System.out.println(alarmTone);
-                    i.putExtra(SetName.ALARM_NAME, alarmName);
-                    i.putExtra(AlarmFrequency.REMINDER_TYPE, reminderType);
-                    i.putExtra(AlarmDetailsActivity.EXISTING_MODEL, existingModel);
-                    i.putExtra(AlarmDetailsActivity.EXISTING_MODEL_ID, existingModelId);
-                    i.putExtra(AlarmDetailsActivity.MIN_BETWEEN_SNOOZE, minBetweenSnooze);
-                    i.putExtra(AlarmDetailsActivity.ALARM_TONE, alarm_tone);
+                    i.putExtra(SetAlarmInfo.ALARM_NAME, alarmName);
+                    i.putExtra(SetFrequency.REMINDER_TYPE, reminderType);
+                    i.putExtra(MainActivity.EXISTING_MODEL, existingModel);
+                    i.putExtra(MainActivity.EXISTING_MODEL_ID, existingModelId);
+                    i.putExtra(MainActivity.MIN_BETWEEN_SNOOZE, minBetweenSnooze);
+                    i.putExtra(MainActivity.ALARM_TONE, alarm_tone);
                     i.putExtra(DATE_YEAR, datePicker.getYear());
                     //month starts counting at 0 so must add 1
                     int month = datePicker.getMonth()+1;
@@ -72,7 +72,7 @@ public class Datepicker extends ActionBarActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.cancel_button: {
-                Intent intent = new Intent(this, AlarmListActivity.class);
+                Intent intent = new Intent(this, AlarmOverviewActivity.class);
                 startActivity(intent);
                 return true;
             }

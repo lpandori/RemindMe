@@ -34,7 +34,7 @@ import java.util.Date;
 
 
 //TODO commented out for now
-public class AlarmDetailsActivity extends ActionBarActivity {
+public class MainActivity extends ActionBarActivity {
 
     private AlarmDBHelper dbHelper = new AlarmDBHelper(this);
     private ReminderListAdapter mAdapter;
@@ -87,12 +87,13 @@ public class AlarmDetailsActivity extends ActionBarActivity {
         addReminder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(mContext, AlarmFrequency.class);
+                Intent intent = new Intent(mContext, SetFrequency.class);
                 intent.putExtra(EXISTING_MODEL_ID, alarmId);//need model id
-                intent.putExtra(SetName.ALARM_NAME, alarmTitle);
+                intent.putExtra(ALARM_NAME, alarmTitle);
                 System.out.println("ALARM TONE FROM DETAILS is " + alarm_tone);
-                intent.putExtra(AlarmDetailsActivity.ALARM_TONE, alarm_tone);
+                intent.putExtra(ALARM_TONE, alarm_tone);
                 intent.putExtra(EXISTING_MODEL, true);
+                intent.putExtra("prevActivity", "AlarmDetails");
                 startActivity(intent);
             }
         });
@@ -128,12 +129,19 @@ public class AlarmDetailsActivity extends ActionBarActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch(item.getItemId()){
             case R.id.home_button:
-                Intent i = new Intent(AlarmDetailsActivity.this, AlarmListActivity.class);
+                Intent i = new Intent(MainActivity.this, AlarmOverviewActivity.class);
                 startActivity(i);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        //Display alert message when back button has been pressed
+        Intent i = new Intent(MainActivity.this, AlarmOverviewActivity.class);
+        startActivity(i);
     }
 
     /*
@@ -216,7 +224,7 @@ public class AlarmDetailsActivity extends ActionBarActivity {
                         e.printStackTrace();
                     }
                     DateFormat outFormat = SimpleDateFormat.getDateInstance();
-                    toDisplay = outFormat.format(date) + " at ";
+                    toDisplay = outFormat.format(date) + " at";
                     break;
                 case ReminderTime.DAILY:
                     toDisplay = "Daily at";
@@ -227,7 +235,7 @@ public class AlarmDetailsActivity extends ActionBarActivity {
                     String week = reminderTime.getWeekdays();
                     int dayIndex = week.indexOf('1');
                     String dayString = weekdays[dayIndex];
-                    toDisplay = "Every " + weekString + " " + dayString + " at ";
+                    toDisplay = "Every " + weekString + " " + dayString + " at";
                     break;
             }
 

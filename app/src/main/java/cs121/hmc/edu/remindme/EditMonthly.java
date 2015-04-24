@@ -1,6 +1,5 @@
 package cs121.hmc.edu.remindme;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -28,13 +27,13 @@ public class EditMonthly extends ActionBarActivity {
         setContentView(R.layout.edit_monthly);
 
         Intent thisIntent = getIntent();
-        int hour = thisIntent.getIntExtra(AlarmDetailsActivity.ALARM_HOUR, -1);
-        int minute = thisIntent.getIntExtra(AlarmDetailsActivity.ALARM_MINUTE, -1);
-        final String name = thisIntent.getStringExtra(AlarmDetailsActivity.ALARM_NAME);
-        id = thisIntent.getLongExtra(AlarmDetailsActivity.EXISTING_MODEL_ID, -1);
-        final long reminderId = thisIntent.getLongExtra(AlarmDetailsActivity.REMINDER_ID, -1);
-        final int weekNumber = thisIntent.getIntExtra(AlarmDetailsActivity.WEEK_OF_MONTH,-1);
-        final String whichdays = thisIntent.getStringExtra(AlarmDetailsActivity.WEEKDAYS);
+        int hour = thisIntent.getIntExtra(MainActivity.ALARM_HOUR, -1);
+        int minute = thisIntent.getIntExtra(MainActivity.ALARM_MINUTE, -1);
+        final String name = thisIntent.getStringExtra(MainActivity.ALARM_NAME);
+        id = thisIntent.getLongExtra(MainActivity.EXISTING_MODEL_ID, -1);
+        final long reminderId = thisIntent.getLongExtra(MainActivity.REMINDER_ID, -1);
+        final int weekNumber = thisIntent.getIntExtra(MainActivity.WEEK_OF_MONTH,-1);
+        final String whichdays = thisIntent.getStringExtra(MainActivity.WEEKDAYS);
 
         TextView alarmName = (TextView) findViewById(R.id.editBlank);
         final TimePicker timePicker = (TimePicker) findViewById(R.id.timePicker);
@@ -87,15 +86,15 @@ public class EditMonthly extends ActionBarActivity {
                 weekdays[whichDay.getSelectedItemPosition()] = true;
                 int weekNumber = whichWeek.getSelectedItemPosition()+1;
 
-                ReminderTime monthly = new MonthlyReminder(h, m, weekNumber, weekdays);
+                ReminderTime monthly = new ReminderMonthly(h, m, weekNumber, weekdays);
                 monthly.setId(reminderId);
                 AlarmManagerHelper.cancelAlarms(mContext);
                 dbHelper.updateReminder(monthly, id);
                 AlarmManagerHelper.setAlarms(mContext);
 
-                Intent i = new Intent(EditMonthly.this, AlarmDetailsActivity.class);
-                i.putExtra(AlarmDetailsActivity.ALARM_NAME, name);
-                i.putExtra(AlarmDetailsActivity.EXISTING_MODEL_ID, id);
+                Intent i = new Intent(EditMonthly.this, MainActivity.class);
+                i.putExtra(MainActivity.ALARM_NAME, name);
+                i.putExtra(MainActivity.EXISTING_MODEL_ID, id);
                 startActivity(i);
             }
         });
@@ -112,8 +111,8 @@ public class EditMonthly extends ActionBarActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.cancel_button: {
-                Intent intent = new Intent(this, AlarmDetailsActivity.class);
-                intent.putExtra(AlarmDetailsActivity.EXISTING_MODEL_ID, id);
+                Intent intent = new Intent(this, MainActivity.class);
+                intent.putExtra(MainActivity.EXISTING_MODEL_ID, id);
                 startActivity(intent);
                 break;
             }

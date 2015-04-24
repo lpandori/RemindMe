@@ -4,8 +4,17 @@ import java.util.Calendar;
 
 /**
  * Created by lepandori on 3/8/15.
+ *
+ * Modified by Tyra He
+ *
+ * Monthly defines specific behavior in the monthly reminder mode. This class implements the
+ *  interface ReminderTime class. It sets a monthly repeating reminder, and every time a monthly
+ *  reminder rings, its next ringing date will be revised to the next at the same time.
+ *  Same as other reminder types, DailyReminder works closely with the RemindMe database.
+ *  Functions, such as getReminderType(), getWeekdays(), getDateString(), and getWeekOfMonth() etc,
+ *  are all modifying to or reading from the database.
  */
-public class MonthlyReminder implements ReminderTime {
+public class ReminderMonthly implements ReminderTime {
 
     private long id;
     private int snoozeCounter = 0;
@@ -23,7 +32,7 @@ public class MonthlyReminder implements ReminderTime {
     }
 
     //weeknumber is 1-4
-    public MonthlyReminder(int hour, int min, int weekNumber, boolean[] weekdays){
+    public ReminderMonthly(int hour, int min, int weekNumber, boolean[] weekdays){
         this.hour = hour;
         this.min = min;
         this.weekNumber = weekNumber;
@@ -95,13 +104,7 @@ public class MonthlyReminder implements ReminderTime {
         setTime.set(Calendar.SECOND, 00);
         setTime.set(Calendar.MONTH, nowMonth);
 
-        if(nowWeekOfMonth == weekNumber) {//should happen in this week
-            //haven't passed this week's alarm
-            //have passed it need to go down to next case
-
-            //check if we've passed it today
-            //loop through array starting tomorrow
-
+        if(nowWeekOfMonth == weekNumber) {
             //check if alarm needs to happen today
             if(hour > nowHour || (nowHour == hour && min > nowMin)){
                 //set for today
