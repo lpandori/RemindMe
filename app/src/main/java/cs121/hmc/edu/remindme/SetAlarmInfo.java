@@ -107,7 +107,7 @@ public class SetAlarmInfo extends ActionBarActivity {
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(
                 SetAlarmInfo.this);
         // Setting Dialog Title
-        alertDialog.setTitle("Stop creating a new Reminder?");
+        alertDialog.setTitle("Confirm:");
         // Setting Dialog Message
         alertDialog.setMessage("Are you sure you want to stop creating a new reminder?");
         // Setting Positive "Yes" Button
