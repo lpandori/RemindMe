@@ -171,10 +171,6 @@ public class AlarmListActivity extends ActionBarActivity {
 
             // get Item implemented above
             final AlarmModel model = (AlarmModel) getItem(position);
-<<<<<<< HEAD:app/src/main/java/cs121/hmc/edu/remindme/AlarmOverviewActivity.java
-
-=======
->>>>>>> origin:app/src/main/java/cs121/hmc/edu/remindme/AlarmListActivity.java
             TextView txtName = (TextView) convertView.findViewById(R.id.alarm_item_name);
             txtName.setText(model.name);
             TextView snoozeTime = (TextView) convertView.findViewById(R.id.alarm_snoozeTime);
