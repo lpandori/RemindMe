@@ -4,8 +4,19 @@ import java.util.Calendar;
 
 /**
  * Created by lepandori on 3/7/15.
+ *
+ * Modified by Tyra He
+ *
+ * OneTimeReminder defines specific behavior in the oneTime reminder mode. This class implements the
+ *  interface ReminderTime class. It sets a oneTime reminder, and every time a oneTime reminder
+ *  rings, it will disable this alarm by setting a flag in the database. Same as other reminder
+ *  types, OneTimeReminder works closely with the RemindMe database. Functions, such as
+ *  getReminderType(), getWeekdays(), getDateString(), and getWeekOfMonth() etc, are all
+ *  modifying to or reading from the database. For oneTimeReminder, it requires the user to set date
+ *  in a specific format: Year has to be an integer, day (from 0-31), month (from 1-12), hour (0-23)
+ *  and min (0-59).
  */
-public class OneTimeReminder implements ReminderTime {
+public class ReminderOneTime implements ReminderTime {
 
     private long id = -1;
     private int snoozeCounter = 0;
@@ -18,12 +29,7 @@ public class OneTimeReminder implements ReminderTime {
     private Calendar date;
 
     //improved constructor
-    //day: 0 - 31
-    //year: postive integer
-    //month: 1=jan, 12=dec
-    //hour 0-23
-    //min 0-59
-    public OneTimeReminder(int year, int month, int day, int hour, int min) {
+    public ReminderOneTime(int year, int month, int day, int hour, int min) {
         //this.id = id; TODO removed id
         this.year = year;
         this.month = month;

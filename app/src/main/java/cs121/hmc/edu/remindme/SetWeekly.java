@@ -13,7 +13,7 @@ import java.util.ArrayList;
 /**
  * Created by rachelleholmgren on 3/5/15.
  */
-public class AlarmDaysOfWeek extends ActionBarActivity {
+public class SetWeekly extends ActionBarActivity {
 
     public static String WEEKDAY_ARRAY= "weekday_array";
 
@@ -43,13 +43,13 @@ public class AlarmDaysOfWeek extends ActionBarActivity {
 
         //get passed in data
         final Intent prevIntent = getIntent(); //gets the previously created intent
-        final String alarmName = prevIntent.getStringExtra(SetName.ALARM_NAME);
-        final String alarmTone = prevIntent.getStringExtra(AlarmDetailsActivity.ALARM_TONE);
-        final int reminderType = prevIntent.getIntExtra(AlarmFrequency.REMINDER_TYPE, -1);
-        final boolean existingModel = prevIntent.getBooleanExtra(AlarmDetailsActivity.EXISTING_MODEL, false);
-        final long existingModelId = prevIntent.getLongExtra(AlarmDetailsActivity.EXISTING_MODEL_ID, -1);
+        final String alarmName = prevIntent.getStringExtra(SetAlarmInfo.ALARM_NAME);
+        final String alarmTone = prevIntent.getStringExtra(MainActivity.ALARM_TONE);
+        final int reminderType = prevIntent.getIntExtra(SetFrequency.REMINDER_TYPE, -1);
+        final boolean existingModel = prevIntent.getBooleanExtra(MainActivity.EXISTING_MODEL, false);
+        final long existingModelId = prevIntent.getLongExtra(MainActivity.EXISTING_MODEL_ID, -1);
 
-        final int minBetweenSnooze = prevIntent.getIntExtra(AlarmDetailsActivity.MIN_BETWEEN_SNOOZE, ReminderTime.DEFAULT_MIN_BETWEEN_SNOOZE);
+        final int minBetweenSnooze = prevIntent.getIntExtra(MainActivity.MIN_BETWEEN_SNOOZE, ReminderTime.DEFAULT_MIN_BETWEEN_SNOOZE);
 
 
 
@@ -64,13 +64,13 @@ public class AlarmDaysOfWeek extends ActionBarActivity {
                        x++;
                    }
 
-                   Intent i = new Intent(AlarmDaysOfWeek.this, Timepicker.class);
-                   i.putExtra(SetName.ALARM_NAME, alarmName);
-                   i.putExtra(AlarmDetailsActivity.ALARM_TONE, alarmTone);
-                   i.putExtra(AlarmDetailsActivity.EXISTING_MODEL, existingModel);
-                   i.putExtra(AlarmDetailsActivity.EXISTING_MODEL_ID, existingModelId);
-                   i.putExtra(AlarmDetailsActivity.MIN_BETWEEN_SNOOZE, minBetweenSnooze);
-                   i.putExtra(AlarmFrequency.REMINDER_TYPE, reminderType);
+                   Intent i = new Intent(SetWeekly.this, SetTime.class);
+                   i.putExtra(SetAlarmInfo.ALARM_NAME, alarmName);
+                   i.putExtra(MainActivity.ALARM_TONE, alarmTone);
+                   i.putExtra(MainActivity.EXISTING_MODEL, existingModel);
+                   i.putExtra(MainActivity.EXISTING_MODEL_ID, existingModelId);
+                   i.putExtra(MainActivity.MIN_BETWEEN_SNOOZE, minBetweenSnooze);
+                   i.putExtra(SetFrequency.REMINDER_TYPE, reminderType);
                    i.putExtra(WEEKDAY_ARRAY, weekdays);
                    startActivity(i);
             }
@@ -89,7 +89,7 @@ public class AlarmDaysOfWeek extends ActionBarActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.cancel_button: {
-                Intent intent = new Intent(this, AlarmListActivity.class);
+                Intent intent = new Intent(this, AlarmOverviewActivity.class);
                 startActivity(intent);
                 return true;
             }

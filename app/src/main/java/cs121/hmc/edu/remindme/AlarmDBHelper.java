@@ -110,25 +110,25 @@ public class AlarmDBHelper extends SQLiteOpenHelper {
                 int year = Integer.parseInt(dateString.substring(0,4));
                 int month = Integer.parseInt(dateString.substring(5,7));
                 int day = Integer.parseInt(dateString.substring(8,10));
-                reminderTime = new OneTimeReminder(year, month, day, hour, min);
+                reminderTime = new ReminderOneTime(year, month, day, hour, min);
                 reminderTime.setMinBetweenSnooze(alarmModel.getSnooze());
 
             }else if(isDaily){
 
-                reminderTime = new DailyReminder(hour, min);
+                reminderTime = new ReminderDaily(hour, min);
 
             }else if(isWeekly){
 
                 boolean[] weekdays =
                         makeWeekdayArray(c.getString(c.getColumnIndex(AlarmContract.Alarm.COLUMN_NAME_ALARM_WHICH_WEEKDAYS)));
-                reminderTime = new WeeklyReminder(hour, min, weekdays);
+                reminderTime = new ReminderWeekly(hour, min, weekdays);
 
             }else if(isMonthly){
 
                 boolean[] weekdays =
                         makeWeekdayArray(c.getString(c.getColumnIndex(AlarmContract.Alarm.COLUMN_NAME_ALARM_WHICH_WEEKDAYS)));
                 int weekNumber = c.getInt(c.getColumnIndex(AlarmContract.Alarm.COLUMN_NAME_ALARM_WHICH_WEEK_OF_MONTH));
-                reminderTime = new MonthlyReminder(hour, min, weekNumber, weekdays);
+                reminderTime = new ReminderMonthly(hour, min, weekNumber, weekdays);
 
             }
 

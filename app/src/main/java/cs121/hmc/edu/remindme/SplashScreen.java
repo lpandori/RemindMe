@@ -1,11 +1,9 @@
 package cs121.hmc.edu.remindme;
 
-import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.view.View;
 
 /**
  * Created by rachelleholmgren on 4/19/15.
@@ -35,7 +33,7 @@ public class SplashScreen extends Activity {
             @Override
             public void run() {
 
-                Intent i = new Intent(SplashScreen.this, AlarmListActivity.class);
+                Intent i = new Intent(SplashScreen.this, AlarmOverviewActivity.class);
                 startActivity(i);
 
 
