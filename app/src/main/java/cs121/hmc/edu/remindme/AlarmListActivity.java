@@ -35,7 +35,7 @@ import java.util.List;
  */
 
 
-public class AlarmOverviewActivity extends ActionBarActivity {
+public class AlarmListActivity extends ActionBarActivity {
     // A DBHelper allows access to the database, the adapter populates the ListView
     private AlarmDBHelper dbHelper = new AlarmDBHelper(this);
     private AlarmListAdapter mAdapter;
