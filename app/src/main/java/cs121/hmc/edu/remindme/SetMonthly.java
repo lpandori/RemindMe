@@ -13,7 +13,7 @@ import android.widget.Spinner;
 /**
  * Created by rachelleholmgren on 3/7/15.
  */
-public class AlarmMonthly extends ActionBarActivity {
+public class SetMonthly extends ActionBarActivity {
 
     public static final String WEEK_NUMBER = "week_number";
 
@@ -37,11 +37,11 @@ public class AlarmMonthly extends ActionBarActivity {
         whichDay.setAdapter(adapter2);
 
         final Intent prevIntent = getIntent(); // gets the previously created intent
-        final String alarmName = prevIntent.getStringExtra(SetName.ALARM_NAME);
-        final String alarmTone = prevIntent.getStringExtra(AlarmDetailsActivity.ALARM_TONE);
-        final int reminderType = prevIntent.getIntExtra(AlarmFrequency.REMINDER_TYPE, -1);
-        final boolean existingModel = prevIntent.getBooleanExtra(AlarmDetailsActivity.EXISTING_MODEL, false);
-        final long existingModelId = prevIntent.getLongExtra(AlarmDetailsActivity.EXISTING_MODEL_ID, -1);
+        final String alarmName = prevIntent.getStringExtra(SetAlarmInfo.ALARM_NAME);
+        final String alarmTone = prevIntent.getStringExtra(MainActivity.ALARM_TONE);
+        final int reminderType = prevIntent.getIntExtra(SetFrequency.REMINDER_TYPE, -1);
+        final boolean existingModel = prevIntent.getBooleanExtra(MainActivity.EXISTING_MODEL, false);
+        final long existingModelId = prevIntent.getLongExtra(MainActivity.EXISTING_MODEL_ID, -1);
 
         Button done = (Button) findViewById(R.id.btn_done);
         done.setOnClickListener(new View.OnClickListener() {
@@ -52,13 +52,13 @@ public class AlarmMonthly extends ActionBarActivity {
                     boolean[] weekdays = {false,false,false,false,false,false,false};
                     weekdays[whichDay.getSelectedItemPosition()] = true;
 
-                    Intent i = new Intent(AlarmMonthly.this, Timepicker.class);
-                    i.putExtra(SetName.ALARM_NAME, alarmName);
-                    i.putExtra(AlarmDetailsActivity.ALARM_TONE, alarmTone);
-                    i.putExtra(AlarmFrequency.REMINDER_TYPE, reminderType);
-                    i.putExtra(AlarmDetailsActivity.EXISTING_MODEL, existingModel);
-                    i.putExtra(AlarmDetailsActivity.EXISTING_MODEL_ID, existingModelId);
-                    i.putExtra(AlarmDaysOfWeek.WEEKDAY_ARRAY, weekdays);
+                    Intent i = new Intent(SetMonthly.this, SetTime.class);
+                    i.putExtra(SetAlarmInfo.ALARM_NAME, alarmName);
+                    i.putExtra(MainActivity.ALARM_TONE, alarmTone);
+                    i.putExtra(SetFrequency.REMINDER_TYPE, reminderType);
+                    i.putExtra(MainActivity.EXISTING_MODEL, existingModel);
+                    i.putExtra(MainActivity.EXISTING_MODEL_ID, existingModelId);
+                    i.putExtra(SetWeekly.WEEKDAY_ARRAY, weekdays);
                     i.putExtra(WEEK_NUMBER, whichWeek.getSelectedItemPosition()+1);
                     startActivity(i);
             }
@@ -75,7 +75,7 @@ public class AlarmMonthly extends ActionBarActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.cancel_button: {
-                Intent intent = new Intent(this, AlarmListActivity.class);
+                Intent intent = new Intent(this, AlarmOverviewActivity.class);
                 startActivity(intent);
                 return true;
             }

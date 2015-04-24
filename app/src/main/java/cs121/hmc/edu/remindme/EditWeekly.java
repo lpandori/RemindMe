@@ -34,13 +34,13 @@ public class EditWeekly extends ActionBarActivity {
         final CustomSwitch saturday = (CustomSwitch) findViewById(R.id.alarm_details_label_saturday);
 
         Intent thisIntent = getIntent();
-        final int hour = thisIntent.getIntExtra(AlarmDetailsActivity.ALARM_HOUR, -1);
-        final int minute = thisIntent.getIntExtra(AlarmDetailsActivity.ALARM_MINUTE, -1);
-        final String name = thisIntent.getStringExtra(AlarmDetailsActivity.ALARM_NAME);
-        final String alarm_tone = thisIntent.getStringExtra(AlarmDetailsActivity.ALARM_TONE);
-        id = thisIntent.getLongExtra(AlarmDetailsActivity.EXISTING_MODEL_ID, -1);
-        final long reminderId = thisIntent.getLongExtra(AlarmDetailsActivity.REMINDER_ID, -1);
-        final String whichdays = thisIntent.getStringExtra(AlarmDetailsActivity.WEEKDAYS);
+        final int hour = thisIntent.getIntExtra(MainActivity.ALARM_HOUR, -1);
+        final int minute = thisIntent.getIntExtra(MainActivity.ALARM_MINUTE, -1);
+        final String name = thisIntent.getStringExtra(MainActivity.ALARM_NAME);
+        final String alarm_tone = thisIntent.getStringExtra(MainActivity.ALARM_TONE);
+        id = thisIntent.getLongExtra(MainActivity.EXISTING_MODEL_ID, -1);
+        final long reminderId = thisIntent.getLongExtra(MainActivity.REMINDER_ID, -1);
+        final String whichdays = thisIntent.getStringExtra(MainActivity.WEEKDAYS);
 
 
 
@@ -79,16 +79,16 @@ public class EditWeekly extends ActionBarActivity {
                         friday.isChecked(),
                         saturday.isChecked()};
 
-                ReminderTime weekly = new WeeklyReminder(h,m,weekdays);
+                ReminderTime weekly = new ReminderWeekly(h,m,weekdays);
                 weekly.setId(reminderId);
                 AlarmManagerHelper.cancelAlarms(mContext);
                 dbHelper.updateReminder(weekly, id);
                 AlarmManagerHelper.setAlarms(mContext);
 
-                Intent i = new Intent(EditWeekly.this, AlarmDetailsActivity.class);
-                i.putExtra(AlarmDetailsActivity.EXISTING_MODEL_ID, id);
-                i.putExtra(AlarmDetailsActivity.ALARM_NAME, name);
-                i.putExtra(AlarmDetailsActivity.ALARM_TONE, alarm_tone);
+                Intent i = new Intent(EditWeekly.this, MainActivity.class);
+                i.putExtra(MainActivity.EXISTING_MODEL_ID, id);
+                i.putExtra(MainActivity.ALARM_NAME, name);
+                i.putExtra(MainActivity.ALARM_TONE, alarm_tone);
                 startActivity(i);
             }
         });
@@ -104,8 +104,8 @@ public class EditWeekly extends ActionBarActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.cancel_button: {
-                Intent intent = new Intent(this, AlarmDetailsActivity.class);
-                intent.putExtra(AlarmDetailsActivity.EXISTING_MODEL_ID, id);
+                Intent intent = new Intent(this, MainActivity.class);
+                intent.putExtra(MainActivity.EXISTING_MODEL_ID, id);
                 startActivity(intent);
                 break;
             }

@@ -6,7 +6,7 @@ import java.util.Calendar;
  * Created by lepandori on 3/7/15.
  */
 
-public class WeeklyReminder implements ReminderTime {
+public class ReminderWeekly implements ReminderTime {
 
     public static final int SUNDAY = 0;
     public static final int MONDAY = 1;
@@ -28,7 +28,7 @@ public class WeeklyReminder implements ReminderTime {
 
     //construct a weekly reminder
     //weekdays - boolean array indicating which weekdays to repeat on
-    public WeeklyReminder(int hour, int min, boolean[] weekdays){
+    public ReminderWeekly(int hour, int min, boolean[] weekdays){
         this.weekdays = weekdays;
         this.hour = hour;
         this.min = min;

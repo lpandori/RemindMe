@@ -5,7 +5,7 @@ import java.util.Calendar;
 /**
  * Created by lepandori on 3/8/15.
  */
-public class MonthlyReminder implements ReminderTime {
+public class ReminderMonthly implements ReminderTime {
 
     private long id;
     private int snoozeCounter = 0;
@@ -23,7 +23,7 @@ public class MonthlyReminder implements ReminderTime {
     }
 
     //weeknumber is 1-4
-    public MonthlyReminder(int hour, int min, int weekNumber, boolean[] weekdays){
+    public ReminderMonthly(int hour, int min, int weekNumber, boolean[] weekdays){
         this.hour = hour;
         this.min = min;
         this.weekNumber = weekNumber;

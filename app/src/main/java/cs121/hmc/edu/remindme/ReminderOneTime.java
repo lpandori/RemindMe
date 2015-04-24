@@ -5,7 +5,7 @@ import java.util.Calendar;
 /**
  * Created by lepandori on 3/7/15.
  */
-public class OneTimeReminder implements ReminderTime {
+public class ReminderOneTime implements ReminderTime {
 
     private long id = -1;
     private int snoozeCounter = 0;
@@ -23,7 +23,7 @@ public class OneTimeReminder implements ReminderTime {
     //month: 1=jan, 12=dec
     //hour 0-23
     //min 0-59
-    public OneTimeReminder(int year, int month, int day, int hour, int min) {
+    public ReminderOneTime(int year, int month, int day, int hour, int min) {
         //this.id = id; TODO removed id
         this.year = year;
         this.month = month;

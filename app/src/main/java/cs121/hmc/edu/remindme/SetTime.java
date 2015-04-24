@@ -15,7 +15,7 @@ import java.util.Calendar;
 /**
  * Created by rachelleholmgren on 3/26/15.
  */
-public class Timepicker extends ActionBarActivity {
+public class SetTime extends ActionBarActivity {
         private TimePicker timePicker;
         private Button button;
         private AlarmDBHelper dbHelper = new AlarmDBHelper(this);
@@ -25,13 +25,13 @@ public class Timepicker extends ActionBarActivity {
             super.onCreate(savedInstanceState);
 
             final Intent prevIntent = getIntent(); // gets the previously created intent
-            final String alarmName = prevIntent.getStringExtra(SetName.ALARM_NAME);
-            final String alarmTone = prevIntent.getStringExtra(SetName.ALARM_TONE);
-            final int reminderType = prevIntent.getIntExtra(AlarmFrequency.REMINDER_TYPE, -1);
-            final boolean existingModel = prevIntent.getBooleanExtra(AlarmDetailsActivity.EXISTING_MODEL, false);
-            final long existingModelId = prevIntent.getLongExtra(AlarmDetailsActivity.EXISTING_MODEL_ID, -1);
+            final String alarmName = prevIntent.getStringExtra(SetAlarmInfo.ALARM_NAME);
+            final String alarmTone = prevIntent.getStringExtra(SetAlarmInfo.ALARM_TONE);
+            final int reminderType = prevIntent.getIntExtra(SetFrequency.REMINDER_TYPE, -1);
+            final boolean existingModel = prevIntent.getBooleanExtra(MainActivity.EXISTING_MODEL, false);
+            final long existingModelId = prevIntent.getLongExtra(MainActivity.EXISTING_MODEL_ID, -1);
 
-            final int minBetweenSnooze = prevIntent.getIntExtra(AlarmDetailsActivity.MIN_BETWEEN_SNOOZE, ReminderTime.DEFAULT_MIN_BETWEEN_SNOOZE);
+            final int minBetweenSnooze = prevIntent.getIntExtra(MainActivity.MIN_BETWEEN_SNOOZE, ReminderTime.DEFAULT_MIN_BETWEEN_SNOOZE);
 
 
             System.out.println(alarmTone);
@@ -54,26 +54,26 @@ public class Timepicker extends ActionBarActivity {
                     switch(reminderType){
                         case ReminderTime.ONE_TIME:
 
-                            int year = prevIntent.getIntExtra(Datepicker.DATE_YEAR, -1);
-                            int month = prevIntent.getIntExtra(Datepicker.DATE_MONTH, -1);
-                            int day = prevIntent.getIntExtra(Datepicker.DATE_DAY, -1);
-                            r = new OneTimeReminder(year, month, day, hour, minute);
+                            int year = prevIntent.getIntExtra(SetDate.DATE_YEAR, -1);
+                            int month = prevIntent.getIntExtra(SetDate.DATE_MONTH, -1);
+                            int day = prevIntent.getIntExtra(SetDate.DATE_DAY, -1);
+                            r = new ReminderOneTime(year, month, day, hour, minute);
                             break;
                         case ReminderTime.DAILY:
-                            r = new DailyReminder(hour, minute);
+                            r = new ReminderDaily(hour, minute);
                             break;
                         case ReminderTime.WEEKLY:
-                            weekdays = prevIntent.getBooleanArrayExtra(AlarmDaysOfWeek.WEEKDAY_ARRAY);
-                            r = new WeeklyReminder(hour, minute, weekdays);
+                            weekdays = prevIntent.getBooleanArrayExtra(SetWeekly.WEEKDAY_ARRAY);
+                            r = new ReminderWeekly(hour, minute, weekdays);
                             break;
                         case ReminderTime.MONTHLY:
-                            weekdays = prevIntent.getBooleanArrayExtra(AlarmDaysOfWeek.WEEKDAY_ARRAY);
-                            int weekNumber = prevIntent.getIntExtra(AlarmMonthly.WEEK_NUMBER,-1);
-                            r = new MonthlyReminder(hour, minute, weekNumber, weekdays);
+                            weekdays = prevIntent.getBooleanArrayExtra(SetWeekly.WEEKDAY_ARRAY);
+                            int weekNumber = prevIntent.getIntExtra(SetMonthly.WEEK_NUMBER,-1);
+                            r = new ReminderMonthly(hour, minute, weekNumber, weekdays);
                             break;
                     }
                     r.setMinBetweenSnooze(minBetweenSnooze);
-                    Intent i = new Intent(Timepicker.this, AlarmDetailsActivity.class);
+                    Intent i = new Intent(SetTime.this, MainActivity.class);
                     if(!existingModel){
                         AlarmModel alarmModel = new AlarmModel(alarmName);
 
@@ -85,7 +85,7 @@ public class Timepicker extends ActionBarActivity {
                         alarmModel.setId(System.currentTimeMillis());
 
                         alarmModel.addReminder(r);
-                        i.putExtra(AlarmDetailsActivity.EXISTING_MODEL_ID, alarmId);
+                        i.putExtra(MainActivity.EXISTING_MODEL_ID, alarmId);
 
 
                         dbHelper.createAlarm(alarmModel);//add to db
@@ -94,7 +94,7 @@ public class Timepicker extends ActionBarActivity {
                         alarmModel.addReminder(r);
                         dbHelper.deleteAlarm(existingModelId);
                         dbHelper.createAlarm(alarmModel);
-                        i.putExtra(AlarmDetailsActivity.EXISTING_MODEL_ID, existingModelId);
+                        i.putExtra(MainActivity.EXISTING_MODEL_ID, existingModelId);
 
                         System.out.println("added new reminder time");
 
@@ -104,8 +104,8 @@ public class Timepicker extends ActionBarActivity {
                     System.out.println("ALARM TONE IS " + alarmTone);
 
 
-                    i.putExtra(AlarmDetailsActivity.ALARM_NAME, alarmName);
-                    i.putExtra(AlarmDetailsActivity.ALARM_TONE, alarmTone);
+                    i.putExtra(MainActivity.ALARM_NAME, alarmName);
+                    i.putExtra(MainActivity.ALARM_TONE, alarmTone);
                     // pass timePicker.getCurrentHour() &&
                     //timePicker.getCurrentMinute() as extras
                     startActivity(i);
@@ -123,7 +123,7 @@ public class Timepicker extends ActionBarActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.cancel_button: {
-                Intent intent = new Intent(this, AlarmListActivity.class);
+                Intent intent = new Intent(this, AlarmOverviewActivity.class);
                 startActivity(intent);
                 return true;
             }
