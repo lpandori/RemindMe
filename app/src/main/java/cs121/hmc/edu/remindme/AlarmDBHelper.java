@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.net.Uri;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -16,7 +17,7 @@ import java.util.List;
 
 public class AlarmDBHelper extends SQLiteOpenHelper {
 
-    public static final int DATABASE_VERSION = 3;
+    public static final int DATABASE_VERSION = 5;
     public static final String DATABASE_NAME = "alarmclock.db";
 
     private static final String SQL_CREATE_ALARM =
@@ -73,14 +74,15 @@ public class AlarmDBHelper extends SQLiteOpenHelper {
                 boolean isEnabled = c.getInt(c.getColumnIndex(AlarmContract.Alarm.COLUMN_NAME_ALARM_ENABLED)) > 0;
                 long model_id = c.getLong(c.getColumnIndex(AlarmContract.Alarm.COLUMN_NAME_ALARM_ID));
                 int snooze = c.getInt(c.getColumnIndex(AlarmContract.Alarm.COLUMN_NAME_ALARM_SNOOZE));
-               String alarm_tone = c.getString(c.getColumnIndex(AlarmContract.Alarm.COLUMN_NAME_ALARM_TONE));
+                alarmModel.alarmTone = Uri.parse(c.getString(c.getColumnIndex(AlarmContract.Alarm.COLUMN_NAME_ALARM_TONE)));
+               //String alarm_tone = c.getString(c.getColumnIndex(AlarmContract.Alarm.COLUMN_NAME_ALARM_TONE));
 
                 //System.out.println("ALARM TONE IS : " + alarmTone);
 
                 alarmModel.setEnabled(isEnabled);
                 alarmModel.setId(model_id);
                 alarmModel.setSnooze(snooze);
-               alarmModel.setAlarmTone(alarm_tone);
+                //alarmModel.setAlarmTone(alarm_tone);
 
             }
             i++;

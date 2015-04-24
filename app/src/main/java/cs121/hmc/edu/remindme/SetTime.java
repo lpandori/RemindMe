@@ -2,14 +2,17 @@ package cs121.hmc.edu.remindme;
 
 import android.content.Context;
 import android.content.Intent;
+import android.media.RingtoneManager;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TimePicker;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 
 /**
@@ -53,7 +56,6 @@ public class SetTime extends ActionBarActivity {
                     //use switch to make reminder time
                     switch(reminderType){
                         case ReminderTime.ONE_TIME:
-
                             int year = prevIntent.getIntExtra(SetDate.DATE_YEAR, -1);
                             int month = prevIntent.getIntExtra(SetDate.DATE_MONTH, -1);
                             int day = prevIntent.getIntExtra(SetDate.DATE_DAY, -1);
@@ -67,9 +69,19 @@ public class SetTime extends ActionBarActivity {
                             r = new ReminderWeekly(hour, minute, weekdays);
                             break;
                         case ReminderTime.MONTHLY:
+                            Log.d("DEBUG", "Creating a monthly alarm");
+
+//                            i.putExtra(SetAlarmInfo.ALARM_NAME, alarmName);
+//                            i.putExtra(MainActivity.ALARM_TONE, alarmTone);
+//                            i.putExtra(SetFrequency.REMINDER_TYPE, reminderType);
+//                            i.putExtra(MainActivity.EXISTING_MODEL, existingModel);
+//                            i.putExtra(MainActivity.EXISTING_MODEL_ID, existingModelId);
+//                            i.putExtra(SetWeekly.WEEKDAY_ARRAY, weekdays);
+//                            i.putExtra(WEEK_NUMBER, whichWeek.getSelectedItemPosition()+1);
                             weekdays = prevIntent.getBooleanArrayExtra(SetWeekly.WEEKDAY_ARRAY);
                             int weekNumber = prevIntent.getIntExtra(SetMonthly.WEEK_NUMBER,-1);
                             r = new ReminderMonthly(hour, minute, weekNumber, weekdays);
+                            System.out.println(hour);
                             break;
                     }
                     r.setMinBetweenSnooze(minBetweenSnooze);

@@ -106,6 +106,7 @@ public class EditWeekly extends ActionBarActivity {
             case R.id.cancel_button: {
                 Intent intent = new Intent(this, MainActivity.class);
                 intent.putExtra(MainActivity.EXISTING_MODEL_ID, id);
+
                 startActivity(intent);
                 break;
             }

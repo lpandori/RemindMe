@@ -3,6 +3,7 @@ package cs121.hmc.edu.remindme;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
@@ -34,6 +35,7 @@ public class EditMonthly extends ActionBarActivity {
         final long reminderId = thisIntent.getLongExtra(MainActivity.REMINDER_ID, -1);
         final int weekNumber = thisIntent.getIntExtra(MainActivity.WEEK_OF_MONTH,-1);
         final String whichdays = thisIntent.getStringExtra(MainActivity.WEEKDAYS);
+        Log.d("DEBUG", whichdays);
 
         TextView alarmName = (TextView) findViewById(R.id.editBlank);
         final TimePicker timePicker = (TimePicker) findViewById(R.id.timePicker);
@@ -113,6 +115,7 @@ public class EditMonthly extends ActionBarActivity {
             case R.id.cancel_button: {
                 Intent intent = new Intent(this, MainActivity.class);
                 intent.putExtra(MainActivity.EXISTING_MODEL_ID, id);
+
                 startActivity(intent);
                 break;
             }

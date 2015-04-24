@@ -15,30 +15,35 @@ import android.widget.TimePicker;
  * Created by rachelleholmgren on 4/12/15.
  */
 public class EditDaily extends ActionBarActivity {
-    public static long id;
+    public static long id = -1;
     private Context mContext = this;
-    private AlarmDBHelper dbHelper = new AlarmDBHelper(this);
+    private AlarmDBHelper dbHelper = new AlarmDBHelper(mContext);
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.edit_daily);
         Intent thisIntent = getIntent();
+
+        TextView alarmName = (TextView) findViewById(R.id.editBlank);
+
+
         int hour = thisIntent.getIntExtra(MainActivity.ALARM_HOUR, -1);
         int minute = thisIntent.getIntExtra(MainActivity.ALARM_MINUTE, -1);
         final String name = thisIntent.getStringExtra(MainActivity.ALARM_NAME);
         final String alarm_tone = thisIntent.getStringExtra(MainActivity.ALARM_TONE);
-        final long id = thisIntent.getLongExtra(MainActivity.EXISTING_MODEL_ID, -1);
+        id = thisIntent.getLongExtra(MainActivity.EXISTING_MODEL_ID, -1);
         final long reminderId = thisIntent.getLongExtra(MainActivity.REMINDER_ID, 7);
 
 
-        TextView alarmName = (TextView) findViewById(R.id.editBlank);
-        alarmName.setText(name);
+
+
 
         final TimePicker timePicker = (TimePicker) findViewById(R.id.timePicker);
         timePicker.setCurrentHour(hour);
         timePicker.setCurrentMinute(minute);
+        alarmName.setText(name);
 
         Button doneEditing = (Button) findViewById(R.id.btn_done);
         doneEditing.setOnClickListener(new View.OnClickListener() {
@@ -76,10 +81,10 @@ public class EditDaily extends ActionBarActivity {
                 Intent intent = new Intent(this, MainActivity.class);
                 intent.putExtra(MainActivity.EXISTING_MODEL_ID, id);
                 startActivity(intent);
-                return true;
+                break;
             }
-            default:
+        }
                 return super.onOptionsItemSelected(item);
         }
-    }
+
 }
