@@ -33,7 +33,6 @@ import java.util.Date;
  */
 
 
-//TODO commented out for now
 public class MainActivity extends ActionBarActivity {
 
     private AlarmDBHelper dbHelper = new AlarmDBHelper(this);
@@ -114,7 +113,9 @@ public class MainActivity extends ActionBarActivity {
                                 mAdapter.remove(position);
                                 View thisView = lvAdapter.getChildAt(position);
                                 long viewId = (long) thisView.getTag();
+                                AlarmManagerHelper.cancelAlarms(mContext);
                                 dbHelper.deleteReminder(viewId);
+                                AlarmManagerHelper.setAlarms(mContext);
                             }
                         });
 
