@@ -33,7 +33,12 @@ import java.util.Date;
  */
 
 
+<<<<<<< HEAD:app/src/main/java/cs121/hmc/edu/remindme/MainActivity.java
 public class MainActivity extends ActionBarActivity {
+=======
+
+public class ReminderListActivity extends ActionBarActivity {
+>>>>>>> origin:app/src/main/java/cs121/hmc/edu/remindme/ReminderListActivity.java
 
     private AlarmDBHelper dbHelper = new AlarmDBHelper(this);
     private ReminderListAdapter mAdapter;
@@ -79,6 +84,7 @@ public class MainActivity extends ActionBarActivity {
 
         mContext = this;
         mAdapter = new ReminderListAdapter(this, reminderList);
+        //mAdapter.notifyDataSetChanged();
         setContentView(R.layout.activity_details);
 
         getSupportActionBar().setTitle(alarmTitle);
@@ -133,7 +139,7 @@ public class MainActivity extends ActionBarActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch(item.getItemId()){
             case R.id.home_button:
-                Intent i = new Intent(MainActivity.this, AlarmOverviewActivity.class);
+                Intent i = new Intent(ReminderListActivity.this, AlarmListActivity.class);
                 startActivity(i);
                 return true;
             default:
@@ -144,7 +150,7 @@ public class MainActivity extends ActionBarActivity {
     @Override
     public void onBackPressed() {
         //Display alert message when back button has been pressed
-        Intent i = new Intent(MainActivity.this, AlarmOverviewActivity.class);
+        Intent i = new Intent(ReminderListActivity.this, AlarmListActivity.class);
         startActivity(i);
     }
 
@@ -249,6 +255,7 @@ public class MainActivity extends ActionBarActivity {
             txtTime.setText(String.format("%02d : %02d", Integer.parseInt(timeHour), Integer.parseInt(timeMinute)));
 
             Button btn_edit = (Button) convertView.findViewById(R.id.reminder_edit_button);
+            //btn_edit.setTag(reminderTime.getId());
             btn_edit.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -256,7 +263,6 @@ public class MainActivity extends ActionBarActivity {
                     switch(reminderTime.getReminderType()) {
                         case ReminderTime.ONE_TIME:
                             j = new Intent(mContext, EditOneTime.class);
-
                             //parse date
                             String dString = reminderTime.getDateString();//in format yyyy-mm-dd
                             j.putExtra(REMINDER_ID, reminderId);
@@ -268,8 +274,10 @@ public class MainActivity extends ActionBarActivity {
                             j.putExtra(EXISTING_MODEL_ID, alarmId);
                             mContext.startActivity(j);
                             break;
+
                         case ReminderTime.DAILY:
                             j = new Intent(mContext, EditDaily.class);
+                            j.putExtra(REMINDER_ID, reminderId);
                             j.putExtra(ALARM_HOUR, reminderTime.getHour());
                             j.putExtra(ALARM_MINUTE, reminderTime.getMin());
                             j.putExtra(ALARM_NAME, alarmTitle);
@@ -280,6 +288,7 @@ public class MainActivity extends ActionBarActivity {
 
                         case ReminderTime.WEEKLY:
                             j = new Intent(mContext, EditWeekly.class);
+                            j.putExtra(REMINDER_ID, reminderId);
                             j.putExtra(WEEKDAYS, reminderTime.getWeekdays());
                             j.putExtra(ALARM_HOUR, reminderTime.getHour());
                             j.putExtra(ALARM_MINUTE, reminderTime.getMin());
@@ -291,6 +300,7 @@ public class MainActivity extends ActionBarActivity {
 
                         case ReminderTime.MONTHLY:
                             j = new Intent(mContext, EditMonthly.class);
+                            j.putExtra(REMINDER_ID, reminderId);
                             j.putExtra(WEEKDAYS, reminderTime.getWeekdays());
                             j.putExtra(WEEK_OF_MONTH, reminderTime.getWeekOfMonth());
                             j.putExtra(ALARM_HOUR, reminderTime.getHour());
@@ -298,7 +308,6 @@ public class MainActivity extends ActionBarActivity {
                             j.putExtra(ALARM_NAME, alarmTitle);
                             j.putExtra(ALARM_TONE, alarm_tone);
                             j.putExtra(EXISTING_MODEL_ID, alarmId);
-
                             mContext.startActivity(j);
                             break;
                     }
@@ -316,60 +325,6 @@ public class MainActivity extends ActionBarActivity {
                     Intent j;
                     if (touchListener.existPendingDismisses()){
                         touchListener.undoPendingDismiss();
-                    }
-                    else {
-                        switch(reminderTime.getReminderType()) {
-                            case ReminderTime.ONE_TIME:
-                                j = new Intent(mContext, EditOneTime.class);
-                                //parse date
-                                String dString =reminderTime.getDateString();//in format yyyy-mm-dd
-                                j.putExtra(REMINDER_ID, reminderId);
-                                j.putExtra(ALARM_DATE, dString);
-                                j.putExtra(ALARM_HOUR, reminderTime.getHour());
-                                j.putExtra(ALARM_MINUTE, reminderTime.getMin());
-                                j.putExtra(ALARM_NAME, alarmTitle);
-                                j.putExtra(ALARM_TONE, alarm_tone);
-                                j.putExtra(EXISTING_MODEL_ID, alarmId);
-
-                                mContext.startActivity(j);
-                                break;
-                            case ReminderTime.DAILY:
-                                j = new Intent(mContext, EditDaily.class);
-                                j.putExtra(REMINDER_ID, reminderId);
-                                j.putExtra(ALARM_HOUR, reminderTime.getHour());
-                                j.putExtra(ALARM_MINUTE, reminderTime.getMin());
-                                j.putExtra(ALARM_NAME, alarmTitle);
-                                j.putExtra(ALARM_TONE, alarm_tone);
-                                j.putExtra(EXISTING_MODEL_ID, alarmId);
-                                mContext.startActivity(j);
-                                break;
-
-                            case ReminderTime.WEEKLY:
-                                j = new Intent(mContext, EditWeekly.class);
-                                j.putExtra(REMINDER_ID, reminderId);
-                                j.putExtra(WEEKDAYS, reminderTime.getWeekdays());
-                                j.putExtra(ALARM_HOUR, reminderTime.getHour());
-                                j.putExtra(ALARM_MINUTE, reminderTime.getMin());
-                                j.putExtra(ALARM_NAME, alarmTitle);
-                                j.putExtra(ALARM_TONE, alarm_tone);
-                                j.putExtra(EXISTING_MODEL_ID, alarmId);
-                                mContext.startActivity(j);
-                                break;
-
-                            case ReminderTime.MONTHLY:
-                                j = new Intent(mContext, EditMonthly.class);
-                                j.putExtra(REMINDER_ID, reminderId);
-                                j.putExtra(WEEKDAYS, reminderTime.getWeekdays());
-                                j.putExtra(WEEK_OF_MONTH, reminderTime.getWeekOfMonth());
-                                j.putExtra(ALARM_HOUR, reminderTime.getHour());
-                                j.putExtra(ALARM_MINUTE, reminderTime.getMin());
-                                j.putExtra(ALARM_NAME, alarmTitle);
-                                j.putExtra(ALARM_TONE, alarm_tone);
-                                j.putExtra(EXISTING_MODEL_ID, alarmId);
-
-                                mContext.startActivity(j);
-                                break;
-                        }
                     }
                 }
             });

@@ -16,7 +16,7 @@ import java.util.Calendar;
  */
 public class ReminderMonthly implements ReminderTime {
 
-    private long id;
+    private long id = -1;
     private int snoozeCounter = 0;
     private int minBetweenSnooze = DEFAULT_MIN_BETWEEN_SNOOZE;
     private long nextAwakeTime = 0;

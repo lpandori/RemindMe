@@ -32,10 +32,10 @@ public class SetDate extends ActionBarActivity {
         final String alarmTone = prevIntent.getStringExtra(SetAlarmInfo.ALARM_TONE);
         final String alarmName = prevIntent.getStringExtra(SetAlarmInfo.ALARM_NAME);
         final int reminderType = prevIntent.getIntExtra(SetFrequency.REMINDER_TYPE, -1);
-        final boolean existingModel = prevIntent.getBooleanExtra(MainActivity.EXISTING_MODEL, false);
-        final long existingModelId = prevIntent.getLongExtra(MainActivity.EXISTING_MODEL_ID, -1);
-        final String alarm_tone = prevIntent.getStringExtra(MainActivity.ALARM_TONE);
-        final int minBetweenSnooze = prevIntent.getIntExtra(MainActivity.MIN_BETWEEN_SNOOZE, ReminderTime.DEFAULT_MIN_BETWEEN_SNOOZE);
+        final boolean existingModel = prevIntent.getBooleanExtra(ReminderListActivity.EXISTING_MODEL, false);
+        final long existingModelId = prevIntent.getLongExtra(ReminderListActivity.EXISTING_MODEL_ID, -1);
+        final String alarm_tone = prevIntent.getStringExtra(ReminderListActivity.ALARM_TONE);
+        final int minBetweenSnooze = prevIntent.getIntExtra(ReminderListActivity.MIN_BETWEEN_SNOOZE, ReminderTime.DEFAULT_MIN_BETWEEN_SNOOZE);
 
         button = (Button) findViewById(R.id.done);
 
@@ -48,10 +48,10 @@ public class SetDate extends ActionBarActivity {
                     System.out.println(alarmTone);
                     i.putExtra(SetAlarmInfo.ALARM_NAME, alarmName);
                     i.putExtra(SetFrequency.REMINDER_TYPE, reminderType);
-                    i.putExtra(MainActivity.EXISTING_MODEL, existingModel);
-                    i.putExtra(MainActivity.EXISTING_MODEL_ID, existingModelId);
-                    i.putExtra(MainActivity.MIN_BETWEEN_SNOOZE, minBetweenSnooze);
-                    i.putExtra(MainActivity.ALARM_TONE, alarm_tone);
+                    i.putExtra(ReminderListActivity.EXISTING_MODEL, existingModel);
+                    i.putExtra(ReminderListActivity.EXISTING_MODEL_ID, existingModelId);
+                    i.putExtra(ReminderListActivity.MIN_BETWEEN_SNOOZE, minBetweenSnooze);
+                    i.putExtra(ReminderListActivity.ALARM_TONE, alarm_tone);
                     i.putExtra(DATE_YEAR, datePicker.getYear());
                     //month starts counting at 0 so must add 1
                     int month = datePicker.getMonth()+1;
@@ -72,7 +72,7 @@ public class SetDate extends ActionBarActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.cancel_button: {
-                Intent intent = new Intent(this, AlarmOverviewActivity.class);
+                Intent intent = new Intent(this, AlarmListActivity.class);
                 startActivity(intent);
                 return true;
             }
