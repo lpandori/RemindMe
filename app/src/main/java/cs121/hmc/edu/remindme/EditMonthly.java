@@ -28,14 +28,15 @@ public class EditMonthly extends ActionBarActivity {
         setContentView(R.layout.edit_monthly);
 
         Intent thisIntent = getIntent();
-        int hour = thisIntent.getIntExtra(MainActivity.ALARM_HOUR, -1);
-        int minute = thisIntent.getIntExtra(MainActivity.ALARM_MINUTE, -1);
-        final String name = thisIntent.getStringExtra(MainActivity.ALARM_NAME);
-        id = thisIntent.getLongExtra(MainActivity.EXISTING_MODEL_ID, -1);
-        final long reminderId = thisIntent.getLongExtra(MainActivity.REMINDER_ID, -1);
-        final int weekNumber = thisIntent.getIntExtra(MainActivity.WEEK_OF_MONTH,-1);
-        final String whichdays = thisIntent.getStringExtra(MainActivity.WEEKDAYS);
-        Log.d("DEBUG", whichdays);
+
+        int hour = thisIntent.getIntExtra(ReminderListActivity.ALARM_HOUR, -1);
+        int minute = thisIntent.getIntExtra(ReminderListActivity.ALARM_MINUTE, -1);
+        final String name = thisIntent.getStringExtra(ReminderListActivity.ALARM_NAME);
+        id = thisIntent.getLongExtra(ReminderListActivity.EXISTING_MODEL_ID, -1);
+        final long reminderId = thisIntent.getLongExtra(ReminderListActivity.REMINDER_ID, -1);
+        final int weekNumber = thisIntent.getIntExtra(ReminderListActivity.WEEK_OF_MONTH,-1);
+        final String whichdays = thisIntent.getStringExtra(ReminderListActivity.WEEKDAYS);
+
 
         TextView alarmName = (TextView) findViewById(R.id.editBlank);
         final TimePicker timePicker = (TimePicker) findViewById(R.id.timePicker);
@@ -94,9 +95,9 @@ public class EditMonthly extends ActionBarActivity {
                 dbHelper.updateReminder(monthly, id);
                 AlarmManagerHelper.setAlarms(mContext);
 
-                Intent i = new Intent(EditMonthly.this, MainActivity.class);
-                i.putExtra(MainActivity.ALARM_NAME, name);
-                i.putExtra(MainActivity.EXISTING_MODEL_ID, id);
+                Intent i = new Intent(EditMonthly.this, ReminderListActivity.class);
+                i.putExtra(ReminderListActivity.ALARM_NAME, name);
+                i.putExtra(ReminderListActivity.EXISTING_MODEL_ID, id);
                 startActivity(i);
             }
         });
@@ -113,8 +114,9 @@ public class EditMonthly extends ActionBarActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.cancel_button: {
-                Intent intent = new Intent(this, MainActivity.class);
-                intent.putExtra(MainActivity.EXISTING_MODEL_ID, id);
+
+                Intent intent = new Intent(this, ReminderListActivity.class);
+                intent.putExtra(ReminderListActivity.EXISTING_MODEL_ID, id);
 
                 startActivity(intent);
                 break;

@@ -31,10 +31,10 @@ public class SetTime extends ActionBarActivity {
             final String alarmName = prevIntent.getStringExtra(SetAlarmInfo.ALARM_NAME);
             final String alarmTone = prevIntent.getStringExtra(SetAlarmInfo.ALARM_TONE);
             final int reminderType = prevIntent.getIntExtra(SetFrequency.REMINDER_TYPE, -1);
-            final boolean existingModel = prevIntent.getBooleanExtra(MainActivity.EXISTING_MODEL, false);
-            final long existingModelId = prevIntent.getLongExtra(MainActivity.EXISTING_MODEL_ID, -1);
+            final boolean existingModel = prevIntent.getBooleanExtra(ReminderListActivity.EXISTING_MODEL, false);
+            final long existingModelId = prevIntent.getLongExtra(ReminderListActivity.EXISTING_MODEL_ID, -1);
 
-            final int minBetweenSnooze = prevIntent.getIntExtra(MainActivity.MIN_BETWEEN_SNOOZE, ReminderTime.DEFAULT_MIN_BETWEEN_SNOOZE);
+            final int minBetweenSnooze = prevIntent.getIntExtra(ReminderListActivity.MIN_BETWEEN_SNOOZE, ReminderTime.DEFAULT_MIN_BETWEEN_SNOOZE);
 
 
             System.out.println(alarmTone);
@@ -85,7 +85,7 @@ public class SetTime extends ActionBarActivity {
                             break;
                     }
                     r.setMinBetweenSnooze(minBetweenSnooze);
-                    Intent i = new Intent(SetTime.this, MainActivity.class);
+                    Intent i = new Intent(SetTime.this, ReminderListActivity.class);
                     if(!existingModel){
                         AlarmModel alarmModel = new AlarmModel(alarmName);
 
@@ -97,7 +97,7 @@ public class SetTime extends ActionBarActivity {
                         alarmModel.setId(System.currentTimeMillis());
 
                         alarmModel.addReminder(r);
-                        i.putExtra(MainActivity.EXISTING_MODEL_ID, alarmId);
+                        i.putExtra(ReminderListActivity.EXISTING_MODEL_ID, alarmId);
 
 
                         dbHelper.createAlarm(alarmModel);//add to db
@@ -106,7 +106,7 @@ public class SetTime extends ActionBarActivity {
                         alarmModel.addReminder(r);
                         dbHelper.deleteAlarm(existingModelId);
                         dbHelper.createAlarm(alarmModel);
-                        i.putExtra(MainActivity.EXISTING_MODEL_ID, existingModelId);
+                        i.putExtra(ReminderListActivity.EXISTING_MODEL_ID, existingModelId);
 
                         System.out.println("added new reminder time");
 
@@ -115,11 +115,11 @@ public class SetTime extends ActionBarActivity {
                     System.out.println("ALARM NAME IS " + alarmName);
                     System.out.println("ALARM TONE IS " + alarmTone);
 
-                    //i.putExtra("prev_activity", "SetTime");
-                    i.putExtra(MainActivity.ALARM_NAME, alarmName);
-                    i.putExtra(MainActivity.ALARM_TONE, alarmTone);
-                    // pass timePicker.getCurrentHour() &&
-                    //timePicker.getCurrentMinute() as extras
+
+
+                    i.putExtra(ReminderListActivity.ALARM_NAME, alarmName);
+                    i.putExtra(ReminderListActivity.ALARM_TONE, alarmTone);
+
                     startActivity(i);
                 }
             });
@@ -135,7 +135,7 @@ public class SetTime extends ActionBarActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.cancel_button: {
-                Intent intent = new Intent(this, AlarmOverviewActivity.class);
+                Intent intent = new Intent(this, AlarmListActivity.class);
                 startActivity(intent);
                 return true;
             }

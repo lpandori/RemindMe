@@ -23,7 +23,7 @@ import com.hudomju.swipe.adapter.ListViewAdapter;
 
 import java.util.List;
 
-public class AlarmOverviewActivity extends ActionBarActivity {
+public class AlarmListActivity extends ActionBarActivity {
 
     private AlarmDBHelper dbHelper = new AlarmDBHelper(this);
 
@@ -105,11 +105,11 @@ public class AlarmOverviewActivity extends ActionBarActivity {
     }
 
     public void startAlarmDetailsActivity(long id, String title, String ringtone) {
-        Intent intent = new Intent(this, MainActivity.class);
-        intent.putExtra(MainActivity.EXISTING_MODEL_ID, id);
-        intent.putExtra(MainActivity.ALARM_NAME, title);
-        intent.putExtra(MainActivity.ALARM_TONE, ringtone);
-        intent.putExtra("prev_activity", "AlarmOverviewActivity");
+
+        Intent intent = new Intent(this, ReminderListActivity.class);
+        intent.putExtra(ReminderListActivity.EXISTING_MODEL_ID, id);
+        intent.putExtra(ReminderListActivity.ALARM_NAME, title);
+        intent.putExtra(ReminderListActivity.ALARM_TONE, ringtone);
         startActivity(intent);
     }
 
@@ -172,9 +172,6 @@ public class AlarmOverviewActivity extends ActionBarActivity {
 
             // get Item implemented above
             final AlarmModel model = (AlarmModel) getItem(position);
-
-//            TextView txtTime = (TextView) convertView.findViewById(R.id.alarm_item_time);
-//            txtTime.setText(String.format("%02d : %02d", model.timeHour, model.timeMinute));
             TextView txtName = (TextView) convertView.findViewById(R.id.alarm_item_name);
             txtName.setText(model.name);
             TextView snoozeTime = (TextView) convertView.findViewById(R.id.alarm_snoozeTime);
@@ -188,7 +185,7 @@ public class AlarmOverviewActivity extends ActionBarActivity {
             btnToggle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    ((AlarmOverviewActivity) mContext).setAlarmEnabled(((Long)
+                    ((AlarmListActivity) mContext).setAlarmEnabled(((Long)
                             buttonView.getTag()), isChecked);
 
                 }
@@ -203,9 +200,8 @@ public class AlarmOverviewActivity extends ActionBarActivity {
                     if (touchListener.existPendingDismisses()){
                         touchListener.undoPendingDismiss();
                     } else {
-                        ((AlarmOverviewActivity) mContext).startAlarmDetailsActivity((Long) v.getTag(), model.name, model.alarmToneStr);
+                        ((AlarmListActivity) mContext).startAlarmDetailsActivity((Long) v.getTag(), model.name, model.alarmToneStr);
                     }
-
                 }
             });
 

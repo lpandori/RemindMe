@@ -44,12 +44,12 @@ public class SetWeekly extends ActionBarActivity {
         //get passed in data
         final Intent prevIntent = getIntent(); //gets the previously created intent
         final String alarmName = prevIntent.getStringExtra(SetAlarmInfo.ALARM_NAME);
-        final String alarmTone = prevIntent.getStringExtra(MainActivity.ALARM_TONE);
+        final String alarmTone = prevIntent.getStringExtra(ReminderListActivity.ALARM_TONE);
         final int reminderType = prevIntent.getIntExtra(SetFrequency.REMINDER_TYPE, -1);
-        final boolean existingModel = prevIntent.getBooleanExtra(MainActivity.EXISTING_MODEL, false);
-        final long existingModelId = prevIntent.getLongExtra(MainActivity.EXISTING_MODEL_ID, -1);
+        final boolean existingModel = prevIntent.getBooleanExtra(ReminderListActivity.EXISTING_MODEL, false);
+        final long existingModelId = prevIntent.getLongExtra(ReminderListActivity.EXISTING_MODEL_ID, -1);
 
-        final int minBetweenSnooze = prevIntent.getIntExtra(MainActivity.MIN_BETWEEN_SNOOZE, ReminderTime.DEFAULT_MIN_BETWEEN_SNOOZE);
+        final int minBetweenSnooze = prevIntent.getIntExtra(ReminderListActivity.MIN_BETWEEN_SNOOZE, ReminderTime.DEFAULT_MIN_BETWEEN_SNOOZE);
 
 
 
@@ -66,10 +66,10 @@ public class SetWeekly extends ActionBarActivity {
 
                    Intent i = new Intent(SetWeekly.this, SetTime.class);
                    i.putExtra(SetAlarmInfo.ALARM_NAME, alarmName);
-                   i.putExtra(MainActivity.ALARM_TONE, alarmTone);
-                   i.putExtra(MainActivity.EXISTING_MODEL, existingModel);
-                   i.putExtra(MainActivity.EXISTING_MODEL_ID, existingModelId);
-                   i.putExtra(MainActivity.MIN_BETWEEN_SNOOZE, minBetweenSnooze);
+                   i.putExtra(ReminderListActivity.ALARM_TONE, alarmTone);
+                   i.putExtra(ReminderListActivity.EXISTING_MODEL, existingModel);
+                   i.putExtra(ReminderListActivity.EXISTING_MODEL_ID, existingModelId);
+                   i.putExtra(ReminderListActivity.MIN_BETWEEN_SNOOZE, minBetweenSnooze);
                    i.putExtra(SetFrequency.REMINDER_TYPE, reminderType);
                    i.putExtra(WEEKDAY_ARRAY, weekdays);
                    startActivity(i);
@@ -82,14 +82,13 @@ public class SetWeekly extends ActionBarActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_cancel, menu);
         return true;
-        //return super.onCreateOptionsMenu(menu);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.cancel_button: {
-                Intent intent = new Intent(this, AlarmOverviewActivity.class);
+                Intent intent = new Intent(this, AlarmListActivity.class);
                 startActivity(intent);
                 return true;
             }

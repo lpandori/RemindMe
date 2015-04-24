@@ -30,13 +30,13 @@ public class EditOneTime extends ActionBarActivity {
 
         final TimePicker timePicker = (TimePicker) findViewById(R.id.timePicker);
         final DatePicker datePicker = (DatePicker) findViewById(R.id.datePicker);
-        int hour = thisIntent.getIntExtra(MainActivity.ALARM_HOUR, -1);
-        int minute = thisIntent.getIntExtra(MainActivity.ALARM_MINUTE, -1);
-        final String name = thisIntent.getStringExtra(MainActivity.ALARM_NAME);
+        int hour = thisIntent.getIntExtra(ReminderListActivity.ALARM_HOUR, -1);
+        int minute = thisIntent.getIntExtra(ReminderListActivity.ALARM_MINUTE, -1);
+        final String name = thisIntent.getStringExtra(ReminderListActivity.ALARM_NAME);
 
-        id = thisIntent.getLongExtra(MainActivity.EXISTING_MODEL_ID, -1);
-        final long reminderId = thisIntent.getLongExtra(MainActivity.REMINDER_ID, -1);
-        final String dString = thisIntent.getStringExtra(MainActivity.ALARM_DATE);
+        id = thisIntent.getLongExtra(ReminderListActivity.EXISTING_MODEL_ID, -1);
+        final long reminderId = thisIntent.getLongExtra(ReminderListActivity.REMINDER_ID, -1);
+        final String dString = thisIntent.getStringExtra(ReminderListActivity.ALARM_DATE);
 
         int year = Integer.parseInt(dString.substring(0,4));
         int month = Integer.parseInt(dString.substring(5,7));
@@ -63,10 +63,11 @@ public class EditOneTime extends ActionBarActivity {
                 dbHelper.updateReminder(oneTime, id);
                 AlarmManagerHelper.setAlarms(mContext);
 
-                Intent i = new Intent(EditOneTime.this, MainActivity.class);
 
-                i.putExtra(MainActivity.ALARM_NAME, name);
-                i.putExtra(MainActivity.EXISTING_MODEL_ID, id);
+                Intent i = new Intent(EditOneTime.this, ReminderListActivity.class);
+                i.putExtra(ReminderListActivity.ALARM_NAME, name);
+                i.putExtra(ReminderListActivity.EXISTING_MODEL_ID, id);
+
                 startActivity(i);
             }
         });
@@ -82,8 +83,8 @@ public class EditOneTime extends ActionBarActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.cancel_button: {
-                Intent intent = new Intent(this, MainActivity.class);
-                intent.putExtra(MainActivity.EXISTING_MODEL_ID, id);
+                Intent intent = new Intent(this, ReminderListActivity.class);
+                intent.putExtra(ReminderListActivity.EXISTING_MODEL_ID, id);
                 startActivity(intent);
                 break;
             }
