@@ -21,15 +21,12 @@ import android.widget.TextView;
 
 public class SetAlarmInfo extends ActionBarActivity {
     private AlarmDBHelper dbHelper = new AlarmDBHelper(this);
-    // better way to do this??!?!??!?!?!??!
     private AlarmModel alarmModel = new AlarmModel("");
     public static String ALARM_NAME = "name";//used to access the alarm name in SetFrequency screen
     public static String SNOOZE_TIME = "snooze_time";
     public static String ALARM_TONE = "alarm_tone";
     public Uri ringtone;
-    //private TextView textToneSelection ;
-    //private Ringtone ringtone;
-    //private Uri alert = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
+
 
 
     @Override
@@ -44,8 +41,6 @@ public class SetAlarmInfo extends ActionBarActivity {
                 EditText snooze = (EditText) findViewById(R.id.snoozeTime);
                 snooze.setInputType(InputType.TYPE_CLASS_NUMBER);
                 EditText name = (EditText)findViewById(R.id.setName);
-
-                TextView tone = (TextView) findViewById(R.id.alarm_label_tone_selection);
                 i.putExtra("prevActivity", "SetAlarmInfo");
                 i.putExtra(ALARM_NAME, name.getText().toString());
                 i.putExtra(ALARM_TONE, ringtone.toString());
@@ -75,11 +70,6 @@ public class SetAlarmInfo extends ActionBarActivity {
         if(resultCode == RESULT_OK){
             switch(requestCode){
                 case 1: {
-                      //Uri ringtone = data.getParcelableExtra(RingtoneManager.EXTRA_RINGTONE_PICKED_URI);
-                      //RingtoneManager.setActualDefaultRingtoneUri(this,RingtoneManager.TYPE_NOTIFICATION, ringtone);
-
-
-                      //alarmModel.alarmTone = data.getParcelableExtra(RingtoneManager.EXTRA_RINGTONE_PICKED_URI);
                       ringtone = data.getParcelableExtra(RingtoneManager.EXTRA_RINGTONE_PICKED_URI);
                       TextView txtToneSelection = (TextView) findViewById(R.id.alarm_label_tone_selection);
                       txtToneSelection.setText(RingtoneManager.getRingtone(this, ringtone).getTitle(this));
@@ -94,7 +84,6 @@ public class SetAlarmInfo extends ActionBarActivity {
     }
     @Override
     public void onBackPressed() {
-
         //Display alert message when back button has been pressed
         backButtonHandler();
     }

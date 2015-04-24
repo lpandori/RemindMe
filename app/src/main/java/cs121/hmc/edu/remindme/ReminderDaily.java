@@ -4,6 +4,17 @@ import java.util.Calendar;
 
 /**
  * Created by lepandori on 3/7/15.
+ *
+ * Modified by Tyra He
+ *
+ * DailyReminder defines specific behavior in the daily reminder mode. This class implements the
+ *  interface ReminderTime class. It sets a daily repeating reminder, and every time a daily
+ *  reminder rings, its next ringing date will be revised to the next at the same time. For extreme
+ *  cases when users snooze for over 24 hours, which means the snoozed alarm in the previous day
+ *  might overlap with the next day's alarm, developers have get around with this case by allowing
+ *  alarms to have a maximum of 24 hours of snooze time. Same as other reminder types, DailyReminder
+ *  works closely with the RemindMe database. Functions, such as getReminderType(), getWeekdays(),
+ *  getDateString(), and getWeekOfMonth() etc, are all modifying to or reading from the database.
  */
 public class ReminderDaily implements ReminderTime{
 
@@ -18,8 +29,9 @@ public class ReminderDaily implements ReminderTime{
     //constructor for a daily repeating reminder
     //id is the same id in db
     //hour is 0-24 :)
+
     public ReminderDaily(int hour, int min){
-        //this.id = id; TODO removed reminder
+
         this.hour = hour;
         this.min = min;
 

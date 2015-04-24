@@ -66,14 +66,17 @@ public class MainActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        ArrayList<ReminderTime> reminderList = new ArrayList<>();
         supportRequestWindowFeature(Window.FEATURE_ACTION_BAR);
 
         Intent prevIntent = getIntent(); // gets the previously created intent
         alarmId = prevIntent.getLongExtra(EXISTING_MODEL_ID, -1);
         alarmTitle = prevIntent.getStringExtra(ALARM_NAME);
         alarm_tone = prevIntent.getStringExtra(ALARM_TONE);
-        ArrayList<ReminderTime> reminderList = dbHelper.getAlarm(alarmId).getReminders();
+        if(dbHelper.getAlarm(alarmId) != null) {
+            System.out.println("TRUE");
+            reminderList = dbHelper.getAlarm(alarmId).getReminders();
+        }
 
         mContext = this;
         mAdapter = new ReminderListAdapter(this, reminderList);
