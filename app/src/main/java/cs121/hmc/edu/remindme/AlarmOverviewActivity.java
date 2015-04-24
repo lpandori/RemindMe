@@ -109,6 +109,7 @@ public class AlarmOverviewActivity extends ActionBarActivity {
         intent.putExtra(MainActivity.EXISTING_MODEL_ID, id);
         intent.putExtra(MainActivity.ALARM_NAME, title);
         intent.putExtra(MainActivity.ALARM_TONE, ringtone);
+        intent.putExtra("prev_activity", "AlarmOverviewActivity");
         startActivity(intent);
     }
 

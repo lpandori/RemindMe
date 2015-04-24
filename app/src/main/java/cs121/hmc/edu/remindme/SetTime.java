@@ -115,7 +115,7 @@ public class SetTime extends ActionBarActivity {
                     System.out.println("ALARM NAME IS " + alarmName);
                     System.out.println("ALARM TONE IS " + alarmTone);
 
-
+                    //i.putExtra("prev_activity", "SetTime");
                     i.putExtra(MainActivity.ALARM_NAME, alarmName);
                     i.putExtra(MainActivity.ALARM_TONE, alarmTone);
                     // pass timePicker.getCurrentHour() &&

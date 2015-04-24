@@ -64,6 +64,7 @@ public class EditOneTime extends ActionBarActivity {
                 AlarmManagerHelper.setAlarms(mContext);
 
                 Intent i = new Intent(EditOneTime.this, MainActivity.class);
+
                 i.putExtra(MainActivity.ALARM_NAME, name);
                 i.putExtra(MainActivity.EXISTING_MODEL_ID, id);
                 startActivity(i);

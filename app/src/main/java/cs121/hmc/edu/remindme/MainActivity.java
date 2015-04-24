@@ -73,6 +73,8 @@ public class MainActivity extends ActionBarActivity {
         alarmId = prevIntent.getLongExtra(EXISTING_MODEL_ID, -1);
         alarmTitle = prevIntent.getStringExtra(ALARM_NAME);
         alarm_tone = prevIntent.getStringExtra(ALARM_TONE);
+
+
         if(dbHelper.getAlarm(alarmId) != null) {
             System.out.println("TRUE");
             reminderList = dbHelper.getAlarm(alarmId).getReminders();
@@ -265,6 +267,7 @@ public class MainActivity extends ActionBarActivity {
                             j.putExtra(ALARM_MINUTE, reminderTime.getMin());
                             j.putExtra(ALARM_NAME, alarmTitle);
                             j.putExtra(EXISTING_MODEL_ID, alarmId);
+
                             mContext.startActivity(j);
                             break;
                         case ReminderTime.DAILY:
