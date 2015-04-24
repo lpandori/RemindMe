@@ -33,7 +33,7 @@ public class SplashScreen extends Activity {
             @Override
             public void run() {
 
-                Intent i = new Intent(SplashScreen.this, AlarmOverviewActivity.class);
+                Intent i = new Intent(SplashScreen.this, AlarmListActivity.class);
                 startActivity(i);
 
 

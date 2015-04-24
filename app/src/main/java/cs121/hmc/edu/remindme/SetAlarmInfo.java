@@ -45,7 +45,7 @@ public class SetAlarmInfo extends ActionBarActivity {
                 i.putExtra(ALARM_NAME, name.getText().toString());
                 i.putExtra(ALARM_TONE, ringtone.toString());
                 try {
-                    i.putExtra(MainActivity.MIN_BETWEEN_SNOOZE, Integer.valueOf(snooze.getText().toString()));
+                    i.putExtra(ReminderListActivity.MIN_BETWEEN_SNOOZE, Integer.valueOf(snooze.getText().toString()));
                     startActivity(i);
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -91,8 +91,8 @@ public class SetAlarmInfo extends ActionBarActivity {
     public void backButtonHandler() {
         Intent thisIntent = getIntent(); // gets the previously created intent
         final String alarmName = thisIntent.getStringExtra(SetAlarmInfo.ALARM_NAME);
-        final long existingModelId = thisIntent.getLongExtra(MainActivity.EXISTING_MODEL_ID, -1);
-        final String alarmTone = thisIntent.getStringExtra(MainActivity.ALARM_TONE);
+        final long existingModelId = thisIntent.getLongExtra(ReminderListActivity.EXISTING_MODEL_ID, -1);
+        final String alarmTone = thisIntent.getStringExtra(ReminderListActivity.ALARM_TONE);
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(
                 SetAlarmInfo.this);
         // Setting Dialog Title
@@ -103,7 +103,7 @@ public class SetAlarmInfo extends ActionBarActivity {
         alertDialog.setPositiveButton("YES",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                        Intent i = new Intent(SetAlarmInfo.this, AlarmOverviewActivity.class);
+                        Intent i = new Intent(SetAlarmInfo.this, AlarmListActivity.class);
 //                        i.putExtra(SetAlarmInfo.ALARM_NAME, alarmName);
 //                        i.putExtra(MainActivity.EXISTING_MODEL_ID, existingModelId);
 //                        i.putExtra(MainActivity.ALARM_TONE, alarmTone);
