@@ -62,8 +62,6 @@ public class AlarmDBHelper extends SQLiteOpenHelper {
     //returns an AlarmModel object from a given db query (which gives us the cursor)
     private AlarmModel populateModel(Cursor c) {
 
-        //String alarmName = c.getString(c.getColumnIndex(AlarmContract.Alarm.COLUMN_NAME_ALARM_NAME));
-        //AlarmModel model = null;// = new AlarmModel(alarmName);TODO using null feels hacky
         AlarmModel alarmModel = new AlarmModel("test");
         int i = 0;
         while(c.moveToNext()){

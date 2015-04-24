@@ -31,19 +31,20 @@ import java.util.Date;
  * Class: MainActivity.java
  * Authors: Heather Seaman, Laura Pandori, Rachelle, Holmgren, Tyra He
  * Last Updated: 04-23-2015
+ *
  * Description: The class displays a list of reminder times associated with a single alarm.
  * Each of these reminders can recur with difference frequency. Relevant parameters
  * such as the time, frequency, or date which are associated with each alarm appear
  * in each list item.
- * Attributions: Swipe-To-Dismiss functionality from third-party code
+ * Attributions: Swipe-To-Dismi
+ * ss functionality from third-party code
  * available on https://github.com/hudomju/android-swipe-to-dismiss-undo
  */
 
 
-//TODO commented out for now
 public class MainActivity extends ActionBarActivity {
 
-    // A DBHelper allows acces to the database, the adapter populates the ListView
+    // A DBHelper allows access to the database, the adapter populates the ListView
     private AlarmDBHelper dbHelper = new AlarmDBHelper(this);
     private ReminderListAdapter mAdapter;
     private Context mContext;
@@ -111,7 +112,8 @@ public class MainActivity extends ActionBarActivity {
         });
         alarmList.setAdapter(mAdapter);
 
-        // touchListener is applied to each list item. This allows users to use a swipe gesture
+        // touchListener is applied to each list item in getView().
+        // This allows users to use a swipe gesture
         // to delete an alarm
         touchListener =
                 new SwipeToDismissTouchListener<>(
@@ -173,7 +175,8 @@ public class MainActivity extends ActionBarActivity {
     static class ReminderListAdapter extends BaseAdapter {
         private Context mContext;
         private ArrayList<ReminderTime> mReminders;
-        private AlarmDBHelper dbHelper = new AlarmDBHelper(mContext);
+//        private AlarmDBHelper dbHelper = new AlarmDBHelper(mContext);
+
         public ReminderListAdapter(Context context, ArrayList<ReminderTime> reminders) {
             mContext = context;
             mReminders = reminders;
@@ -212,6 +215,7 @@ public class MainActivity extends ActionBarActivity {
         }
         /*
          * Removes an object from an adapter
+         * Note: this does not remove the reminder from the database.
          */
         public void remove(int position) {
             if (mReminders != null) {
@@ -351,7 +355,7 @@ public class MainActivity extends ActionBarActivity {
             });
 
             // Define the view for the revealed screen after a view is swiped
-            // deleteView removed a reminder from the database
+            // deleteView removes a reminder from the database
             View deleteView = convertView.findViewById(R.id.txt_delete);
             // helper method to define behavior on delete
             setOnClickForDelete(deleteView);
@@ -526,7 +530,7 @@ public class MainActivity extends ActionBarActivity {
 
         // onClick method for the txt_delete portion of reminder_list_item or
         // weekly_reminder_list_item. When a user taps the portion reading "Confirm
-        // Delete" the alarm is removed from the databse
+        // Delete" the alarm is removed from the database
         private void setOnClickForDelete(View deleteView) {
 
             deleteView.setOnClickListener(new View.OnClickListener() {
@@ -549,10 +553,6 @@ public class MainActivity extends ActionBarActivity {
             } else {
                 view.setTextColor(Color.WHITE);
             }
-        }
-
-
-    }
-
-
-}
+        } // end class updateTextColor
+    } //end ReminderListAdapter
+} // end class MainActivity.java

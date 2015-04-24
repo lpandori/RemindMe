@@ -27,6 +27,7 @@ import java.util.List;
  * Class: AlarmOverViewActivity.java
  * Authors: Heather Seaman, Laura Pandori, Rachelle, Holmgren, Tyra He
  * Last Updated: 04-23-2015
+ *
  * Description: This class is the main activity which runs on startup immediately after
  * the splash screen disappears. It displays a list of alarm which are currently set by the
  * user. From here users can tap an alarm to see all the reminder times associated with
@@ -34,9 +35,8 @@ import java.util.List;
  */
 
 public class AlarmOverviewActivity extends ActionBarActivity {
-
+    // A DBHelper allows access to the database, the adapter populates the ListView
     private AlarmDBHelper dbHelper = new AlarmDBHelper(this);
-
     private AlarmListAdapter mAdapter;
     private Context mContext;
     public static SwipeToDismissTouchListener<ListViewAdapter> touchListener;
@@ -44,14 +44,19 @@ public class AlarmOverviewActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         mContext = this;
+
+        // adapter populates the list of existing alarms in the database
+        // each alarm will have a number >= 1 of ReminderTimes associated with it
+        // as well as a title, snooze time, and alarm ringtone.
         mAdapter = new AlarmListAdapter(this, dbHelper.getAlarms());
         setContentView(R.layout.activity_alarm_list);
-
         ListView alarmList=(ListView)findViewById(R.id.alarm_list);
-
         alarmList.setAdapter(mAdapter);
+
+        // touchListener is applied to each list item in getView()
+        // This allows users to use a swipe gesture
+        // to delete an alarm
         touchListener =
                 new SwipeToDismissTouchListener<>(
                         new ListViewAdapter(alarmList),
@@ -79,9 +84,11 @@ public class AlarmOverviewActivity extends ActionBarActivity {
         return true;
     }
 
+    /*
+     * The menu contains one button which allows users to add a new alarm
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
         switch (item.getItemId()) {
             case R.id.action_add_new_alarm: {
                 Intent intent = new Intent(this, SetAlarmInfo.class);
@@ -89,10 +96,13 @@ public class AlarmOverviewActivity extends ActionBarActivity {
                 break;
             }
         }
-
         return super.onOptionsItemSelected(item);
     }
 
+    /*
+     * onActivityResult sets the alarms after the workflow of creating a new
+     * alarm is complete.
+     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -102,11 +112,18 @@ public class AlarmOverviewActivity extends ActionBarActivity {
         }
     }
 
+    /*
+     * setAlarmEnabled enables or disables an alarm with the given id
+     */
     public void setAlarmEnabled(long id, boolean isEnabled) {
+        // to prevent mistakes, we first cancel all alarms in the database
+        // and then reset them in the AlarmManagerHelper class
         AlarmManagerHelper.cancelAlarms(this);
         AlarmModel model = dbHelper.getAlarm(id);
-
+        // update the model
         model.setEnabled(isEnabled);
+        // update the alarm by deleting it from the database and
+        // recreating the model.
         dbHelper.deleteAlarm(id);
         dbHelper.createAlarm(model);
         // refreshing the adapter after the state of the toggle has changed
@@ -114,6 +131,12 @@ public class AlarmOverviewActivity extends ActionBarActivity {
         AlarmManagerHelper.setAlarms(this);
     }
 
+    /*
+     * startAlarmDetailsActivity is called when an alarm list item is
+     * tapped. The MainActivity is started which displays a list of
+     * all reminder times and relevant parameters associated with the alarm
+     * with the given id
+     */
     public void startAlarmDetailsActivity(long id, String title, String ringtone) {
         Intent intent = new Intent(this, MainActivity.class);
         intent.putExtra(MainActivity.EXISTING_MODEL_ID, id);
@@ -123,12 +146,14 @@ public class AlarmOverviewActivity extends ActionBarActivity {
     }
 
     /*
-     * ADAPTER CLASS!!!! YAY
+     * AlarmListAdapter populates the ListView with content from the database.
+     * Each AlarmModel has a view defined to display the alarm's title, number of
+      * reminder associated with that title, and the set snooze time.
      */
     static class AlarmListAdapter extends BaseAdapter {
         private Context mContext;
         private List<AlarmModel> mAlarms;
-        private AlarmDBHelper dbHelper = new AlarmDBHelper(mContext);
+        //private AlarmDBHelper dbHelper = new AlarmDBHelper(mContext);
 
         public AlarmListAdapter(Context context, List<AlarmModel> alarms) {
             mContext = context;
@@ -136,10 +161,16 @@ public class AlarmOverviewActivity extends ActionBarActivity {
         }
 
 
+        /*
+         * sets the content of the adapter to be a list of AlarmModels
+         */
         public void setAlarms(List<AlarmModel> alarms) {
             mAlarms = alarms;
         }
 
+        /*
+         * gets the number of elements in the adapter
+         */
         @Override
         public int getCount() {
             if (mAlarms != null) {
@@ -148,6 +179,9 @@ public class AlarmOverviewActivity extends ActionBarActivity {
             return 0;
         }
 
+        /*
+         * gets the object at a given position
+         */
         @Override
         public Object getItem(int position) {
             if (mAlarms != null) {
@@ -156,6 +190,9 @@ public class AlarmOverviewActivity extends ActionBarActivity {
             return null;
         }
 
+        /*
+         * gets the id of an item at a given position
+         */
         @Override
         public long getItemId(int position) {
             if (mAlarms != null) {
@@ -164,6 +201,10 @@ public class AlarmOverviewActivity extends ActionBarActivity {
             return 0;
         }
 
+        /*
+         * remove an alarm from the adapter.
+         * Note: this does not remove the alarm from the database as well!
+         */
         public void remove(int position) {
             if (mAlarms != null) {
                 mAlarms.remove(position);
@@ -171,19 +212,21 @@ public class AlarmOverviewActivity extends ActionBarActivity {
             }
         }
 
-
+        /*
+         * Defines how the view looks for a specific reminder item
+         */
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
+            // if we are creating a View for the first time we must
+            // call the inflater. Otherwise we can update an existing view
+            // and skip this control block.
             if (convertView == null) {
                 LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 convertView = inflater.inflate(R.layout.alarm_list_item, parent, false);
             }
 
-            // get Item implemented above
+            // Populate the views in alarm_list_item.xml
             final AlarmModel model = (AlarmModel) getItem(position);
-
-//            TextView txtTime = (TextView) convertView.findViewById(R.id.alarm_item_time);
-//            txtTime.setText(String.format("%02d : %02d", model.timeHour, model.timeMinute));
             TextView txtName = (TextView) convertView.findViewById(R.id.alarm_item_name);
             txtName.setText(model.name);
             TextView snoozeTime = (TextView) convertView.findViewById(R.id.alarm_snoozeTime);
@@ -191,6 +234,7 @@ public class AlarmOverviewActivity extends ActionBarActivity {
             TextView reminderTime = (TextView) convertView.findViewById(R.id.alarm_reminderCount);
             reminderTime.setText("Reminders:" + model.getReminders().size());
 
+            // Define behavior for the on/off toggle button which appears in each alarm
             ToggleButton btnToggle = (ToggleButton) convertView.findViewById(R.id.alarm_item_toggle);
             btnToggle.setChecked(model.isEnabled());
             btnToggle.setTag(model.getId());
@@ -202,50 +246,50 @@ public class AlarmOverviewActivity extends ActionBarActivity {
 
                 }
             });
+
+            // Define the view for the revealed screen after a view is swiped
+            // deleteView removes a alarm from the database
             View deleteView = convertView.findViewById(R.id.txt_delete);
             setOnClickForDelete(deleteView);
-            convertView.setTag(model.getId());
 
+            convertView.setTag(model.getId());
+            // this onClickListener is defined over the whole view.
             convertView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    // When there are other reminder times which have been "swiped"
+                    // with being deleted or undone, this control statement tells
+                    // the activity to preserve these swiped items when another list
+                    // item is tapped. This prevents users from losing reminders that
+                    // they did not mean to delete.
                     if (touchListener.existPendingDismisses()){
                         touchListener.undoPendingDismiss();
-                    } else {
-                        ((AlarmOverviewActivity) mContext).startAlarmDetailsActivity((Long) v.getTag(), model.name, model.alarmToneStr);
-                    }
 
+                    // otherwise we start the MainActivity
+                    } else {
+                        ((AlarmOverviewActivity) mContext).startAlarmDetailsActivity(
+                                (Long) v.getTag(), model.name, model.alarmToneStr);
+                    }
                 }
             });
-
-
+            // adds swipe-to-delete functionality to each alarm list item
             convertView.setOnTouchListener(touchListener);
 
             return convertView;
         }
-
+        // onClick method for the txt_delete portion of alarm_list_item.
+        // When a user taps the portion reading "Confirm
+        // Delete" the alarm is removed from the database
         private void setOnClickForDelete(View deleteView) {
 
             deleteView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (touchListener.existPendingDismisses()){
+                    if (touchListener.existPendingDismisses()) {
                         touchListener.processPendingDismisses();
                     }
-
                 }
             });
-        }
-
-        private void updateTextColor(TextView view, boolean isOn) {
-            if (isOn) {
-                view.setTextColor(Color.GREEN);
-            } else {
-                view.setTextColor(Color.BLACK);
-            }
-        }
-
-
-    }
-
-}
+        } // end setOnClickForDelete
+    }// end AlarmListAdapter
+} //end class AlarmOverviewActivity
