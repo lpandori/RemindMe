@@ -64,7 +64,7 @@ public class MainActivity extends ActionBarActivity {
     public static String WEEKDAYS = "week_days";
     public static String MIN_BETWEEN_SNOOZE = "snooze";
     public static long alarmId = -1;
-    private static String[] weekdays = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
+    private static String[] weekdays = {"Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"};
     private static String[] stringIndices = {"1st", "2nd", "3rd", "4th", "5th"};
 
     public static String alarm_tone = "Default";

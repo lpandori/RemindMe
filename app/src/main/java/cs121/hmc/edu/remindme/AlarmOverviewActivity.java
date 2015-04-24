@@ -230,9 +230,9 @@ public class AlarmOverviewActivity extends ActionBarActivity {
             TextView txtName = (TextView) convertView.findViewById(R.id.alarm_item_name);
             txtName.setText(model.name);
             TextView snoozeTime = (TextView) convertView.findViewById(R.id.alarm_snoozeTime);
-            snoozeTime.setText("" + model.getSnooze() + " min snooze");
+            snoozeTime.setText("" + model.getSnooze() + " min");
             TextView reminderTime = (TextView) convertView.findViewById(R.id.alarm_reminderCount);
-            reminderTime.setText("Reminders:" + model.getReminders().size());
+            reminderTime.setText("" + model.getReminders().size());
 
             // Define behavior for the on/off toggle button which appears in each alarm
             ToggleButton btnToggle = (ToggleButton) convertView.findViewById(R.id.alarm_item_toggle);
