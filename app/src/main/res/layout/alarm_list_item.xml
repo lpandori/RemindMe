@@ -2,57 +2,62 @@
 
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content" >
+    android:layout_height="80dp" >
 
-    <RelativeLayout
+    <LinearLayout
         android:id="@+id/alarm_item"
+        android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical">
 
         <TextView
             android:id="@+id/alarm_item_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
-            android:layout_marginRight="8dp"
+            android:layout_width="100dp"
+            android:layout_height="match_parent"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
             android:text="Medium Text"
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
-        <TextView
-            android:id="@+id/alarm_reminderCount"
+        <LinearLayout
+            android:id="@+id/alarm_parameters"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
-            android:layout_marginRight="8dp"
-            android:layout_centerVertical="true"
-            android:layout_toRightOf="@+id/alarm_item_name"
-            android:text="Reminder Count"
-            android:textAppearance="?android:attr/textAppearanceSmall" />
+            android:layout_gravity="center_vertical">
 
-        <TextView
-            android:id="@+id/alarm_snoozeTime"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
-            android:layout_marginRight="8dp"
-            android:layout_centerVertical="true"
-            android:layout_toRightOf="@+id/alarm_reminderCount"
-            android:layout_toLeftOf="@+id/alarm_item_toggle"
-            android:text="Snooze Time"
-            android:textAppearance="?android:attr/textAppearanceSmall" />
+            <TextView
+                android:id="@+id/alarm_reminderCount"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@+id/alarm_item_name"
+                android:text="Reminder Count"
+                android:layout_weight="1"
+                android:textAppearance="?android:attr/textAppearanceSmall" />
+
+            <TextView
+                android:id="@+id/alarm_snoozeTime"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@+id/alarm_reminderCount"
+                android:layout_toLeftOf="@+id/alarm_item_toggle"
+                android:text="Snooze Time"
+                android:layout_weight="1"
+                android:textAppearance="?android:attr/textAppearanceSmall" />
+        </LinearLayout>
 
         <ToggleButton
             android:id="@+id/alarm_item_toggle"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="70dp"
             android:layout_centerVertical="true"
             android:layout_alignParentRight="true"
-            android:layout_alignParentTop="true" />
+            android:layout_alignParentTop="true"
+            />
 
-    </RelativeLayout>
+    </LinearLayout>
 
 
     <LinearLayout
