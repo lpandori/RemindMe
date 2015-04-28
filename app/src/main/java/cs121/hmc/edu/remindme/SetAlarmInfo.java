@@ -43,8 +43,9 @@ public class SetAlarmInfo extends ActionBarActivity {
                 EditText name = (EditText)findViewById(R.id.setName);
                 i.putExtra("prevActivity", "SetAlarmInfo");
                 i.putExtra(ALARM_NAME, name.getText().toString());
-                i.putExtra(ALARM_TONE, ringtone.toString());
+                i.putExtra(ALARM_TONE, ringtone==null ? "Silent" : ringtone.toString());
                 try {
+
                     i.putExtra(ReminderListActivity.MIN_BETWEEN_SNOOZE, Integer.valueOf(snooze.getText().toString()));
                     startActivity(i);
                 } catch (Exception e) {

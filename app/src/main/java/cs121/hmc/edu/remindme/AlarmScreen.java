@@ -5,8 +5,6 @@ import android.content.ClipData;
 import android.content.Context;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
-import android.media.Ringtone;
-import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -109,8 +107,9 @@ public class AlarmScreen extends Activity {
                 AlarmDBHelper dbHelper = new AlarmDBHelper(context);
                 dbHelper.snoozeReminder(reminderId);
                 AlarmManagerHelper.setAlarms(context);
-
-                mPlayer.stop();
+                try {
+                    mPlayer.stop();
+                } catch (Exception e) {}
                 finish();
             }
         });
