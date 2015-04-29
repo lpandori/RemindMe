@@ -86,82 +86,40 @@ public class ReminderMonthly implements ReminderTime {
     @Override
     public int getMin() { return min; }
 
-    //
     @Override
     public long getNextTime() {
         Calendar now = Calendar.getInstance();
 
         Calendar setTime = Calendar.getInstance();
-
-        int nowWeekOfMonth = now.get(Calendar.WEEK_OF_MONTH);//get today's week of month (1st, 2nd, etc)
-
-        int nowHour = now.get(Calendar.HOUR_OF_DAY);
-        int nowMin = now.get(Calendar.MINUTE);
-        int nowWeekday = now.get(Calendar.DAY_OF_WEEK);
-        int nowMonth = now.get(Calendar.MONTH);
         setTime.set(Calendar.HOUR_OF_DAY, hour);
         setTime.set(Calendar.MINUTE, min);
-        setTime.set(Calendar.SECOND, 00);
-        setTime.set(Calendar.MONTH, nowMonth);
 
-        if(nowWeekOfMonth == weekNumber) {
-            //check if alarm needs to happen today
-            if(hour > nowHour || (nowHour == hour && min > nowMin)){
-                //set for today
-                setTime.set(Calendar.WEEK_OF_MONTH, weekNumber);
-                setTime.set(Calendar.DAY_OF_WEEK, nowWeekday);
-                return setTime.getTimeInMillis() + snoozeCounter*minToMillis;
-            }
-
-            //if alarm between tomorrow and saturday (end of the week)
-            for(int i = nowWeekday; i <= Calendar.SATURDAY; i++){
-
-                //if there is a timer for this weekday
-                if(weekdays[i-1]){//timer exists for this weekday (be careful to reach into correct index)
-                    setTime.set(Calendar.WEEK_OF_MONTH, weekNumber);
-                    setTime.set(Calendar.DAY_OF_WEEK, i);
-                    return setTime.getTimeInMillis() + snoozeCounter*minToMillis;
-                }
-            }
-
-            //if we didn't return then we've passed it this month and can set for earliest next month
-            setTime.roll(Calendar.MONTH, 1);
-
-            for(int i = Calendar.SUNDAY; i <= Calendar.SATURDAY; i++){
-                if(weekdays[i-1]){//timer exists for this weekday (be careful to reach into correct index)
-                    setTime.set(Calendar.WEEK_OF_MONTH, weekNumber);
-                    setTime.set(Calendar.DAY_OF_WEEK, i);
-                    return setTime.getTimeInMillis() + snoozeCounter*minToMillis;
-                }
-            }
-
-        }else{
-            if(nowWeekOfMonth < weekNumber){//it is in upcoming week
-                //set earliest day of week
-                //in this month :)
-                for(int i = Calendar.SUNDAY; i <= Calendar.SATURDAY; i++){
-                    if(weekdays[i-1]){//timer exists for this weekday (be careful to reach into correct index)
-                        setTime.set(Calendar.WEEK_OF_MONTH, weekNumber);
-                        setTime.set(Calendar.DAY_OF_WEEK, i);
-                        return setTime.getTimeInMillis() + snoozeCounter*minToMillis;
-                    }
-                }
-
-            }else{//nowWeekOfMonth > weekNumber //it is in a previous week to now
-                //set the earliest week day
-                //roll by a month
-                setTime.roll(Calendar.MONTH, 1);
-                for(int i = Calendar.SUNDAY; i <= Calendar.SATURDAY; i++){
-                    if(weekdays[i-1]){//timer exists for this weekday (be careful to reach into correct index)
-                        setTime.set(Calendar.WEEK_OF_MONTH, weekNumber);
-                        setTime.set(Calendar.DAY_OF_WEEK, i);
-                        return setTime.getTimeInMillis() + snoozeCounter*minToMillis;
-                    }
-                }
-            }
+        // According to the weekly schedule
+        Calendar timeBySchedule = Calendar.getInstance();
+        timeBySchedule.set(Calendar.HOUR_OF_DAY, hour);
+        timeBySchedule.set(Calendar.MINUTE, min);
+        timeBySchedule.set(Calendar.SECOND, 0);
+        while (!isScheduledAt(timeBySchedule) || timeBySchedule.before(now)) {
+            // The next reminder will be tomorrow
+            timeBySchedule.add(Calendar.DATE, 1);
         }
 
-        return -1;//error
+        // See if the snooze should take priority
+        if (getNextAwakeTime() > now.getTimeInMillis()) {
+            return Math.min(timeBySchedule.getTimeInMillis(), getNextAwakeTime());
+        } else {
+            return timeBySchedule.getTimeInMillis();
+        }
+    }
+
+    /**
+     * check whether this reminder is scheduled for a particular date
+     * @param calendar - represent a date
+     * @return True iff the date satisfies the monthly schedule defined
+     */
+    private boolean isScheduledAt(final Calendar calendar) {
+        return weekdays[calendar.get(Calendar.DAY_OF_WEEK)-1] &&
+                calendar.get(Calendar.DAY_OF_WEEK_IN_MONTH) == weekNumber;
     }
 
     @Override
