@@ -12,7 +12,6 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 
 /**
- * Created by rachelleholmgren on 4/12/15.
  * EditDaily allows a user to change the time of an alarm that goes off every day.
  */
 public class EditDaily extends ActionBarActivity {

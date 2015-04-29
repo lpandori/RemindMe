@@ -12,12 +12,7 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 
 /**
- * Created by rachelleholmgren on 4/12/15.
- */
-
-
-/**
- * 
+ * Change time of day and day of week
  */
 public class EditWeekly extends ActionBarActivity {
     public static long id;
@@ -60,7 +55,6 @@ public class EditWeekly extends ActionBarActivity {
         boolean thu =  whichdays.substring(4,5).equals("1");
         boolean fri =  whichdays.substring(5,6).equals("1");
         boolean sat = whichdays.substring(6,7).equals("1");
-
 
         sunday.setChecked(sun);
         monday.setChecked(mon);

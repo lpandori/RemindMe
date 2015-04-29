@@ -30,7 +30,7 @@ import java.util.Date;
 /**
  * Class: MainActivity.java
  * Authors: Heather Seaman, Laura Pandori, Rachelle, Holmgren, Tyra He
- * Last Updated: 04-23-2015
+ * Last Updated: 04-28-2015
  *
  * Description: The class displays a list of reminder times associated with a single alarm.
  * Each of these reminders can recur with difference frequency. Relevant parameters
@@ -439,6 +439,7 @@ public class ReminderListActivity extends ActionBarActivity {
                 @Override
                 public void onClick(View v) {
                     j = new Intent(mContext, EditWeekly.class);
+                    j.putExtra(REMINDER_ID, reminderId);
                     j.putExtra(WEEKDAYS, reminderTime.getWeekdays());
                     j.putExtra(ALARM_HOUR, reminderTime.getHour());
                     j.putExtra(ALARM_MINUTE, reminderTime.getMin());
