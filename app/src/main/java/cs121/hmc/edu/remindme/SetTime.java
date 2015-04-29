@@ -33,9 +33,7 @@ public class SetTime extends ActionBarActivity {
 
             final int minBetweenSnooze = prevIntent.getIntExtra(ReminderListActivity.MIN_BETWEEN_SNOOZE, ReminderTime.DEFAULT_MIN_BETWEEN_SNOOZE);
 
-
             System.out.println(alarmTone);
-
 
             final Context context = this;
             setContentView(R.layout.time_picker);
@@ -53,7 +51,6 @@ public class SetTime extends ActionBarActivity {
                     //use switch to make reminder time
                     switch(reminderType){
                         case ReminderTime.ONE_TIME:
-
                             int year = prevIntent.getIntExtra(SetDate.DATE_YEAR, -1);
                             int month = prevIntent.getIntExtra(SetDate.DATE_MONTH, -1);
                             int day = prevIntent.getIntExtra(SetDate.DATE_DAY, -1);

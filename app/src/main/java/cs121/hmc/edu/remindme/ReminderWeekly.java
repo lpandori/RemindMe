@@ -105,45 +105,29 @@ public class ReminderWeekly implements ReminderTime {
     public int getMin() { return min; }
 
     //returns the soonest upcoming alarm time (in milliseconds)
-    public long getNextTime(){
-        //go through all possible days
+    public long getNextTime() {
         Calendar now = Calendar.getInstance();
+
         Calendar setTime = Calendar.getInstance();
-
-        int nowWeekday = now.get(Calendar.DAY_OF_WEEK);//get today's weekday
-
-        int nowHour = now.get(Calendar.HOUR_OF_DAY);
-        int nowMin = now.get(Calendar.MINUTE);
         setTime.set(Calendar.HOUR_OF_DAY, hour);
         setTime.set(Calendar.MINUTE, min);
-        setTime.set(Calendar.SECOND, 0);
 
-        //check if alarm needs to happen today
-        if(weekdays[nowWeekday-1] && (hour > nowHour || (nowHour == hour && min > nowMin))){
-            //set for today
-            setTime.set(Calendar.DAY_OF_WEEK, nowWeekday);
-            return setTime.getTimeInMillis() + snoozeCounter*minToMillis;
+        // According to the weekly schedule
+        Calendar timeBySchedule = Calendar.getInstance();
+        timeBySchedule.set(Calendar.HOUR_OF_DAY, hour);
+        timeBySchedule.set(Calendar.MINUTE, min);
+        timeBySchedule.set(Calendar.SECOND, 0);
+        while (!weekdays[timeBySchedule.get(Calendar.DAY_OF_WEEK)-1] || timeBySchedule.before(now)) {
+            // The next reminder will be tomorrow
+            timeBySchedule.add(Calendar.DATE, 1);
         }
 
-        //if alarm between tomorrow and saturday
-        for(int i = nowWeekday+1; i <= Calendar.SATURDAY; i++){
-
-            //if there is a timer for this weekday
-            if(weekdays[i-1]){//timer exists for this weekday (be careful to reach into correct index)
-                setTime.set(Calendar.DAY_OF_WEEK, i);
-                return setTime.getTimeInMillis() + snoozeCounter*minToMillis;
-            }
+        // See if the snooze should take priority
+        if (getNextAwakeTime() > now.getTimeInMillis()) {
+            return Math.min(timeBySchedule.getTimeInMillis(), getNextAwakeTime());
+        } else {
+            return timeBySchedule.getTimeInMillis();
         }
-
-        //otherwise alarm must be between sunday and nowWeekday
-        for(int i = Calendar.SUNDAY; i < nowWeekday; i++){
-            if(weekdays[i-1]){//timer exists for this weekday (be careful to reach into correct index)
-                setTime.set(Calendar.DAY_OF_WEEK, i);
-                return setTime.getTimeInMillis() + snoozeCounter*minToMillis;
-            }
-        }
-        return -1;//error occurred
-
     }
 
     //returns if this scheme will produce an upcoming alarm

@@ -3,7 +3,6 @@ package cs121.hmc.edu.remindme;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
@@ -68,10 +67,12 @@ public class AlarmListActivity extends ActionBarActivity {
                             }
                             @Override
                             public void onDismiss(ListViewAdapter lvAdapter, int position) {
+                                AlarmManagerHelper.cancelAlarms(mContext);
                                 mAdapter.remove(position);
                                 View thisView = lvAdapter.getChildAt(position);
                                 long viewId = (long) thisView.getTag();
                                 dbHelper.deleteAlarm(viewId);
+                                AlarmManagerHelper.setAlarms(mContext);
                             }
                         });
 
