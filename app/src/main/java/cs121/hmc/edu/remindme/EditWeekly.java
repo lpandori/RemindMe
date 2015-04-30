@@ -91,9 +91,9 @@ public class EditWeekly extends ActionBarActivity {
 
                 ReminderTime weekly = new ReminderWeekly(h,m,weekdays);
                 weekly.setId(reminderId);
-                AlarmManagerHelper.cancelAlarms(mContext);
-                dbHelper.updateReminder(weekly, id);
-                AlarmManagerHelper.setAlarms(mContext);
+                AlarmModel alarm = dbHelper.getAlarm(id);
+                alarm.replaceReminder(weekly);
+                dbHelper.updateAlarm(alarm);
 
                 Intent i = new Intent(EditWeekly.this, ReminderListActivity.class);
                 i.putExtra(ReminderListActivity.EXISTING_MODEL_ID, id);

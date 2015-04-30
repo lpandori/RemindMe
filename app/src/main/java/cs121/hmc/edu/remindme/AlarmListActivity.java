@@ -71,6 +71,7 @@ public class AlarmListActivity extends ActionBarActivity {
                                 mAdapter.remove(position);
                                 View thisView = lvAdapter.getChildAt(position);
                                 long viewId = (long) thisView.getTag();
+                                AlarmManagerHelper.cancelAlarms(mContext);
                                 dbHelper.deleteAlarm(viewId);
                                 AlarmManagerHelper.setAlarms(mContext);
                             }
@@ -118,19 +119,10 @@ public class AlarmListActivity extends ActionBarActivity {
      * setAlarmEnabled enables or disables an alarm with the given id
      */
     public void setAlarmEnabled(long id, boolean isEnabled) {
-        // to prevent mistakes, we first cancel all alarms in the database
-        // and then reset them in the AlarmManagerHelper class
-        AlarmManagerHelper.cancelAlarms(this);
         AlarmModel model = dbHelper.getAlarm(id);
         // update the model
         model.setEnabled(isEnabled);
-        // update the alarm by deleting it from the database and
-        // recreating the model.
-        dbHelper.deleteAlarm(id);
-        dbHelper.createAlarm(model);
-        // refreshing the adapter after the state of the toggle has changed
-        // in the first list view item
-        AlarmManagerHelper.setAlarms(this);
+        dbHelper.updateAlarm(model);
     }
 
     /*

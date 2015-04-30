@@ -3,7 +3,9 @@ package cs121.hmc.edu.remindme;
 import android.provider.BaseColumns;
 
 /**
- * Created by heatherseaman on 2/23/15.
+ * Class: EditMonthly.java
+ * Authors: Heather Seaman, Laura Pandori, Rachelle, Holmgren, Tyra He
+ * Last Updated: 04-23-2015
  * A database scheme containing table definitions for storage
  */
 public final class AlarmContract {

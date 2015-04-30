@@ -29,7 +29,7 @@ public class AlarmScreen extends Activity {
     private MediaPlayer mPlayer;
     private PowerManager.WakeLock mWakeLock;
     private static final int WAKELOCK_TIMEOUT = 60 * 1000;
-    private Context context= this;
+    private Context context = this; //TODO fix this bullshit
     private Context mContext;
     private long reminderId;
 
@@ -42,25 +42,11 @@ public class AlarmScreen extends Activity {
         this.setContentView(R.layout.alarm_screen);
         String name = getIntent().getStringExtra(AlarmManagerHelper.NAME);
         String tone = getIntent().getStringExtra(AlarmManagerHelper.TONE);
-        System.out.println("TONE IS FROM ALARM SCREEN: " + tone);
         reminderId = getIntent().getLongExtra(AlarmManagerHelper.REMINDER_ID, -1);
 
 
         TextView tvName = (TextView) findViewById(R.id.alarm_screen_name);
         tvName.setText(name);
-//        TextView tvTime = (TextView) findViewById(R.id.alarm_screen_time);
-//        tvName.setText(name);
-
-
-
-//        Button dismissButton = (Button) findViewById(R.id.alarm_screen_button);
-//        dismissButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                mPlayer.stop();
-//                finish();
-//            }
-//        });
 
         findViewById(R.id.dismiss_start).setOnTouchListener(new DismissTouchListener());
         findViewById(R.id.dismiss_end).setOnDragListener(new DismissDragListener());
@@ -75,14 +61,6 @@ public class AlarmScreen extends Activity {
                 Uri toneUri = Uri.parse(tone);
                 //MediaPlayer mPlayer = MediaPlayer.create(mContext, toneUri);
 
-                System.out.println("TONE is: " + tone);
-                System.out.println("URITONE is: " + toneUri.toString());
-//                Uri defaultRingtoneUri = RingtoneManager.getActualDefaultRingtoneUri(getApplicationContext(), RingtoneManager.TYPE_RINGTONE);
-//                Ringtone defaultRingtone = RingtoneManager.getRingtone(getApplicationContext(), defaultRingtoneUri);
-//                defaultRingtone.play();
-                if(toneUri instanceof Uri){
-                    Log.d("URI?", "I AM A URI!!!!!!!!!!");
-                }
 
                 if (toneUri != null) {
                     mPlayer.setDataSource(getApplicationContext(), toneUri);
@@ -90,9 +68,6 @@ public class AlarmScreen extends Activity {
                     mPlayer.setLooping(true);
                     mPlayer.prepare();
                     mPlayer.start();
-                }
-                else{
-                    System.out.println("TONE URI IS NULL!");
                 }
             }
         } catch (Exception e) {
@@ -150,9 +125,6 @@ public class AlarmScreen extends Activity {
     }
 
     class DismissDragListener implements View.OnDragListener {
-
-//        Drawable enterShape = getResources().getDrawable(R.drawable.oval_selected);
-//        Drawable normalShape = getResources().getDrawable(R.drawable.oval_droptarget);
 
         @Override
         public boolean onDrag(View v, DragEvent event) {

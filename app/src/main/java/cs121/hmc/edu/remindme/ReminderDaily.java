@@ -96,7 +96,7 @@ public class ReminderDaily implements ReminderTime{
 
         Calendar setTime = Calendar.getInstance();
         setTime.set(Calendar.HOUR_OF_DAY, hour);
-        setTime.set(Calendar.MINUTE, min);
+        setTime.set(Calendar.MINUTE, min);//TODO fix this dangling variable
 
         // According to the daily schedule
         Calendar timeBySchedule = Calendar.getInstance();

@@ -67,7 +67,6 @@ public class AlarmManagerHelper extends BroadcastReceiver{
      * again. Otherwise we might leave scheduled alarms that we can no longer
      * reference.
      */
-    //TODO we need to do this!!!
     public static synchronized void cancelAlarms(Context context) {
         AlarmDBHelper dbHelper = new AlarmDBHelper(context);
         List<AlarmModel> alarms = dbHelper.getAlarms();
@@ -75,7 +74,7 @@ public class AlarmManagerHelper extends BroadcastReceiver{
         if (alarms != null) {
             for (AlarmModel alarm : alarms) {
                 if (alarm.isEnabled()) {
-                    PendingIntent pIntent = createPendingIntent(context, alarm);//TODO redo this method
+                    PendingIntent pIntent = createPendingIntent(context, alarm);
                     AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
                     alarmManager.cancel(pIntent);
                 }
@@ -84,17 +83,14 @@ public class AlarmManagerHelper extends BroadcastReceiver{
     }
 
     //creates pending intent in uniform way
-    //TODO double check this
-    //Need help on this one
     private static PendingIntent createPendingIntent(Context context, AlarmModel model) {
         Intent intent = new Intent(context, AlarmService.class);
 
         //from the model get currentreminder id :)
 
         intent.putExtra(NAME, model.name);
-        System.out.println("TONE FROM MANAGER HELPER IS: " + model.alarmTone.toString());
         intent.putExtra(TONE, model.alarmTone.toString());
-        intent.putExtra(REMINDER_ID, model.getReminderId());//TODO catch -1 case here?
+        intent.putExtra(REMINDER_ID, model.getReminderId());
         return PendingIntent.getService(context, (int) model.getId(), intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
     }

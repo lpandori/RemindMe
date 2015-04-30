@@ -49,10 +49,14 @@ public class SetFrequency extends ActionBarActivity {
             public void onClick(View view) {
                 Intent i = new Intent(SetFrequency.this, SetDate.class);
                 i.putExtra(REMINDER_TYPE, ReminderTime.ONE_TIME);
+                i.putExtra(SetAlarmInfo.ALARM_TONE, alarmTone);
+                i.putExtra(SetAlarmInfo.ALARM_NAME, alarmName);
+                i.putExtra(ReminderListActivity.EXISTING_MODEL, existingModel);
+                i.putExtra(ReminderListActivity.EXISTING_MODEL_ID, existingModelId);
+                i.putExtra(ReminderListActivity.MIN_BETWEEN_SNOOZE, snoozeTime);
+                startActivity(i);
             }
         });
-
-        Intent i;
 
         //start the setTime activity if you're making a daily reminder and
         //passes the previously set information for the current reminder time to
@@ -66,7 +70,6 @@ public class SetFrequency extends ActionBarActivity {
                 i.putExtra(SetAlarmInfo.ALARM_NAME, alarmName);
                 i.putExtra(ReminderListActivity.EXISTING_MODEL, existingModel);
                 i.putExtra(ReminderListActivity.EXISTING_MODEL_ID, existingModelId);
-
                 i.putExtra(ReminderListActivity.MIN_BETWEEN_SNOOZE, snoozeTime);
                 startActivity(i);
             }

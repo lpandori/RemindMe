@@ -12,14 +12,6 @@ import java.util.Calendar;
  */
 public class AlarmModel {
 
-    public static final int SUNDAY = 0;
-    public static final int MONDAY = 1;
-    public static final int TUESDAY = 2;
-    public static final int WEDNESDAY = 3;
-    public static final int THURSDAY = 4;
-    public static final int FRIDAY = 5;
-    public static final int SATURDAY = 6;
-
     private long id = -1; //TODO remove
     public String name;
     private int snooze = 20;//TODO set default for snooze (will remove later)
@@ -56,27 +48,39 @@ public class AlarmModel {
         }
     }
 
-    //return list of reminders
+    /*
+     * return list of reminders
+     */
     public ArrayList<ReminderTime> getReminders() {
         return reminders;
     }
 
-    //add a reminder time to the alarm model
+    /*
+     * add a reminder time to the alarm model
+     */
     public void addReminder(ReminderTime toAdd){
         reminders.add(toAdd);
     }
 
     //remove a specific reminder time from the alarm model
-    public void removeReminder(long reminderId){
+    //return if it was successfully removed
+    public boolean removeReminder(long reminderId){
+        boolean successfulRemoved = false;
+
         //search through arraylist comparing id of reminder to all others
         //remove it
         for(ReminderTime r : reminders){//check how to do for each loops
             if(r.getId() == reminderId){
-                //remove it
-                //TODO finish
+                successfulRemoved = reminders.remove(r);
             }
         }
-        //TODO look into if this is worthwhile
+        return successfulRemoved;
+    }
+
+    //swap out a reminder with the same id
+    public void replaceReminder(ReminderTime replacement){
+        removeReminder(replacement.getId());
+        addReminder(replacement);
     }
 
     //check if this alarm type is on/off

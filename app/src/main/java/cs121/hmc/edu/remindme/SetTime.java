@@ -87,15 +87,13 @@ public class SetTime extends ActionBarActivity {
                         alarmModel.addReminder(r);
                         i.putExtra(ReminderListActivity.EXISTING_MODEL_ID, alarmId);
 
-
                         dbHelper.createAlarm(alarmModel);//add to db
-                        //otherwise, just add the new reminder to the existing
-                        //alarmModel's array of reminders
+                    //otherwise, just add the new reminder to the existing
+                    //alarmModel's array of reminders
                     }else{
                         AlarmModel alarmModel = dbHelper.getAlarm(existingModelId);
                         alarmModel.addReminder(r);
-                        dbHelper.deleteAlarm(existingModelId);
-                        dbHelper.createAlarm(alarmModel);
+                        dbHelper.updateAlarm(alarmModel);
                         i.putExtra(ReminderListActivity.EXISTING_MODEL_ID, existingModelId);
                     }
                     //trigger setting alarm

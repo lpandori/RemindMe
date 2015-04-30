@@ -19,13 +19,6 @@ import java.util.Calendar;
 
 public class ReminderWeekly implements ReminderTime {
 
-    public static final int SUNDAY = 0;
-    public static final int MONDAY = 1;
-    public static final int TUESDAY = 2;
-    public static final int WEDNESDAY = 3;
-    public static final int THURSDAY = 4;
-    public static final int FRIDAY = 5;
-    public static final int SATURDAY = 6;
     //note: although sunday is in our array at index 0, Calendar.SUNDAY = 1
     //(i.e. DAY_OF_WEEK is 1-7)
 
@@ -111,12 +104,13 @@ public class ReminderWeekly implements ReminderTime {
         Calendar setTime = Calendar.getInstance();
         setTime.set(Calendar.HOUR_OF_DAY, hour);
         setTime.set(Calendar.MINUTE, min);
+        setTime.set(Calendar.SECOND, 00);
 
         // According to the weekly schedule
         Calendar timeBySchedule = Calendar.getInstance();
         timeBySchedule.set(Calendar.HOUR_OF_DAY, hour);
         timeBySchedule.set(Calendar.MINUTE, min);
-        timeBySchedule.set(Calendar.SECOND, 0);
+        timeBySchedule.set(Calendar.SECOND, 00);
         while (!weekdays[timeBySchedule.get(Calendar.DAY_OF_WEEK)-1] || timeBySchedule.before(now)) {
             // The next reminder will be tomorrow
             timeBySchedule.add(Calendar.DATE, 1);

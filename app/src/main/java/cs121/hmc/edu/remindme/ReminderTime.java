@@ -14,7 +14,7 @@ public interface ReminderTime {
     public static int WEEKLY = 3;
     public static int MONTHLY = 4;
 
-    public static int DEFAULT_MIN_BETWEEN_SNOOZE = 1;
+    public static int DEFAULT_MIN_BETWEEN_SNOOZE = 1;//TODO when is this used?
 
     public static int minToMillis = 60000;
 
@@ -44,9 +44,12 @@ public interface ReminderTime {
     public int getSnoozeCounter();
     public void setSnoozeCounter(int snoozeCounter);
 
+    //TODO rename to getSnooze()/setSnooze() will be done inside alarm model
+    //TODO only alarm model should really have this info set by outside class
     public int getMinBetweenSnooze();
     public void setMinBetweenSnooze(int minBetweenSnooze);
 
+    //TODO get next awake time does not do what tyra claimed (useless)
     public long getNextAwakeTime();
     public void setNextAwakeTime(long nextAwakeTime);
 

@@ -83,14 +83,12 @@ public class ReminderListActivity extends ActionBarActivity {
         alarmTitle = prevIntent.getStringExtra(ALARM_NAME);
         alarm_tone = prevIntent.getStringExtra(ALARM_TONE);
         if(dbHelper.getAlarm(alarmId) != null) {
-            System.out.println("TRUE");
             reminderList = dbHelper.getAlarm(alarmId).getReminders();
         }
 
         mContext = this;
         // the list adapter populates the list view alarmList
         mAdapter = new ReminderListAdapter(this, reminderList);
-        //mAdapter.notifyDataSetChanged();
         setContentView(R.layout.activity_details);
         ListView alarmList = (ListView)findViewById(R.id.reminder_list);
 
@@ -107,7 +105,6 @@ public class ReminderListActivity extends ActionBarActivity {
                 Intent intent = new Intent(mContext, SetFrequency.class);
                 intent.putExtra(EXISTING_MODEL_ID, alarmId);//need model id
                 intent.putExtra(ALARM_NAME, alarmTitle);
-                System.out.println("ALARM TONE FROM DETAILS is " + alarm_tone);
                 intent.putExtra(ALARM_TONE, alarm_tone);
                 intent.putExtra(EXISTING_MODEL, true);
                 intent.putExtra("prevActivity", "AlarmDetails");
@@ -132,9 +129,9 @@ public class ReminderListActivity extends ActionBarActivity {
                                 mAdapter.remove(position);
                                 View thisView = lvAdapter.getChildAt(position);
                                 long viewId = (long) thisView.getTag();
-                                AlarmManagerHelper.cancelAlarms(mContext);
-                                dbHelper.deleteReminder(viewId);
-                                AlarmManagerHelper.setAlarms(mContext);
+                                AlarmModel alarm = dbHelper.getAlarm(alarmId);
+                                alarm.removeReminder(viewId);
+                                dbHelper.updateAlarm(alarm);
                             }
                         });
 
@@ -181,7 +178,6 @@ public class ReminderListActivity extends ActionBarActivity {
     static class ReminderListAdapter extends BaseAdapter {
         private Context mContext;
         private ArrayList<ReminderTime> mReminders;
-//        private AlarmDBHelper dbHelper = new AlarmDBHelper(mContext);
 
         public ReminderListAdapter(Context context, ArrayList<ReminderTime> reminders) {
             mContext = context;

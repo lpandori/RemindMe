@@ -73,9 +73,9 @@ public class EditOneTime extends ActionBarActivity {
 
                 ReminderTime oneTime = new ReminderOneTime(yr,month,day,h,m);
                 oneTime.setId(reminderId);
-                AlarmManagerHelper.cancelAlarms(mContext);
-                dbHelper.updateReminder(oneTime, id);
-                AlarmManagerHelper.setAlarms(mContext);
+                AlarmModel alarm = dbHelper.getAlarm(id);
+                alarm.replaceReminder(oneTime);
+                dbHelper.updateAlarm(alarm);
 
                 Intent i = new Intent(EditOneTime.this, ReminderListActivity.class);
                 i.putExtra(ReminderListActivity.ALARM_NAME, name);

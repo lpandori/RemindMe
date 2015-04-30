@@ -60,9 +60,9 @@ public class EditDaily extends ActionBarActivity {
                 int m = timePicker.getCurrentMinute();
                 ReminderTime daily = new ReminderDaily(h,m);
                 daily.setId(reminderId);
-                AlarmManagerHelper.cancelAlarms(mContext);
-                dbHelper.updateReminder(daily, id);
-                AlarmManagerHelper.setAlarms(mContext);
+                AlarmModel alarm = dbHelper.getAlarm(id);
+                alarm.replaceReminder(daily);//replace existing reminder
+                dbHelper.updateAlarm(alarm);
 
                 //start the reminderListActivity to show a list of all the different time
                 //frequencies/remindertimes under the alarm. Pass the alarm name, modelid,

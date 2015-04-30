@@ -104,9 +104,9 @@ public class EditMonthly extends ActionBarActivity {
 
                 ReminderTime monthly = new ReminderMonthly(h, m, weekNumber, weekdays);
                 monthly.setId(reminderId);
-                AlarmManagerHelper.cancelAlarms(mContext);
-                dbHelper.updateReminder(monthly, id);
-                AlarmManagerHelper.setAlarms(mContext);
+                AlarmModel alarm = dbHelper.getAlarm(id);
+                alarm.replaceReminder(monthly);
+                dbHelper.updateAlarm(alarm);
 
                 //start the reminderlist activity and pass in the alarm name and
                 //model id for use in future activities

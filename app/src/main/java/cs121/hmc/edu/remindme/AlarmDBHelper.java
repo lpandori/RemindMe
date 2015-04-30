@@ -11,13 +11,37 @@ import java.util.Calendar;
 import java.util.List;
 
 /**
- * Created by heatherseaman on 2/23/15.
- */
-
+ * Class: AlarmDBHelper.java
+ * Authors: Heather Seaman, Laura Pandori, Rachelle, Holmgren, Tyra He
+ * Last Updated: 04-29-2015
+ * Adapted from StevenTrigg's AlarmClock  project.
+ * Provides a suite of methods for retrieving alarm information from the database
+ * and writing information into the database.
+ * The database is designed so that every row corresponds to a reminder time for a given alarm.
+ * Multiple rows can be associated with a single alarm.
+ * Each row contains information on:
+ *  _ID : unique id managed by the SQLite db that identifies a reminder time
+ *  ALARM_ID: id that identifies an alarm (can be in the db multiple times)
+ *  ENABLED: if they alarm is currently enabled (true/false for all rows of a given ALARM_ID)
+ *  SNOOZE: amount of time this alarm is snoozed
+ *  SNOOZE_COUNTER: number of times, snooze has been used consecutively for this alarm
+ *  NEXT_AWAKE_TIME: next time to ring (calculated based on snooze counter and snooze time)
+ *  TIME_HOUR: hour of alarm from 0-23
+ *  TIME_MINUTE: minute of alarm from 0-59
+ *  ONE_TIME, MONTHLY, DAILY, WEEKLY : integer boolean to indicate what type of reminder this is
+ *  DATE: date ("yyyy-mm-dd") that the alarm goes of "" for non-one_time reminders
+ *  WHICH_WEEKDAYS: array of days of the week alarm goes off on,
+ *      stored as string of 0s and 1s, starting on sunday ("" when not applicable)
+ *  WHICH_WEEK_OF_MONTH: integer representing which week of the month reminder is for
+ *      1st = 1, 2nd = 2, .. 4th = 4
+ *  ALARM_TONE: uri of chosen alarm tone
+**/
 public class AlarmDBHelper extends SQLiteOpenHelper {
 
     public static final int DATABASE_VERSION = 5;
     public static final String DATABASE_NAME = "alarmclock.db";
+
+    private Context mContext;
 
     private static final String SQL_CREATE_ALARM =
             "CREATE TABLE " + AlarmContract.Alarm.TABLE_NAME + " (" +
@@ -30,36 +54,49 @@ public class AlarmDBHelper extends SQLiteOpenHelper {
                     AlarmContract.Alarm.COLUMN_NAME_ALARM_NEXT_AWAKE_TIME + " INTEGER,"+
                     AlarmContract.Alarm.COLUMN_NAME_ALARM_TIME_HOUR + " INTEGER," +
                     AlarmContract.Alarm.COLUMN_NAME_ALARM_TIME_MINUTE + " INTEGER," +
-                    AlarmContract.Alarm.COLUMN_NAME_ALARM_ONE_TIME+ " BOOLEAN," + //integer booleans for all remindertype identifier
+                    AlarmContract.Alarm.COLUMN_NAME_ALARM_ONE_TIME+ " BOOLEAN," +
                     AlarmContract.Alarm.COLUMN_NAME_ALARM_DAILY+ " BOOLEAN," +
                     AlarmContract.Alarm.COLUMN_NAME_ALARM_WEEKLY+ " BOOLEAN," +
                     AlarmContract.Alarm.COLUMN_NAME_ALARM_MONTHLY+ " BOOLEAN," +
-                    AlarmContract.Alarm.COLUMN_NAME_ALARM_DATE+ " TEXT," + //text as input type "yyyy-mm-dd"
-                    AlarmContract.Alarm.COLUMN_NAME_ALARM_WHICH_WEEKDAYS+ " TEXT," + //stored as string of 0s and 1s, starting on sunday
+                    AlarmContract.Alarm.COLUMN_NAME_ALARM_DATE+ " TEXT," +
+                    AlarmContract.Alarm.COLUMN_NAME_ALARM_WHICH_WEEKDAYS+ " TEXT," +
                     AlarmContract.Alarm.COLUMN_NAME_ALARM_WHICH_WEEK_OF_MONTH + " INTEGER," +
                     AlarmContract.Alarm.COLUMN_NAME_ALARM_TONE + " TEXT" +" )";
 
 
     private static final String SQL_DELETE_AlARM = "DROP TABLE IF EXISTS " + AlarmContract.Alarm.TABLE_NAME;
 
-    public AlarmDBHelper(Context context) {
 
+    public AlarmDBHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
+        mContext = context;
 
     }
 
+    /*
+     * Creates table first time database is used
+     */
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(SQL_CREATE_ALARM);
     }
 
+    /*
+     * Upgrades database when new version is created
+     * Deletes old table and recreates it
+     */
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL(SQL_DELETE_AlARM);
         onCreate(db);
     }
 
-    //returns an AlarmModel object from a given db query (which gives us the cursor)
+    /*
+     * Builds an AlarmModel from a given cursor
+     * pre - cursor must be for rows with all same ALARM_ID (with no rows missing)
+     * @return - AlarmModel corresponding to cursor's rows
+     * @param c - cursor to those rows in the table
+     */
     private AlarmModel populateModel(Cursor c) {
 
         AlarmModel alarmModel = new AlarmModel("test");
@@ -146,7 +183,14 @@ public class AlarmDBHelper extends SQLiteOpenHelper {
         }
 
     }
-    //takes in a string of the form "0110001" and makes boolean array
+
+    /*
+     * Makes boolean array from input of form "0110001"
+     * Represents which days of the week are selected
+     * pre: string must be 7 characters long and be composed of "0"s and "1"s
+     * @param boolString - string of 0s and 1s that will be converted into boolean array
+     * @return - boolean array corresponding to input (first cell is sunday)
+     */
     private boolean[] makeWeekdayArray(String boolString){
         boolean[] result = new boolean[7];
 
@@ -157,6 +201,7 @@ public class AlarmDBHelper extends SQLiteOpenHelper {
 
     }
 
+    //TODO figure out snooze and reminderId
     private ContentValues populateReminderContent(ReminderTime r, long mId,
                                                   String mName, boolean enabled, int snooze, long reminderId
                                                   ,String tone
@@ -209,9 +254,6 @@ public class AlarmDBHelper extends SQLiteOpenHelper {
         ArrayList<ContentValues> valueList= new ArrayList<ContentValues>();
         for(ReminderTime r : model.getReminders()){
 
-
-            System.out.println("MODEL ALARM TONE: " + model.getAlarmTone().toString());
-
             ContentValues values = populateReminderContent(r, model.getId(), model.name,
                     model.isEnabled(), model.getSnooze(), model.getReminderId(), model.getAlarmTone().toString());
 
@@ -223,47 +265,55 @@ public class AlarmDBHelper extends SQLiteOpenHelper {
 
     //returns an array list of ids of the new columns
     //adds alarm model into db
+    //pre alarm cannot already exist in the db
     public ArrayList<Long> createAlarm(AlarmModel model) {
+        //AlarmManagerHelper.cancelAlarms(mContext); TODO check that this is unnecessary
         ArrayList<ContentValues> valuesList = populateContent(model);
         ArrayList<Long> ids = new ArrayList<Long>();
         for(ContentValues values : valuesList){
             long id = getWritableDatabase().insert(AlarmContract.Alarm.TABLE_NAME, null, values);
             ids.add(id);
         }
+        AlarmManagerHelper.setAlarms(mContext);
         return ids;
     }
 
-    //pre: reminder must already exist
-    //takes reminder that should replace old reminder with same id in db
-    //and id of the alarm model that it's a part of
-    //post: database contains updated version of reminder
-    public void updateReminder(ReminderTime reminder, long mId){
-
-        AlarmModel parentAlarm = getAlarm(mId);
-
-        ContentValues rVals = populateReminderContent(reminder, parentAlarm.getId(),
-            parentAlarm.name, parentAlarm.isEnabled(), parentAlarm.getSnooze(), reminder.getId(), parentAlarm.getAlarmTone().toString());
-
-        long rId = reminder.getId();
-
-        getWritableDatabase().update(AlarmContract.Alarm.TABLE_NAME,
-                rVals, AlarmContract.Alarm._ID + " = "+rId, null);
+    //updateAlarm in alarmModel
+    public ArrayList<Long> updateAlarm(AlarmModel model){
+        deleteAlarm(model.getId());
+        return createAlarm(model);
     }
 
+//    //pre: reminder must already exist
+//    //takes reminder that should replace old reminder with same id in db
+//    //and id of the alarm model that it's a part of
+//    //post: database contains updated version of reminder
+//    public void updateReminder(ReminderTime reminder, long mId){
+//
+//        AlarmModel parentAlarm = getAlarm(mId);
+//
+//        ContentValues rVals = populateReminderContent(reminder, parentAlarm.getId(),
+//            parentAlarm.name, parentAlarm.isEnabled(), parentAlarm.getSnooze(), reminder.getId(), parentAlarm.getAlarmTone().toString());
+//
+//        long rId = reminder.getId();
+//
+//        getWritableDatabase().update(AlarmContract.Alarm.TABLE_NAME,
+//                rVals, AlarmContract.Alarm._ID + " = "+rId, null);
+//    }
+
     //increment the snooze counter for this reminderId
-    //TODO potentially rewrite dealing more with objects (maybe not)
     public void snoozeReminder(long reminderId){
 
         long currentTimeInMillis = Calendar.getInstance().getTimeInMillis();
         int minBetweenSnooze = 0;
-        //TODO not written in very safe manner
+
         SQLiteDatabase db = getReadableDatabase();
         String retrieve = "SELECT " + AlarmContract.Alarm.COLUMN_NAME_ALARM_SNOOZE_COUNTER +
                 "," + AlarmContract.Alarm.COLUMN_NAME_ALARM_SNOOZE +
                 " FROM "+AlarmContract.Alarm.TABLE_NAME+" WHERE " + AlarmContract.Alarm._ID + " = " + reminderId;
 
         Cursor c = db.rawQuery(retrieve, null);
-        int previousSnooze = -1;//TODO check this for safety!!!!
+        int previousSnooze = -1;
         while(c.moveToNext()){
             previousSnooze  = c.getInt(c.getColumnIndex(AlarmContract.Alarm.COLUMN_NAME_ALARM_SNOOZE_COUNTER));
             minBetweenSnooze  = c.getInt(c.getColumnIndex(AlarmContract.Alarm.COLUMN_NAME_ALARM_SNOOZE));
@@ -308,19 +358,21 @@ public class AlarmDBHelper extends SQLiteOpenHelper {
     //deletes all rows related to a given alarm
     public int deleteAlarm(long id) {
 
-        return getWritableDatabase().delete(AlarmContract.Alarm.TABLE_NAME,
+        int rowsDeleted;
+        AlarmManagerHelper.cancelAlarms(mContext);
+
+        rowsDeleted = getWritableDatabase().delete(AlarmContract.Alarm.TABLE_NAME,
                 AlarmContract.Alarm.COLUMN_NAME_ALARM_ID + " = "+id, null);
+
+        AlarmManagerHelper.setAlarms(mContext);
+
+        return rowsDeleted;
     }
 
-    //deletes all rows related to a given reminder
-    public int deleteReminder(long id) {
 
-        return getWritableDatabase().delete(AlarmContract.Alarm.TABLE_NAME,
-                AlarmContract.Alarm._ID + " = "+id, null);
-    }
-
-    //makes a list of all current alarms
-    //requires nested for loops in our implementation
+    /*
+     * Returns a list of all current alarms stored in the database
+     */
     public List<AlarmModel> getAlarms() {
 
         List<AlarmModel> alarmList = new ArrayList<AlarmModel>();
