@@ -1,11 +1,14 @@
 package cs121.hmc.edu.remindme;
 
 /**
- * Created by lepandori on 3/7/15.
+ * Class: ReminderTime.java
+ * Authors: Heather Seaman, Laura Pandori, Rachelle, Holmgren, Tyra He
+ * Last Updated: 04-29-2015
+ * Interface for ReminderTimes
+ * Defines behavior all Reminder(*) objects should follow
+ * represents an individual reminder timing scheme (based on its frequency)
+ * for a specific alarm (ex: "take meds")
  */
-
-//represents an individual reminder timing scheme (based on its frequency)
-//for a specific alarm (ex: "take meds")
 public interface ReminderTime {
 
     //reminder types
@@ -14,9 +17,8 @@ public interface ReminderTime {
     public static int WEEKLY = 3;
     public static int MONTHLY = 4;
 
-    public static int DEFAULT_MIN_BETWEEN_SNOOZE = 1;//TODO when is this used?
-
     public static int minToMillis = 60000;
+    public static int DEFAULT_MIN_BETWEEN_SNOOZE = 1;
 
     //return what type of reminder it is
     public int getReminderType();
@@ -44,12 +46,11 @@ public interface ReminderTime {
     public int getSnoozeCounter();
     public void setSnoozeCounter(int snoozeCounter);
 
-    //TODO rename to getSnooze()/setSnooze() will be done inside alarm model
-    //TODO only alarm model should really have this info set by outside class
-    public int getMinBetweenSnooze();
-    public void setMinBetweenSnooze(int minBetweenSnooze);
+    //setter and getter for snooze time
+    public int getSnoozeTime();
+    public void setSnoozeTime(int minBetweenSnooze);
 
-    //TODO get next awake time does not do what tyra claimed (useless)
+    //setter and getter for next awake time
     public long getNextAwakeTime();
     public void setNextAwakeTime(long nextAwakeTime);
 

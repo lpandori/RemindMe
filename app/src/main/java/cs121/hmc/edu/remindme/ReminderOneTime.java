@@ -20,7 +20,7 @@ public class ReminderOneTime implements ReminderTime {
 
     private long id = -1;
     private int snoozeCounter = 0;
-    private int minBetweenSnooze = DEFAULT_MIN_BETWEEN_SNOOZE;
+    private int snooze;//snooze time in minutes
     private long nextAwakeTime = 0; // in seconds
     //pre: date must include m/d/y AND hour and minute
     private int year;
@@ -30,7 +30,6 @@ public class ReminderOneTime implements ReminderTime {
 
     //improved constructor
     public ReminderOneTime(int year, int month, int day, int hour, int min) {
-        //this.id = id; TODO removed id
         this.year = year;
         this.month = month;
         this.day = day;
@@ -98,7 +97,6 @@ public class ReminderOneTime implements ReminderTime {
     @Override
     public String getDateString(){
         //formatted as: yyyy-mm-dd
-        //TODO refactor so not so repetitive
         String  dayStr = ((""+day).length() == 2) ? ""+day : "0"+day;
         String  monthStr = ((""+month).length() == 2) ? ""+month : "0"+month;
         String date = year + "-" + monthStr + "-" +  dayStr;
@@ -130,8 +128,8 @@ public class ReminderOneTime implements ReminderTime {
     @Override
     public void setSnoozeCounter(int snoozeCounter){this.snoozeCounter = snoozeCounter;}
 
-    public int getMinBetweenSnooze() { return minBetweenSnooze; }
-    public void setMinBetweenSnooze(int minBetweenSnooze) { this.minBetweenSnooze = minBetweenSnooze; }
+    public int getSnoozeTime() { return snooze; }
+    public void setSnoozeTime(int minBetweenSnooze) { this.snooze = minBetweenSnooze; }
     public long getNextAwakeTime() { return nextAwakeTime; }
     public void setNextAwakeTime(long nextAwakeTime) { this.nextAwakeTime = nextAwakeTime; }
 

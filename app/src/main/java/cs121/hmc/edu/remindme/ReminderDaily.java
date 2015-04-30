@@ -20,7 +20,7 @@ public class ReminderDaily implements ReminderTime{
 
     private long id = -1;
     private int snoozeCounter;
-    private int minBetweenSnooze = DEFAULT_MIN_BETWEEN_SNOOZE;
+    private int snooze;
     private long nextAwakeTime = 0;
     private int hour;
     private int min;
@@ -79,9 +79,14 @@ public class ReminderDaily implements ReminderTime{
     @Override
     public void setSnoozeCounter(int snoozeCounter){this.snoozeCounter = snoozeCounter;}
 
-    public int getMinBetweenSnooze() { return minBetweenSnooze; }
-    public void setMinBetweenSnooze(int minBetweenSnooze) { this.minBetweenSnooze = minBetweenSnooze; }
+    @Override
+    public int getSnoozeTime() { return snooze; }
+    @Override
+    public void setSnoozeTime(int minBetweenSnooze) { this.snooze = minBetweenSnooze; }
+
+    @Override
     public long getNextAwakeTime() { return nextAwakeTime; }
+    @Override
     public void setNextAwakeTime(long nextAwakeTime) { this.nextAwakeTime = nextAwakeTime; }
 
     @Override
@@ -93,10 +98,6 @@ public class ReminderDaily implements ReminderTime{
     @Override
     public long getNextTime() {
         Calendar now = Calendar.getInstance();
-
-        Calendar setTime = Calendar.getInstance();
-        setTime.set(Calendar.HOUR_OF_DAY, hour);
-        setTime.set(Calendar.MINUTE, min);//TODO fix this dangling variable
 
         // According to the daily schedule
         Calendar timeBySchedule = Calendar.getInstance();

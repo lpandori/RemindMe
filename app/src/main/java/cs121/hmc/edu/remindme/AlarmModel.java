@@ -9,12 +9,14 @@ import java.util.Calendar;
 /**
  * Created by heatherseaman on 2/14/15.
  * Defines the data that is stored in the alarm
+ * Contains multiple reminder schemes
+ * REpresents an event such as "Take Meds" or "CS121 Meeting"
  */
 public class AlarmModel {
 
-    private long id = -1; //TODO remove
+    private long id;
     public String name;
-    private int snooze = 20;//TODO set default for snooze (will remove later)
+    private int snooze = 1;
     private boolean isEnabled = true;
     private ArrayList<ReminderTime> reminders;
     public String alarmToneStr;
@@ -25,9 +27,10 @@ public class AlarmModel {
      * Default constructor creates an alarm model with a given name
      */
     public AlarmModel(String name) {
+        this.id = -1;
         this.name = name;
         reminders = new ArrayList<ReminderTime>();
-        alarmToneStr = "Argo Navis"; // TODO
+        alarmToneStr = "Argo Navis";
         alarmTone = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
     }
 
@@ -37,7 +40,12 @@ public class AlarmModel {
 
     //setter and getter for snooze
     public int getSnooze() { return snooze; }
-    public void setSnooze(int snooze) { this.snooze = snooze; }
+    public void setSnooze(int snooze) {
+        this.snooze = snooze;
+        for(ReminderTime r : reminders){
+            r.setSnoozeTime(snooze);
+        }
+    }
 
     //return the id of the reminder time that is the most upcoming
     public long getReminderId(){
@@ -60,6 +68,7 @@ public class AlarmModel {
      */
     public void addReminder(ReminderTime toAdd){
         reminders.add(toAdd);
+        toAdd.setSnoozeTime(snooze);
     }
 
     //remove a specific reminder time from the alarm model

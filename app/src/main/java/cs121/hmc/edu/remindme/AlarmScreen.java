@@ -29,7 +29,6 @@ public class AlarmScreen extends Activity {
     private MediaPlayer mPlayer;
     private PowerManager.WakeLock mWakeLock;
     private static final int WAKELOCK_TIMEOUT = 60 * 1000;
-    private Context context = this; //TODO fix this bullshit
     private Context mContext;
     private long reminderId;
 
@@ -79,9 +78,9 @@ public class AlarmScreen extends Activity {
             @Override
             public void onClick(View v) {
                 //Work with alarmDBHelper
-                AlarmDBHelper dbHelper = new AlarmDBHelper(context);
+                AlarmDBHelper dbHelper = new AlarmDBHelper(mContext);
                 dbHelper.snoozeReminder(reminderId);
-                AlarmManagerHelper.setAlarms(context);
+                AlarmManagerHelper.setAlarms(mContext);
                 try {
                     mPlayer.stop();
                 } catch (Exception e) {}
@@ -154,7 +153,7 @@ public class AlarmScreen extends Activity {
                         view.setVisibility(View.INVISIBLE);
                         v.setVisibility(View.INVISIBLE);
 
-                        AlarmDBHelper dbHelper = new AlarmDBHelper(context);
+                        AlarmDBHelper dbHelper = new AlarmDBHelper(mContext);
                         dbHelper.dismiss(reminderId);
                         finish();
                         break;

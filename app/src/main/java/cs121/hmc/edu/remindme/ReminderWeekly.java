@@ -24,7 +24,7 @@ public class ReminderWeekly implements ReminderTime {
 
     private long id = -1;
     private int snoozeCounter = 0;
-    private int minBetweenSnooze = DEFAULT_MIN_BETWEEN_SNOOZE;
+    private int snooze;
     private long nextAwakeTime = 0;
     boolean[] weekdays;
     int hour;
@@ -86,8 +86,8 @@ public class ReminderWeekly implements ReminderTime {
     @Override
     public void setSnoozeCounter(int snoozeCounter){this.snoozeCounter = snoozeCounter;}
 
-    public int getMinBetweenSnooze() { return minBetweenSnooze; }
-    public void setMinBetweenSnooze(int minBetweenSnooze) { this.minBetweenSnooze = minBetweenSnooze; }
+    public int getSnoozeTime() { return snooze; }
+    public void setSnoozeTime(int minBetweenSnooze) { this.snooze = minBetweenSnooze; }
     public long getNextAwakeTime() { return nextAwakeTime; }
     public void setNextAwakeTime(long nextAwakeTime) { this.nextAwakeTime = nextAwakeTime; }
 

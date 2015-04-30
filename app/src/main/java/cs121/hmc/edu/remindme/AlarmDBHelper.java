@@ -108,14 +108,12 @@ public class AlarmDBHelper extends SQLiteOpenHelper {
                 boolean isEnabled = c.getInt(c.getColumnIndex(AlarmContract.Alarm.COLUMN_NAME_ALARM_ENABLED)) > 0;
                 long model_id = c.getLong(c.getColumnIndex(AlarmContract.Alarm.COLUMN_NAME_ALARM_ID));
                 int snooze = c.getInt(c.getColumnIndex(AlarmContract.Alarm.COLUMN_NAME_ALARM_SNOOZE));
-               String alarm_tone = c.getString(c.getColumnIndex(AlarmContract.Alarm.COLUMN_NAME_ALARM_TONE));
-
-                //System.out.println("ALARM TONE IS : " + alarmTone);
+                String alarm_tone = c.getString(c.getColumnIndex(AlarmContract.Alarm.COLUMN_NAME_ALARM_TONE));
 
                 alarmModel.setEnabled(isEnabled);
                 alarmModel.setId(model_id);
                 alarmModel.setSnooze(snooze);
-               alarmModel.setAlarmTone(alarm_tone);
+                alarmModel.setAlarmTone(alarm_tone);
 
             }
             i++;
@@ -146,7 +144,7 @@ public class AlarmDBHelper extends SQLiteOpenHelper {
                 int month = Integer.parseInt(dateString.substring(5,7));
                 int day = Integer.parseInt(dateString.substring(8,10));
                 reminderTime = new ReminderOneTime(year, month, day, hour, min);
-                reminderTime.setMinBetweenSnooze(alarmModel.getSnooze());
+                reminderTime.setSnoozeTime(alarmModel.getSnooze());
 
             }else if(isDaily){
 
@@ -169,8 +167,6 @@ public class AlarmDBHelper extends SQLiteOpenHelper {
 
             reminderTime.setSnoozeCounter(snoozeCounter);
             reminderTime.setNextAwakeTime(nextAwakeTime);
-            reminderTime.setMinBetweenSnooze(alarmModel.getSnooze());
-
             reminderTime.setId(id);
 
             alarmModel.addReminder(reminderTime);
@@ -201,11 +197,11 @@ public class AlarmDBHelper extends SQLiteOpenHelper {
 
     }
 
-    //TODO figure out snooze and reminderId
-    private ContentValues populateReminderContent(ReminderTime r, long mId,
-                                                  String mName, boolean enabled, int snooze, long reminderId
-                                                  ,String tone
-                                                    ){
+    /*
+     * Return a table row represented as a contentvalues object
+     */
+    private ContentValues populateReminderContent(ReminderTime r, long mId, String mName,
+                                                  boolean enabled, int snooze, String tone ){
         ContentValues values = new ContentValues();
         if(r.getId() != -1){
             values.put(AlarmContract.Alarm._ID, r.getId());
@@ -220,7 +216,7 @@ public class AlarmDBHelper extends SQLiteOpenHelper {
         values.put(AlarmContract.Alarm.COLUMN_NAME_ALARM_WHICH_WEEK_OF_MONTH, r.getWeekOfMonth());
         values.put(AlarmContract.Alarm.COLUMN_NAME_ALARM_SNOOZE_COUNTER, r.getSnoozeCounter());
 
-        values.put(AlarmContract.Alarm.COLUMN_NAME_ALARM_SNOOZE, r.getMinBetweenSnooze());
+        values.put(AlarmContract.Alarm.COLUMN_NAME_ALARM_SNOOZE, snooze);
         values.put(AlarmContract.Alarm.COLUMN_NAME_ALARM_NEXT_AWAKE_TIME, r.getNextAwakeTime());
 
         values.put(AlarmContract.Alarm.COLUMN_NAME_ALARM_TONE, tone);
@@ -249,13 +245,15 @@ public class AlarmDBHelper extends SQLiteOpenHelper {
         return values;
     }
 
-    // returns an array list of content values from an alarm model
+    /*
+      * returns an array list of content values from an alarm model
+      */
     private ArrayList<ContentValues> populateContent(AlarmModel model) {
         ArrayList<ContentValues> valueList= new ArrayList<ContentValues>();
         for(ReminderTime r : model.getReminders()){
 
             ContentValues values = populateReminderContent(r, model.getId(), model.name,
-                    model.isEnabled(), model.getSnooze(), model.getReminderId(), model.getAlarmTone().toString());
+                    model.isEnabled(), model.getSnooze(), model.getAlarmTone().toString());
 
 
             valueList.add(values);
@@ -263,11 +261,12 @@ public class AlarmDBHelper extends SQLiteOpenHelper {
         return valueList;
     }
 
-    //returns an array list of ids of the new columns
-    //adds alarm model into db
-    //pre alarm cannot already exist in the db
+    /*
+     *returns an array list of ids of the new table columns
+     * adds alarm model into db
+     * pre alarm cannot already exist in the db
+     */
     public ArrayList<Long> createAlarm(AlarmModel model) {
-        //AlarmManagerHelper.cancelAlarms(mContext); TODO check that this is unnecessary
         ArrayList<ContentValues> valuesList = populateContent(model);
         ArrayList<Long> ids = new ArrayList<Long>();
         for(ContentValues values : valuesList){
@@ -278,30 +277,17 @@ public class AlarmDBHelper extends SQLiteOpenHelper {
         return ids;
     }
 
-    //updateAlarm in alarmModel
+    /*
+     * updateAlarm in alarmModel
+     */
     public ArrayList<Long> updateAlarm(AlarmModel model){
         deleteAlarm(model.getId());
         return createAlarm(model);
     }
 
-//    //pre: reminder must already exist
-//    //takes reminder that should replace old reminder with same id in db
-//    //and id of the alarm model that it's a part of
-//    //post: database contains updated version of reminder
-//    public void updateReminder(ReminderTime reminder, long mId){
-//
-//        AlarmModel parentAlarm = getAlarm(mId);
-//
-//        ContentValues rVals = populateReminderContent(reminder, parentAlarm.getId(),
-//            parentAlarm.name, parentAlarm.isEnabled(), parentAlarm.getSnooze(), reminder.getId(), parentAlarm.getAlarmTone().toString());
-//
-//        long rId = reminder.getId();
-//
-//        getWritableDatabase().update(AlarmContract.Alarm.TABLE_NAME,
-//                rVals, AlarmContract.Alarm._ID + " = "+rId, null);
-//    }
-
-    //increment the snooze counter for this reminderId
+    /*
+     * increment the snooze counter for this reminderId
+     */
     public void snoozeReminder(long reminderId){
 
         long currentTimeInMillis = Calendar.getInstance().getTimeInMillis();
@@ -331,7 +317,9 @@ public class AlarmDBHelper extends SQLiteOpenHelper {
         getWritableDatabase().execSQL(update);
     }
 
-    //set the snooze counter of given reminder to zero
+    /*
+     * set the snooze counter of given reminder to zero
+     */
     public void dismiss(long reminderId){
 
         String update = "UPDATE "+AlarmContract.Alarm.TABLE_NAME+" SET "+
@@ -343,7 +331,9 @@ public class AlarmDBHelper extends SQLiteOpenHelper {
 
     }
 
-    //returns alarm model from the database based on id
+    /*
+     * Returns alarm model from the database based on id
+     */
     public AlarmModel getAlarm(long id) {
         SQLiteDatabase db = getReadableDatabase();
         String select = "SELECT * FROM " + AlarmContract.Alarm.TABLE_NAME + " WHERE "
@@ -355,7 +345,9 @@ public class AlarmDBHelper extends SQLiteOpenHelper {
         return toReturn;
     }
 
-    //deletes all rows related to a given alarm
+    /*
+     * Deletes all rows related to a given alarm
+     */
     public int deleteAlarm(long id) {
 
         int rowsDeleted;

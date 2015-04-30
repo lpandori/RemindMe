@@ -32,8 +32,6 @@ import java.util.List;
  * user. From here users can tap an alarm to see all the reminder times associated with
  * that alarm title. They can also add new alarms.
  */
-
-
 public class AlarmListActivity extends ActionBarActivity {
     // A DBHelper allows access to the database, the adapter populates the ListView
     private AlarmDBHelper dbHelper = new AlarmDBHelper(this);
@@ -67,11 +65,9 @@ public class AlarmListActivity extends ActionBarActivity {
                             }
                             @Override
                             public void onDismiss(ListViewAdapter lvAdapter, int position) {
-                                AlarmManagerHelper.cancelAlarms(mContext);
                                 mAdapter.remove(position);
                                 View thisView = lvAdapter.getChildAt(position);
                                 long viewId = (long) thisView.getTag();
-                                AlarmManagerHelper.cancelAlarms(mContext);
                                 dbHelper.deleteAlarm(viewId);
                                 AlarmManagerHelper.setAlarms(mContext);
                             }

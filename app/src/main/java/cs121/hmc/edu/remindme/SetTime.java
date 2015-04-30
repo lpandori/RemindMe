@@ -72,7 +72,7 @@ public class SetTime extends ActionBarActivity {
                             r = new ReminderMonthly(hour, minute, weekNumber, weekdays);
                             break;
                     }
-                    r.setMinBetweenSnooze(minBetweenSnooze);
+                    r.setSnoozeTime(minBetweenSnooze);
                     Intent i = new Intent(SetTime.this, ReminderListActivity.class);
                     //if user is creating a new alarm, create a new alarmModel
                     if(!existingModel){

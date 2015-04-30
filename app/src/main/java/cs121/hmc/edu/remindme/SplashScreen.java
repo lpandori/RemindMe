@@ -7,6 +7,7 @@ import android.os.Handler;
 
 /**
  * Created by rachelleholmgren on 4/19/15.
+ * Splash screen that is displayed while app is loading
  */
 public class SplashScreen extends Activity {
     private static int SPLASH_TIME_OUT = 3000;
