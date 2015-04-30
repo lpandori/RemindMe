@@ -12,7 +12,11 @@ import android.widget.DatePicker;
 import java.util.Calendar;
 
 /**
- * Created by rachelleholmgren on 3/26/15.
+ * Class: SetDate.java
+ * Authors: Heather Seaman, Laura Pandori, Rachelle, Holmgren, Tyra He
+ * Last Updated: 04-23-2015
+ *
+ * Description: Set date allows the user to set a reminder time's date
  */
 public class SetDate extends ActionBarActivity {
     private DatePicker datePicker;
@@ -29,6 +33,7 @@ public class SetDate extends ActionBarActivity {
         setCurrentDate();
 
         Intent prevIntent = getIntent(); // gets the previously created intent
+        //gets the information set in previous activities
         final String alarmTone = prevIntent.getStringExtra(SetAlarmInfo.ALARM_TONE);
         final String alarmName = prevIntent.getStringExtra(SetAlarmInfo.ALARM_NAME);
         final int reminderType = prevIntent.getIntExtra(SetFrequency.REMINDER_TYPE, -1);
@@ -38,14 +43,14 @@ public class SetDate extends ActionBarActivity {
         final int minBetweenSnooze = prevIntent.getIntExtra(ReminderListActivity.MIN_BETWEEN_SNOOZE, ReminderTime.DEFAULT_MIN_BETWEEN_SNOOZE);
 
         button = (Button) findViewById(R.id.done);
-
-
+            //start the activity for the user to set the time of the remindertime
+            //and pass the information from previous activities and this activity
+            //set time activity.
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     Intent i = new Intent(SetDate.this, SetTime.class);
                     i.putExtra(SetAlarmInfo.ALARM_TONE, alarmTone);
-                    System.out.println(alarmTone);
                     i.putExtra(SetAlarmInfo.ALARM_NAME, alarmName);
                     i.putExtra(SetFrequency.REMINDER_TYPE, reminderType);
                     i.putExtra(ReminderListActivity.EXISTING_MODEL, existingModel);
@@ -62,12 +67,16 @@ public class SetDate extends ActionBarActivity {
             });
     }
 
+    //inflate the action bar to contain a cancel icon
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_cancel, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
+
+    //when the cancel icon is clicked, go back to the list of remindertimes for
+    //that alarm
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -84,6 +93,8 @@ public class SetDate extends ActionBarActivity {
 
 
 
+    //get the current year, month, and day and then set the datepicker to
+    //display this date
     public void setCurrentDate(){
         datePicker = (DatePicker) findViewById(R.id.date);
         final Calendar c = Calendar.getInstance();

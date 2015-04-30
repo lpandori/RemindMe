@@ -11,7 +11,12 @@ import android.widget.Button;
 import android.widget.Spinner;
 
 /**
- * Created by rachelleholmgren on 3/7/15.
+ * Class: SetMonthly.java
+ * Authors: Heather Seaman, Laura Pandori, Rachelle, Holmgren, Tyra He
+ * Last Updated: 04-23-2015
+ *
+ * Description: Set monthly allows a user to set the week of the month, and day of the week
+ * of a monthly remindertime.
  */
 public class SetMonthly extends ActionBarActivity {
 
@@ -22,6 +27,7 @@ public class SetMonthly extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.set_month);
 
+        //populate spinner with week number options
         final Spinner whichWeek = (Spinner) findViewById(R.id.which_week);
         ArrayAdapter<CharSequence> adapter =
                 ArrayAdapter.createFromResource(this, R.array.which_week_options,
@@ -29,6 +35,7 @@ public class SetMonthly extends ActionBarActivity {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         whichWeek.setAdapter(adapter);
 
+        //populate spinner with days of the week options
         final Spinner whichDay = (Spinner) findViewById(R.id.day_of_week);
         ArrayAdapter<CharSequence> adapter2 =
                 ArrayAdapter.createFromResource(this, R.array.day_options,
@@ -37,12 +44,15 @@ public class SetMonthly extends ActionBarActivity {
         whichDay.setAdapter(adapter2);
 
         final Intent prevIntent = getIntent(); // gets the previously created intent
+        //get the previously set information for this remindertime
         final String alarmName = prevIntent.getStringExtra(SetAlarmInfo.ALARM_NAME);
         final String alarmTone = prevIntent.getStringExtra(ReminderListActivity.ALARM_TONE);
         final int reminderType = prevIntent.getIntExtra(SetFrequency.REMINDER_TYPE, -1);
         final boolean existingModel = prevIntent.getBooleanExtra(ReminderListActivity.EXISTING_MODEL, false);
         final long existingModelId = prevIntent.getLongExtra(ReminderListActivity.EXISTING_MODEL_ID, -1);
 
+        //when the user clicks done, get the selected day of the week
+        //start the setTime activity and pass in previously set information
         Button done = (Button) findViewById(R.id.btn_done);
         done.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -63,14 +73,16 @@ public class SetMonthly extends ActionBarActivity {
                     startActivity(i);
             }
         });
-
     }
+
+    //populate the action bar with a cancel icon
     @Override
       public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_cancel, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
+    //when the user clicks the cancel icon, go back to a list of alarms the user has set
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {

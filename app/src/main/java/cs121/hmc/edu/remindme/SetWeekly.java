@@ -11,7 +11,12 @@ import android.widget.Button;
 import java.util.ArrayList;
 
 /**
- * Created by rachelleholmgren on 3/5/15.
+ * Class: SetWeekly.java
+ * Authors: Heather Seaman, Laura Pandori, Rachelle, Holmgren, Tyra He
+ * Last Updated: 04-23-2015
+ *
+ * Description: SetWeekly allows the user to set the days of the week for a weekly
+ * reminder to ring
  */
 public class SetWeekly extends ActionBarActivity {
 
@@ -51,19 +56,19 @@ public class SetWeekly extends ActionBarActivity {
 
         final int minBetweenSnooze = prevIntent.getIntExtra(ReminderListActivity.MIN_BETWEEN_SNOOZE, ReminderTime.DEFAULT_MIN_BETWEEN_SNOOZE);
 
-
-
+        //when the user clicks the next button, check which weekdays are checked
+        //and store this data as an array of booleans
         next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                    boolean[] weekdays = new boolean[7];//boolean string i.e "0011010"
                    int x = 0;
                    for(CustomSwitch c: customSwitches){
                        weekdays[x] = c.isChecked();
                        x++;
                    }
-
+                   //start the setTime class and pass in information set in previous and this
+                   //activity
                    Intent i = new Intent(SetWeekly.this, SetTime.class);
                    i.putExtra(SetAlarmInfo.ALARM_NAME, alarmName);
                    i.putExtra(ReminderListActivity.ALARM_TONE, alarmTone);
@@ -78,12 +83,14 @@ public class SetWeekly extends ActionBarActivity {
 
     }
 
+    //populate the actionbar with a cancel icon
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_cancel, menu);
         return true;
     }
 
+    //on the click of the cancel button, go back to a list of alarms the user has set
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {

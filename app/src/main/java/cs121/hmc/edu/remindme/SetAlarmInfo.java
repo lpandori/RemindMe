@@ -16,20 +16,23 @@ import android.widget.TextView;
 
 
 /**
- * Created by rachelleholmgren on 3/12/15.
+ * Class: SetAlarmInfo.java
+ * Authors: Heather Seaman, Laura Pandori, Rachelle, Holmgren, Tyra He
+ * Last Updated: 04-23-2015
+ *
+ * Description: SetAlarmInfo allows a user to set the alarm model's name, tone, and
+ * snooze time
  */
 
 public class SetAlarmInfo extends ActionBarActivity {
-    //private AlarmDBHelper dbHelper = new AlarmDBHelper(this);
-    //private AlarmModel alarmModel = new AlarmModel("");
+
     public static String ALARM_NAME = "name";//used to access the alarm name in SetFrequency screen
-    //public static String SNOOZE_TIME = "snooze_time";
     public static String ALARM_TONE = "alarm_tone";
     public Uri ringtone;
 
-
-
     @Override
+    //gets the information entered by the user, starts the setFrequency activity
+    //and passes the alarm name, tone, and snooze time in as extras in the intent
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.set_name);
@@ -45,7 +48,6 @@ public class SetAlarmInfo extends ActionBarActivity {
                 i.putExtra(ALARM_NAME, name.getText().toString());
                 i.putExtra(ALARM_TONE, ringtone==null ? "Silent" : ringtone.toString());
                 try {
-
                     i.putExtra(ReminderListActivity.MIN_BETWEEN_SNOOZE, Integer.valueOf(snooze.getText().toString()));
                     startActivity(i);
                 } catch (Exception e) {
@@ -54,6 +56,8 @@ public class SetAlarmInfo extends ActionBarActivity {
 
             }
         });
+
+        //start an alarm ringtone picker
         final LinearLayout ringToneContainer = (LinearLayout) findViewById(R.id.alarm_ringtone_container);
         ringToneContainer.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -65,6 +69,7 @@ public class SetAlarmInfo extends ActionBarActivity {
         });
     }
 
+    //retrieve the picked ringtone as a Uri set the textview to display the selected ringtone
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -90,10 +95,6 @@ public class SetAlarmInfo extends ActionBarActivity {
     }
 
     public void backButtonHandler() {
-        Intent thisIntent = getIntent(); // gets the previously created intent
-        //final String alarmName = thisIntent.getStringExtra(SetAlarmInfo.ALARM_NAME);
-        //final long existingModelId = thisIntent.getLongExtra(ReminderListActivity.EXISTING_MODEL_ID, -1);
-        //final String alarmTone = thisIntent.getStringExtra(ReminderListActivity.ALARM_TONE);
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(
                 SetAlarmInfo.this);
         // Setting Dialog Title

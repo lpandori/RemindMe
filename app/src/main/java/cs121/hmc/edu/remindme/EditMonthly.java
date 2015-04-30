@@ -14,18 +14,29 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 
 /**
- * Created by rachelleholmgren on 4/12/15.
+ * Class: EditMonthly.java
+ * Authors: Heather Seaman, Laura Pandori, Rachelle, Holmgren, Tyra He
+ * Last Updated: 04-23-2015
+ *
+ * Description: EditMonthly allows a user to change the time, the week of the month,
+ * and the day of the week that a monthly reminderTime within an alarm goes off.
  */
+
+
 public class EditMonthly extends ActionBarActivity {
     public static long id;
     Context mContext = this;
     AlarmDBHelper dbHelper = new AlarmDBHelper(mContext);
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.edit_monthly);
 
+        //get the alarm details previously set for this monthly remindertime, and populate
+        //the timepicker, and dropdown menus(Spinners) with this information.
         Intent thisIntent = getIntent();
         int hour = thisIntent.getIntExtra(ReminderListActivity.ALARM_HOUR, -1);
         int minute = thisIntent.getIntExtra(ReminderListActivity.ALARM_MINUTE, -1);
@@ -76,6 +87,11 @@ public class EditMonthly extends ActionBarActivity {
         whichWeek.setSelection(weekNumber-1);
         whichDay.setSelection(position);
 
+        //when the user clicks done, get the alarm details in the timepicker,
+        //and two dropdown menus (Scrollers). Create a new monthly alarm
+        //with the new edited information and the same reminderId, and cancel
+        //the old reminder. Then go back to the list of remindertimes
+        //for that alarm
         Button done = (Button) findViewById(R.id.btn_done);
         done.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -92,6 +108,8 @@ public class EditMonthly extends ActionBarActivity {
                 dbHelper.updateReminder(monthly, id);
                 AlarmManagerHelper.setAlarms(mContext);
 
+                //start the reminderlist activity and pass in the alarm name and
+                //model id for use in future activities
                 Intent i = new Intent(EditMonthly.this, ReminderListActivity.class);
                 i.putExtra(ReminderListActivity.ALARM_NAME, name);
                 i.putExtra(ReminderListActivity.EXISTING_MODEL_ID, id);
@@ -100,13 +118,15 @@ public class EditMonthly extends ActionBarActivity {
         });
 
     }
-
+    //inflate the action bar to contain a cancel icon
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_cancel, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
+    //when the cancel icon is clicked, go back to the list of remindertimes for
+    //that alarm
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {

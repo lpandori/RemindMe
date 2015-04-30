@@ -12,8 +12,15 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 
 /**
- * EditDaily allows a user to change the time of an alarm that goes off every day.
+ * Class: EditDaily.java
+ * Authors: Heather Seaman, Laura Pandori, Rachelle, Holmgren, Tyra He
+ * Last Updated: 04-23-2015
+ *
+ * Description: EditDaily allows a user to change the time of an alarm that goes off every day.
+ * It also displays a timePicker populated with the previously set time.
+ *
  */
+
 public class EditDaily extends ActionBarActivity {
     public static long id;
     private Context mContext = this;
@@ -23,7 +30,7 @@ public class EditDaily extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
+        //gets the alarm details
         setContentView(R.layout.edit_daily);
         Intent thisIntent = getIntent();
         int hour = thisIntent.getIntExtra(ReminderListActivity.ALARM_HOUR, -1);
@@ -33,7 +40,7 @@ public class EditDaily extends ActionBarActivity {
         final long id = thisIntent.getLongExtra(ReminderListActivity.EXISTING_MODEL_ID, -1);
         final long reminderId = thisIntent.getLongExtra(ReminderListActivity.REMINDER_ID, 7);
 
-
+        //displays the alarm details as they currently are before edits
         TextView alarmName = (TextView) findViewById(R.id.editBlank);
         alarmName.setText(name);
 
@@ -41,7 +48,9 @@ public class EditDaily extends ActionBarActivity {
         timePicker.setCurrentHour(hour);
         timePicker.setCurrentMinute(minute);
 
-        //when the done button is clicked,
+        //when the done button is clicked, get the new hour and minute from
+        //the timePicker. create a new remindertime with the same reminderId
+        //and the new time, and cancel the remindertime with the old time.
         Button doneEditing = (Button) findViewById(R.id.btn_done);
         doneEditing.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -55,6 +64,9 @@ public class EditDaily extends ActionBarActivity {
                 dbHelper.updateReminder(daily, id);
                 AlarmManagerHelper.setAlarms(mContext);
 
+                //start the reminderListActivity to show a list of all the different time
+                //frequencies/remindertimes under the alarm. Pass the alarm name, modelid,
+                //and tone in as extras so they can be accessed in future activities.
                 Intent i = new Intent(EditDaily.this, ReminderListActivity.class);
                 i.putExtra(ReminderListActivity.ALARM_NAME, name);
                 i.putExtra(ReminderListActivity.EXISTING_MODEL_ID, id);
@@ -65,12 +77,15 @@ public class EditDaily extends ActionBarActivity {
 
     }
 
+    //inflate the action bar to contain a cancel icon
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_cancel, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
+    //when the cancel icon is clicked, go back to the list of remindertimes for
+    //that alarm
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {

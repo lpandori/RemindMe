@@ -12,7 +12,12 @@ import android.widget.Button;
 
 
 /**
- * Created by rachelleholmgren on 3/5/15.
+ * Class: SetFrequency.java
+ * Authors: Heather Seaman, Laura Pandori, Rachelle, Holmgren, Tyra He
+ * Last Updated: 04-23-2015
+ *
+ * Description: SetFrequency redirects the user to an appropriate workflow to set the details
+ * of the remindertime
  */
 public class SetFrequency extends ActionBarActivity {
 
@@ -28,6 +33,7 @@ public class SetFrequency extends ActionBarActivity {
         Button monthly = (Button) findViewById(R.id.monthly);
 
         Intent thisIntent = getIntent(); // gets the previously created intent
+        //get info passed from previous activities
         final String alarmName = thisIntent.getStringExtra(SetAlarmInfo.ALARM_NAME);
         final int snoozeTime = thisIntent.getIntExtra(ReminderListActivity.MIN_BETWEEN_SNOOZE, ReminderTime.DEFAULT_MIN_BETWEEN_SNOOZE);
         final boolean existingModel = thisIntent.getBooleanExtra(ReminderListActivity.EXISTING_MODEL, false);
@@ -35,57 +41,68 @@ public class SetFrequency extends ActionBarActivity {
         final String alarmTone = thisIntent.getStringExtra(ReminderListActivity.ALARM_TONE);
 
 
-        //create a ReminderTime based on which was clicked and pass it as
+        //starts the setDate activity if you're making a one time reminder and
+        //passes the previously set information for the current remindertime to the next
+        //activity.
         once.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(SetFrequency.this, SetDate.class);
-                i.putExtra(SetAlarmInfo.ALARM_TONE, alarmTone);
-                System.out.println(alarmTone);
-                i.putExtra(SetAlarmInfo.ALARM_NAME, alarmName);
-                i.putExtra(ReminderListActivity.EXISTING_MODEL, existingModel);
-                i.putExtra(ReminderListActivity.EXISTING_MODEL_ID, existingModelId);
                 i.putExtra(REMINDER_TYPE, ReminderTime.ONE_TIME);
-                i.putExtra(ReminderListActivity.MIN_BETWEEN_SNOOZE, snoozeTime);
-
-                startActivity(i);
             }
         });
+
+        Intent i;
+
+        //start the setTime activity if you're making a daily reminder and
+        //passes the previously set information for the current reminder time to
+        //the next activity
         daily.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(SetFrequency.this, SetTime.class);
+                i.putExtra(REMINDER_TYPE, ReminderTime.DAILY);
                 i.putExtra(SetAlarmInfo.ALARM_TONE, alarmTone);
                 i.putExtra(SetAlarmInfo.ALARM_NAME, alarmName);
                 i.putExtra(ReminderListActivity.EXISTING_MODEL, existingModel);
                 i.putExtra(ReminderListActivity.EXISTING_MODEL_ID, existingModelId);
-                i.putExtra(REMINDER_TYPE, ReminderTime.DAILY);
+
                 i.putExtra(ReminderListActivity.MIN_BETWEEN_SNOOZE, snoozeTime);
                 startActivity(i);
             }
         });
+
+        //starts the setWeekly activity if user is making a weekly reminder
+        //and passes the previously set information for the current reminder time
+        //to the next activity
         weekly.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(SetFrequency.this, SetWeekly.class);
+                i.putExtra(REMINDER_TYPE, ReminderTime.WEEKLY);
                 i.putExtra(SetAlarmInfo.ALARM_TONE, alarmTone);
                 i.putExtra(SetAlarmInfo.ALARM_NAME, alarmName);
                 i.putExtra(ReminderListActivity.EXISTING_MODEL, existingModel);
                 i.putExtra(ReminderListActivity.EXISTING_MODEL_ID, existingModelId);
-                i.putExtra(REMINDER_TYPE, ReminderTime.WEEKLY);
+
                 i.putExtra(ReminderListActivity.MIN_BETWEEN_SNOOZE, snoozeTime);
                 startActivity(i);
             }
         });
+
+        //starts the setMonthly activity if user is making a monthly reminder
+        //and passes the previously set information for the current reminder time
+        //to the next activity
         monthly.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(SetFrequency.this, SetMonthly.class);
+                i.putExtra(REMINDER_TYPE, ReminderTime.MONTHLY);
                 i.putExtra(SetAlarmInfo.ALARM_TONE, alarmTone);
                 i.putExtra(SetAlarmInfo.ALARM_NAME, alarmName);
                 i.putExtra(ReminderListActivity.EXISTING_MODEL, existingModel);
                 i.putExtra(ReminderListActivity.EXISTING_MODEL_ID, existingModelId);
-                i.putExtra(REMINDER_TYPE, ReminderTime.MONTHLY);
+
                 i.putExtra(ReminderListActivity.MIN_BETWEEN_SNOOZE, snoozeTime);
                 startActivity(i);
             }
@@ -93,12 +110,15 @@ public class SetFrequency extends ActionBarActivity {
 
     }
 
+    //inflate the action bar with a cancel icon
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_cancel, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
+    //when the cancel icon is clicked, go back to the list of alarms the
+    //user has set
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {

@@ -13,7 +13,13 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 
 /**
- * Created by rachelleholmgren on 4/12/15.
+ * Class: EditOneTime.java
+ * Authors: Heather Seaman, Laura Pandori, Rachelle, Holmgren, Tyra He
+ * Last Updated: 04-23-2015
+ *
+ * Description: EditOneTime allows a user to change the time and date
+ * that a one-time reminderTime within an alarm goes off.
+ *
  */
 public class EditOneTime extends ActionBarActivity {
     public static long id = -1;
@@ -24,6 +30,8 @@ public class EditOneTime extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.edit_one_time);
+
+        //get the alarm details previously set for this one time remindertime
         Intent thisIntent = getIntent();
 
         TextView alarmName = (TextView) findViewById(R.id.editBlank);
@@ -42,11 +50,17 @@ public class EditOneTime extends ActionBarActivity {
         int month = Integer.parseInt(dString.substring(5,7));
         int day = Integer.parseInt(dString.substring(8,10));
 
+        //populate screen with the old alarm details for easy and fast editing
         alarmName.setText(name);
         timePicker.setCurrentHour(hour);
         timePicker.setCurrentMinute(minute);
         datePicker.updateDate(year, month-1, day);
 
+
+        //on done, get the information from the datepicker and timepicker.
+        //create a new reminder time with this information and the old reminderid
+        //and delete the old reminder time. Then start the reminderlist activity
+        //to show all the remindertimes set under this alarm.
         Button done = (Button) findViewById(R.id.btn_done);
         done.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -71,12 +85,15 @@ public class EditOneTime extends ActionBarActivity {
         });
     }
 
+    //inflate the action bar to contain a cancel icon
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_cancel, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
+    //when the cancel icon is clicked, go back to the list of remindertimes for
+    //that alarm
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {

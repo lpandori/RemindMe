@@ -13,7 +13,12 @@ import android.widget.TimePicker;
 import java.util.Calendar;
 
 /**
- * Created by rachelleholmgren on 3/26/15.
+ * Class: SetTime.java
+ * Authors: Heather Seaman, Laura Pandori, Rachelle, Holmgren, Tyra He
+ * Last Updated: 04-23-2015
+ *
+ * Description: Set time allows the user to set the date of the remindertime they are
+ * creating.
  */
 public class SetTime extends ActionBarActivity {
         private TimePicker timePicker;
@@ -24,16 +29,14 @@ public class SetTime extends ActionBarActivity {
         public void onCreate(Bundle savedInstanceState){
             super.onCreate(savedInstanceState);
 
-            final Intent prevIntent = getIntent(); // gets the previously created intent
+            //get previously set information from earlier activities
+            final Intent prevIntent = getIntent();
             final String alarmName = prevIntent.getStringExtra(SetAlarmInfo.ALARM_NAME);
             final String alarmTone = prevIntent.getStringExtra(SetAlarmInfo.ALARM_TONE);
             final int reminderType = prevIntent.getIntExtra(SetFrequency.REMINDER_TYPE, -1);
             final boolean existingModel = prevIntent.getBooleanExtra(ReminderListActivity.EXISTING_MODEL, false);
             final long existingModelId = prevIntent.getLongExtra(ReminderListActivity.EXISTING_MODEL_ID, -1);
-
             final int minBetweenSnooze = prevIntent.getIntExtra(ReminderListActivity.MIN_BETWEEN_SNOOZE, ReminderTime.DEFAULT_MIN_BETWEEN_SNOOZE);
-
-            System.out.println(alarmTone);
 
             final Context context = this;
             setContentView(R.layout.time_picker);
@@ -48,7 +51,7 @@ public class SetTime extends ActionBarActivity {
                     boolean[] weekdays;
 
                     ReminderTime r = null;
-                    //use switch to make reminder time
+                    //depending on the reminderType create a new reminderTime
                     switch(reminderType){
                         case ReminderTime.ONE_TIME:
                             int year = prevIntent.getIntExtra(SetDate.DATE_YEAR, -1);
@@ -71,9 +74,9 @@ public class SetTime extends ActionBarActivity {
                     }
                     r.setMinBetweenSnooze(minBetweenSnooze);
                     Intent i = new Intent(SetTime.this, ReminderListActivity.class);
+                    //if user is creating a new alarm, create a new alarmModel
                     if(!existingModel){
                         AlarmModel alarmModel = new AlarmModel(alarmName);
-
                         // we create a unique id using the system time
                         long alarmId = System.currentTimeMillis();
                         alarmModel.setId(alarmId);
@@ -86,21 +89,17 @@ public class SetTime extends ActionBarActivity {
 
 
                         dbHelper.createAlarm(alarmModel);//add to db
+                        //otherwise, just add the new reminder to the existing
+                        //alarmModel's array of reminders
                     }else{
                         AlarmModel alarmModel = dbHelper.getAlarm(existingModelId);
                         alarmModel.addReminder(r);
                         dbHelper.deleteAlarm(existingModelId);
                         dbHelper.createAlarm(alarmModel);
                         i.putExtra(ReminderListActivity.EXISTING_MODEL_ID, existingModelId);
-
-                        System.out.println("added new reminder time");
-
                     }
-                    AlarmManagerHelper.setAlarms(context);//trigger setting alarm
-                    System.out.println("ALARM NAME IS " + alarmName);
-                    System.out.println("ALARM TONE IS " + alarmTone);
-
-
+                    //trigger setting alarm
+                    AlarmManagerHelper.setAlarms(context);
                     i.putExtra(ReminderListActivity.ALARM_NAME, alarmName);
                     i.putExtra(ReminderListActivity.ALARM_TONE, alarmTone);
                     startActivity(i);
@@ -108,12 +107,15 @@ public class SetTime extends ActionBarActivity {
             });
         }
 
+
+    //inflate action bar to have a cancel icon
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_cancel, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
+    //on the click of the cancel icon, go back to the list of alarms
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -126,6 +128,8 @@ public class SetTime extends ActionBarActivity {
                 return super.onOptionsItemSelected(item);
         }
     }
+
+        //set timepicker to show current time
         public void setCurrentTimeOnView(){
             timePicker = (TimePicker) findViewById(R.id.test);
             final Calendar c = Calendar.getInstance();
